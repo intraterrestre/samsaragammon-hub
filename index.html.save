@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samsaragammon — HUB Curvista</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+  <script defer src="js/ritual.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fdfcf9;
+      font-family: 'Helvetica Neue', sans-serif;
+      animation: fadeIn 1s ease-in;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 {
+      margin-top: 2em;
+      font-size: 2em;
+      color: #333;
+    }
+
+    .enlace-ritual {
+      display: block;
+      margin: 1.5em auto;
+      font-size: 1.2em;
+      color: #444;
+
+      text-decoration: none;
+      padding: 0.5em 1em;
+      border: 2px solid #ccc;
+      border-radius: 1em;
+      width: fit-content;
+      transition: all 0.3s ease;
+    }
+
+    .enlace-ritual:hover {
+      background-color: #eee;
+      transform: scale(1.05);
+      border-color: #999;
+    }
+
+    .intro {
+      margin-top: 1em;
+      font-size: 1.1em;
+      color: #666;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .luna-superpuesta {
+      margin-top: 2em;
+      width: 140px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      animation: pulseLuna 2.5s infinite ease-in-out;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .luna-superpuesta:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes pulseLuna {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌀 Samsaragammon — HUB Curvista</h1>
+  <div class="intro">
+    <p>Bienvenido al templo digital del juego filosófico.</p>
+    <p>Explorá los módulos, activá tu dharma curvo, y colaborá en la expansión del Samsaragammon.</p>
+  </div>
+
+  <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
+       alt="Luna portal"
+       class="luna-superpuesta" />
+
+  <a class="enlace-ritual" href="juego.html">🎮 Entrar al Juego Ritual</a>
+  <a class="enlace-ritual" href="manual-curvist.html">📜 Manual Curvista</a>
+  <a class="enlace-ritual" href="diccionario.html">📚 Diccionario Interactivo</a>
+  <a class="enlace-ritual" href="tabla-curvista.html">🧩 Tabla Curvista + Reinos</a>
+  <a class="enlace-ritual" href="colaborar.html">🤝 Cómo Colaborar</a>
+  <a class="enlace-ritual" href="karma.html">⚖️ Karma Curvista</a>
+
+</body>
+</html>

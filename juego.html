@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samsaragammon — Juego Ritual</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fdfcf9;
+      font-family: 'Helvetica Neue', sans-serif;
+      animation: fadeIn 1s ease-in;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .texto-ritual {
+      margin-top: 2em;
+      font-size: 1.3em;
+      color: #333;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6em;
+    }
+
+    .luna-superpuesta {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 140px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      animation: pulseLuna 2.5s infinite ease-in-out;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+
+    .luna-superpuesta:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes pulseLuna {
+      0% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+        transform: scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+      }
+    }
+
+    .contenedor-imagenes {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: 3em auto;
+      height: auto;
+    }
+
+    .imagen-ritual {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 1em;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      transition: opacity 1.5s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Texto ritual -->
+  <div class="texto-ritual">
+    <p>La luna llena brilla en el horizonte, símbolo de iluminación.</p>
+    <p>Empieza tu viaje en <strong>Samsaragammon</strong> y descubre el sendero para romper la rueda del Samsara.</p>
+    <p><strong>RECUERDA:</strong> este mundo cúbico es falso.</p>
+    <p><strong>Saca al Buda en ti.</strong></p>
+    <p><strong>Toca la luna… y que el juego empiece.</strong></p>
+  </div>
+
+  <!-- Contenedor de imágenes con fade y luna superpuesta -->
+  <div class="contenedor-imagenes">
+    <img id="hombre" src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-EN-POTENCIA.png"
+         alt="Buda en potencia"
+         class="imagen-ritual visible" />
+
+    <img id="buda" src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-SIN-LUNA-.png"
+         alt="Buda sin luna"
+         class="imagen-ritual oculto" />
+
+    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
+         alt="Luna portal"
+         class="luna-superpuesta"
+         onclick="redirigirAlJuego()" />
+  </div>
+
+  <script>
+    // Transición visual entre hombre y Buda
+    window.addEventListener('DOMContentLoaded', () => {
+      const hombre = document.getElementById('hombre');
+      const buda = document.getElementById('buda');
+
+      if (hombre && buda) {
+        setTimeout(() => {
+          hombre.classList.remove('visible');
+          hombre.classList.add('oculto');
+          buda.classList.remove('oculto');
+          buda.classList.add('visible');
+        }, 4000);
+      }
+    });
+
+    // Redirección inmediata al juego
+    function redirigirAlJuego() {
+      window.open('https://manual-samsaragammon-9c38dd.netlify.app/', '_blank');
+    }
+  </script>
+
+<script>
+  function activarAudioYRedirigir() {
+    const audio = new Audio('audio/ritual-l4d1c0m0.mp3');
+    audio.loop = true;
+    audio.play();
+    setTimeout(() => {
+      window.open('https://manual-samsaragammon-9c38dd.netlify.app/', '_blank');
+    }, 500);
+  }
+
+  document.querySelector('.luna-superpuesta').addEventListener('click', activarAudioYRedirigir);
+</script>
+
+</body>
+</html>

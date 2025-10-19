@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<<<<<<< HEAD
-  <title>Samsaragammon — HUB Curvista</title>
+  <title>Samsaragammon — Portal Curvista</title>
   <link rel="stylesheet" href="css/estilos.css" />
-  <script defer src="js/ritual.js"></script>
   <style>
     body {
       margin: 0;
-      padding: 0;
+      font-family: "Quicksand", "Helvetica Neue", sans-serif;
       background-color: #fdfcf9;
-      font-family: 'Helvetica Neue', sans-serif;
+      color: #333;
+      line-height: 1.6;
       animation: fadeIn 1s ease-in;
-      text-align: center;
     }
 
     @keyframes fadeIn {
@@ -22,200 +20,136 @@
       to { opacity: 1; }
     }
 
-    h1 {
-      margin-top: 2em;
-      font-size: 2em;
-      color: #333;
-    }
-
-    .enlace-ritual {
-      display: block;
-      margin: 1.5em auto;
-      font-size: 1.2em;
-      color: #444;
-      text-decoration: none;
-      padding: 0.5em 1em;
-      border: 2px solid #ccc;
-      border-radius: 1em;
-      width: fit-content;
-      transition: all 0.3s ease;
-    }
-
-    .enlace-ritual:hover {
-      background-color: #eee;
-      transform: scale(1.05);
-      border-color: #999;
-    }
-
-    .intro {
-      margin-top: 1em;
-      font-size: 1.1em;
-      color: #666;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .luna-superpuesta {
-      margin-top: 2em;
-      width: 140px;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-      animation: pulseLuna 2.5s infinite ease-in-out;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .luna-superpuesta:hover {
-      transform: scale(1.05);
-    }
-
-    @keyframes pulseLuna {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.03); }
-      100% { opacity: 1; transform: scale(1); }
-=======
-  <title>Samsaragammon Hub — Curvismo</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      background: linear-gradient(to bottom, #fdfdfd, #e0f7fa);
-      color: #333;
-    }
-    header {
+    header, section, footer {
       text-align: center;
-      padding: 2rem;
-      background-color: #00796b;
-      color: white;
+      padding: 3rem 1.5rem;
     }
-    section {
-      padding: 2rem;
-      text-align: center;
-    }
+
     h1 {
       font-size: 2.5rem;
+      color: #1b263b;
       margin-bottom: 1rem;
     }
+
     h2 {
       font-size: 1.8rem;
-      margin-top: 3rem;
+      color: #222;
+      margin-bottom: 1rem;
     }
+
     p {
-      font-size: 1.2rem;
       max-width: 800px;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.2rem;
+      font-size: 1.1rem;
+      color: #555;
     }
+
+    a.button {
+      display: inline-block;
+      margin-top: 1.2rem;
+      padding: 0.7rem 1.4rem;
+      background-color: #1b263b;
+      color: #fff;
+      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    a.button:hover {
+      background-color: #2c3e50;
+    }
+
     img {
       max-width: 90%;
       height: auto;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      margin-bottom: 2rem;
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+      margin: 1.5rem auto;
     }
-    a.button {
-      display: inline-block;
-      padding: 0.8rem 1.5rem;
-      background-color: #009688;
-      color: white;
-      font-size: 1rem;
-      border-radius: 5px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    a.button:hover {
-      background-color: #00695c;
-    }
-    .luna-portal {
-      text-align: center;
-      margin-top: 2rem;
-    }
+
     .luna-portal img {
-      width: 200px;
+      width: 180px;
       border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      box-shadow: 0 0 20px rgba(240, 230, 140, 0.6);
+      animation: pulseLuna 3s infinite ease-in-out;
       transition: transform 0.3s ease;
       cursor: pointer;
     }
+
     .luna-portal img:hover {
       transform: scale(1.05);
     }
+
+    @keyframes pulseLuna {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.04); opacity: 0.85; }
+    }
+
     footer {
-      text-align: center;
-      padding: 1rem;
+      background-color: #f1f1f1;
+      color: #666;
       font-size: 0.9rem;
-      color: #777;
->>>>>>> 8243f142331655e917513cf01921af9ae66c5602
+      padding: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.4rem; }
+      p { font-size: 1rem; }
+      .luna-portal img { width: 120px; }
     }
   </style>
 </head>
 <body>
 
-<<<<<<< HEAD
-  <h1>🌀 Samsaragammon — HUB Curvista</h1>
-  <div class="intro">
-    <p>Bienvenido al templo digital del juego filosófico.</p>
-    <p>Explorá los módulos, activá tu dharma curvo, y colaborá en la expansión del Samsaragammon.</p>
-  </div>
-
-  <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
-       alt="Luna portal"
-       class="luna-superpuesta" />
-
-  <a class="enlace-ritual" href="juego.html">🎮 Entrar al Juego Ritual</a>
-  <a class="enlace-ritual" href="manual-curvist.html">📜 Manual Curvista</a>
-  <a class="enlace-ritual" href="diccionario.html">📚 Diccionario Interactivo</a>
-  <a class="enlace-ritual" href="tabla-curvista.html">🧩 Tabla Curvista + Reinos</a>
-  <a class="enlace-ritual" href="colaborar.html">🤝 Cómo Colaborar</a>
-  <a class="enlace-ritual" href="karma.html">⚖️ Karma Curvista</a>
-=======
   <header>
-    <h1>🌀 Samsaragammon Hub</h1>
-    <p>Curvismo: el arte de redondear la conciencia</p>
+    <h1>Samsaragammon — Portal Curvista</h1>
+    <p>Aprende a jugar, reflexiona con nuevos términos budistas y descubre cómo el Curvismo puede transformar tu hogar y tu conciencia.</p>
   </header>
 
   <section>
-    <h2>Bienvenido al manifiesto curvista</h2>
+    <h2>El Juego Filosófico</h2>
+    <p>Samsaragammon es un juego ritual donde cada decisión te hace crecer en la curva. A través de su tablero trascendente, diccionario de términos milenarios y reinos históricamente curvistas, experimentarás el ciclo del Samsara y aprenderás a reconocer como salirte.</p>
+    <a class="button" href="juego.html">Entrar al Juego</a>
     <p>
-      Antes de entrar al juego, descubre por qué <strong>vivir en cubos nos enferma</strong> — y cómo las curvas pueden sanar tu espacio, tu mente y tu alma.
+      <a href="manual-curvista.html">Manual Curvista</a> · 
+      <a href="diccionario.html">Diccionario Interactivo</a> · 
+      <a href="tabla-curvista.html">Tabla Curvista + Reinos</a> · 
+      <a href="karma.html">Karma Curvista</a>
     </p>
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/Samsara24-direction-scaled.jpg" alt="Arte Curvista" />
-    <p>
-      Este arte representa el viaje espiritual del Homo curvicus: desde los ojos que ven con baja frecuencia hasta el séptimo par cerrado — símbolo de la realización divina. Las líneas de colores que emergen de Yama expresan nuestros niveles de conciencia, y todos convergen en la rueda del Samsara, donde el gallo, el cerdo y la serpiente mueven el mundo.
-    </p>
-    <a class="button" href="https://www.amazon.com.mx/dp/B0FSDTS252" target="_blank">📘 Ver el libro en Amazon (versión en español)</a>
-    <p>Incluye QR interactivos que te llevan al sitio web y al Oráculo Curvista.</p>
   </section>
 
   <section>
-    <h2>🌕 La Luna como Portal</h2>
-    <p>
-      Para aprender a salir del Samsara, debes entrar al juego <strong>Samsaragammon</strong> por la luna.<br>
-      <em>Buda no señala el ciclo... señala la luna que está fuera del teatro terrestre.</em>
-    </p>
+    <h2>Esto es Curvismo para tu Hogar</h2>
+    <p>El mundo cúbico enferma. La curva libera.  
+    Con el Curvismo aprendemos a redondear rincones y transformar nuestros espacios, reduciendo el estrés y ampliando la creatividad.</p>
+    <a class="button" href="https://www.federicogarcia.art" target="_blank">Visita federicogarcia.art</a>
+  </section>
 
+  <section>
+    <h2>El Libro</h2>
+    <p>Este camino está explicado en mi libro <strong>“Esto es Curvismo no Cubismo”</strong>.  
+    Una guía práctica para ver más allá del paradigma cúbico, profundizando en la filosofía detrás del juego.</p>
+    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/Samsara24-direction-scaled.jpg" alt="Portada del libro Curvismo" />
+    <a class="button" href="https://www.amazon.com/dp/B0FS1VXTMN" target="_blank">Ver en Amazon</a>
+  </section>
+
+  <section>
+    <h2>La Luna como Portal</h2>
+    <p>El camino de liberación se abre al tocar la luna y entrar en <strong>Samsaragammon</strong>.<br>
+    Buda no señala la prisión del ciclo… señala la luna, refugio más allá del teatro de la vida.</p>
     <div class="luna-portal">
       <a href="juego.html">
         <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png" alt="Portal lunar" />
       </a>
-      <p><strong>Haz clic en la luna para entrar al juego</strong></p>
+      <p><strong>Haz clic en la luna para comenzar</strong></p>
     </div>
   </section>
 
-  <section>
-    <h2>🧘‍♂️ Buda señala la luna</h2>
-    <p>
-      No señala el Samsara, ni el teatro terrestre. Señala la luna — el séptimo cielo, el escape curvista.
-    </p>
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/09/Buda-moon-Fake-World-.png" alt="Buda señalando la luna" />
-  </section>
-
   <footer>
-    © 2025 Federico García · Curvismo no cubismo · Todos los derechos redondeados
+    © 2025 Federico García · Curvismo, no Cubismo · Todos los derechos reservados
   </footer>
->>>>>>> 8243f142331655e917513cf01921af9ae66c5602
 
 </body>
 </html>

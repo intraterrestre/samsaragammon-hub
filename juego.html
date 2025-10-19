@@ -47,21 +47,9 @@
     }
 
     @keyframes pulseLuna {
-      0% {
-        opacity: 1;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.7;
-        box-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
-        transform: scale(1.03);
-      }
-      100% {
-        opacity: 1;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-        transform: scale(1);
-      }
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
     .contenedor-imagenes {
@@ -95,7 +83,6 @@
 </head>
 <body>
 
-  <!-- Texto ritual -->
   <div class="texto-ritual">
     <p>La luna llena brilla en el horizonte, símbolo de iluminación.</p>
     <p>Empieza tu viaje en <strong>Samsaragammon</strong> y descubre el sendero para romper la rueda del Samsara.</p>
@@ -104,7 +91,6 @@
     <p><strong>Toca la luna… y que el juego empiece.</strong></p>
   </div>
 
-  <!-- Contenedor de imágenes con fade y luna superpuesta -->
   <div class="contenedor-imagenes">
     <img id="hombre" src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-EN-POTENCIA.png"
          alt="Buda en potencia"
@@ -117,11 +103,10 @@
     <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
          alt="Luna portal"
          class="luna-superpuesta"
-         onclick="redirigirAlJuego()" />
+         id="luna" />
   </div>
 
   <script>
-    // Transición visual entre hombre y Buda
     window.addEventListener('DOMContentLoaded', () => {
       const hombre = document.getElementById('hombre');
       const buda = document.getElementById('buda');
@@ -134,26 +119,20 @@
           buda.classList.add('visible');
         }, 4000);
       }
+
+      const luna = document.getElementById('luna');
+      if (luna) {
+        luna.addEventListener('click', () => {
+          const audio = new Audio('audio/ritual-l4d1c0m0.mp3');
+          audio.loop = true;
+          audio.play();
+          setTimeout(() => {
+            window.open('https://manual-samsaragammon-9c38dd.netlify.app/', '_blank');
+          }, 500);
+        });
+      }
     });
-
-    // Redirección inmediata al juego
-    function redirigirAlJuego() {
-      window.open('https://manual-samsaragammon-9c38dd.netlify.app/', '_blank');
-    }
   </script>
-
-<script>
-  function activarAudioYRedirigir() {
-    const audio = new Audio('audio/ritual-l4d1c0m0.mp3');
-    audio.loop = true;
-    audio.play();
-    setTimeout(() => {
-      window.open('https://manual-samsaragammon-9c38dd.netlify.app/', '_blank');
-    }, 500);
-  }
-
-  document.querySelector('.luna-superpuesta').addEventListener('click', activarAudioYRedirigir);
-</script>
 
 </body>
 </html>

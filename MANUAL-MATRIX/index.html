@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manual Matrix — Samsaragammon</title>
+<meta name="description" content="Reglas base de Samsaragammon y variante experimental Modo Venenos (veneno + reino + nidanas).">
+<style>
+  /* Base minimalista (Matrix) */
+  :root{
+    --bg:#000; --fg:#00ff7f; --fg-soft:#9ff3c6; --line:#0a4229; --accent:#22ff99; --warn:#ffe08a; --muted:#6bd3a7;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;line-height:1.6}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px}
+  header{border:1px solid var(--line);border-radius:12px;padding:20px 18px;margin-bottom:18px;background:rgba(0,20,0,.6);box-shadow:0 0 20px rgba(34,255,153,.08)}
+  h1{margin:0 0 6px 0;font-size:clamp(1.4rem,2.6vw,2rem);color:var(--accent)}
+  p.lead{margin:4px 0 0 0;color:var(--fg-soft)}
+  /* Tabs */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+  .tab{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#001b10;color:var(--fg);cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--accent);color:#002313;border-color:transparent;font-weight:700}
+  .panel{display:none;border:1px solid var(--line);border-radius:12px;background:rgba(0,20,0,.55);padding:20px;margin-bottom:16px}
+  .panel.active{display:block}
+  h2{margin:0 0 10px 0;font-size:1.2rem;color:var(--fg)}
+  h3{margin:16px 0 6px 0;color:var(--fg-soft);font-size:1rem}
+  ul{margin:6px 0 12px 18px;padding:0}
+  li{margin:4px 0}
+  .note{background:rgba(255,224,138,.08);border:1px solid rgba(255,224,138,.4);color:#eadeb0;padding:10px;border-radius:8px}
+  .danger{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.4);color:#ffb0b0}
+  .grid{display:grid;gap:12px}
+  @media(min-width:800px){.grid-2{grid-template-columns:1fr 1fr}}
+  code{background:#012414;color:#b9ffe1;padding:1px 6px;border-radius:6px}
+  .calc{border:1px dashed var(--line);padding:12px;border-radius:10px}
+  label{display:block;margin:6px 0 2px}
+  select,input[type="checkbox"]{background:#002418;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:8px}
+  .nidanas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:6px}
+  .out{font-weight:700;color:var(--accent);font-size:1.1rem}
+  .hr{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:16px 0}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}
+  a:hover{opacity:.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Manual Matrix — Samsaragammon</h1>
+    <p class="lead">Reglas base actuales y variante experimental “Modo Venenos”. Documento de trabajo para pruebas internas.</p>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist" aria-label="Secciones del manual">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="p-basico" id="t-basico">Básico</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-karma" id="t-karma">Karma/Dharma</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-nidanas" id="t-nidanas">Nidanas</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-avanzado" id="t-avanzado">Avanzado</button>
+  </div>
+
+  <!-- Panel: Básico -->
+  <section class="panel active" role="tabpanel" id="p-basico" aria-labelledby="t-basico">
+    <h2>Protocolo de inicio</h2>
+    <h3>Objetivo principal</h3>
+    <p>Liberar 7 fichas del ciclo del Samsara.</p>
+
+    <h3>Componentes del sistema</h3>
+    <ul>
+      <li><strong>Tablero:</strong> 6 reinos con 4 espacios cada uno (24 en total).</li>
+      <li><strong>Fichas:</strong> 15 por jugador.</li>
+      <li><strong>Dados:</strong> 3 dados estándar de seis caras.</li>
+      <li><strong>Marcadores:</strong> Karma (rojo) y Dharma (verde) — uso opcional.</li>
+    </ul>
+
+    <h3>Ciclo de turno</h3>
+    <ul>
+      <li><strong>Fase 1 — Tirada:</strong> lanza 3 dados.</li>
+      <li><strong>Fase 2 — Elección:</strong> elige 1 de los tres resultados para tu primer movimiento.</li>
+      <li><strong>Fase 3 — Resolución:</strong> usa los otros 2 resultados por separado (dos movimientos) o sumados (un único movimiento más largo).</li>
+      <li><strong>Fase 4 — Cierre:</strong> aplica capturas/protecciones y finaliza turno.</li>
+    </ul>
+
+    <h3>Movimiento y capturas</h3>
+    <ul>
+      <li><strong>Movimiento:</strong> cada resultado mueve tantas casillas como indica su número. Puedes repartirlos o sumar dos en una ficha.</li>
+      <li><strong>Protección:</strong> dos o más fichas propias en el mismo punto no pueden ser capturadas.</li>
+      <li><strong>Captura:</strong> una ficha sola puede ser capturada y enviada al inicio (según reglas del reino o modo activo).</li>
+    </ul>
+  </section>
+
+  <!-- Panel: Karma/Dharma -->
+  <section class="panel" role="tabpanel" id="p-karma" aria-labelledby="t-karma">
+    <h2>Sistema Karma/Dharma (opcional)</h2>
+    <div class="grid grid-2">
+      <div>
+        <h3>Acumular Karma (rojo)</h3>
+        <ul>
+          <li>+1 por capturar.</li>
+          <li>+1 por cruzar entre reinos.</li>
+          <li>+1 por dobles consecutivos.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Acumular Dharma (verde)</h3>
+        <ul>
+          <li>+1 por perdonar (no capturar pudiendo).</li>
+          <li>+1 por enseñar (reflexión aceptada).</li>
+          <li>+2 por renunciar (sacrificio voluntario).</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Intercambios</h3>
+    <ul>
+      <li><strong>Universal:</strong> 1 Dharma elimina 4 Karma.</li>
+      <li><strong>Humano:</strong> en Reino Humano, 2 Karma → 1 Dharma.</li>
+    </ul>
+    <p class="note">Este módulo es opcional. Ajusta o elimina efectos fuertes durante pruebas si generan bloqueo.</p>
+  </section>
+
+  <!-- Panel: Nidanas -->
+  <section class="panel" role="tabpanel" id="p-nidanas" aria-labelledby="t-nidanas">
+    <h2>Las 12 vinculaciones (Nidanas)</h2>
+    <div class="grid grid-2">
+      <div>
+        <h3>Bloque de Ignorancia</h3>
+        <ul>
+          <li>1. Ignorancia (Avidya)</li>
+          <li>2. Formaciones (Samskara)</li>
+          <li>3. Conciencia (Vijñana)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Bloque de Manifestación</h3>
+        <ul>
+          <li>4. Nombre/Forma (Nama-Rupa)</li>
+          <li>5. Seis Sentidos (Sadayatana)</li>
+          <li>6. Contacto (Sparsha)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Bloque de Experiencia</h3>
+        <ul>
+          <li>7. Sensación (Vedana)</li>
+          <li>8. Deseo (Trishna)</li>
+          <li>9. Apego (Upadana)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Bloque de Renacimiento</h3>
+        <ul>
+          <li>10. Devenir (Bhava)</li>
+          <li>11. Nacimiento (Jati)</li>
+          <li>12. Vejez/Muerte (Jara-Marana)</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Comprender los Nidanas ayuda a elegir mejores estrategias y a leer consecuencias en el tablero.</p>
+  </section>
+
+  <!-- Panel: Avanzado (incluye Modo Venenos) -->
+  <section class="panel" role="tabpanel" id="p-avanzado" aria-labelledby="t-avanzado">
+    <h2>Modo Venenos (experimental)</h2>
+    <p>Variante alineada a la tradición: cada tirada activa un <strong>triple</strong> — veneno elegido, reino destino y nidanas implicadas. Ese triple produce un <em>multiplicador venenoso</em> que puede modular consecuencias kármicas del turno.</p>
+
+    <div class="hr"></div>
+
+    <div class="grid grid-2">
+      <div class="calc">
+        <h3>Parámetros venenosos</h3>
+        <label for="veneno">Veneno</label>
+        <select id="veneno">
+          <option value="ignorancia">Ignorancia (cerdo)</option>
+          <option value="deseo">Deseo/Apego (gallo)</option>
+          <option value="aversion">Aversión/Odio (serpiente)</option>
+        </select>
+
+        <label for="reino">Reino</label>
+        <select id="reino">
+          <option value="devas">Devas</option>
+          <option value="asuras">Asuras</option>
+          <option value="humanos" selected>Humanos</option>
+          <option value="animales">Animales</option>
+          <option value="pretas">Pretas</option>
+          <option value="infierno">Infierno</option>
+        </select>
+
+        <h3>Nidanas implicadas (elige 1–3)</h3>
+        <div id="nidanasBox" class="nidanas">
+          <!-- Se llena dinámicamente según veneno -->
+        </div>
+
+        <p class="hr"></p>
+        <button id="calcBtn" class="tab">Calcular multiplicador</button>
+        <p class="out">Valor venenoso: <span id="out">1.000</span></p>
+        <p class="note" id="hint">Consejo: prueba distintas combinaciones; el valor final se limita entre 0.70 y 1.40 para testeo.</p>
+      </div>
+
+      <div>
+        <h3>Regla de aplicación sugerida</h3>
+        <ul>
+          <li>Aplica el multiplicador venenoso al resultado de la <strong>calculadora kármica</strong> o a la <strong>ruleta</strong> del turno.</li>
+          <li>Alternativa: aplícalo solo al <strong>delta de Karma</strong> (no al movimiento) para mantener estabilidad.</li>
+          <li>Límites de seguridad en pruebas: mínimo 0.70, máximo 1.40.</li>
+        </ul>
+
+        <h3>Mapeos propuestos</h3>
+        <ul>
+          <li><strong>Ignorancia</strong> → Nidanas 1–3 (Avidya, Samskara, Vijñana).</li>
+          <li><strong>Deseo</strong> → Nidanas 7–9 (Vedana, Trishna, Upadana).</li>
+          <li><strong>Aversión</strong> → Nidanas 6,10–12 (Sparsha, Bhava, Jati, Jara-Marana).</li>
+        </ul>
+
+        <p class="danger">Estado: experimental. No usar en torneos hasta completar pruebas y sondeo a estudiosos.</p>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+    <p>Cuando el módulo esté probado, podremos integrarlo como un “conmutador” en la calculadora oficial o como artefacto independiente.</p>
+  </section>
+</div>
+
+<script>
+/* ================== Tabs ================== */
+const tabs = document.querySelectorAll('.tab[role="tab"]');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=>{
+    tabs.forEach(x=>x.setAttribute('aria-selected','false'));
+    panels.forEach(p=>p.classList.remove('active'));
+    t.setAttribute('aria-selected','true');
+    document.getElementById(t.getAttribute('aria-controls')).classList.add('active');
+  });
+});
+
+/* ================== Configuración Venenos/Reinos/Nidanas ================== */
+const CONFIG = {
+  venenos: {
+    ignorancia: { id:'IGN', peso:1.10, nidanas:[1,2,3] },
+    deseo:      { id:'DES', peso:1.20, nidanas:[7,8,9] },
+    aversion:   { id:'AVE', peso:1.15, nidanas:[6,10,11,12] }
+  },
+  reinos: {
+    devas:    { id:'DEV', base:+2 },
+    asuras:   { id:'ASU', base:+1 },
+    humanos:  { id:'HUM', base: 0 },
+    animales: { id:'ANI', base:-1 },
+    pretas:   { id:'PRE', base:-2 },
+    infierno: { id:'INF', base:-3 }
+  },
+  nidanas: {
+    1:{ id:'AVIDYA',    peso:1.30, nombre:'1 Avidya' },
+    2:{ id:'SAMSKARA',  peso:1.10, nombre:'2 Samskara' },
+    3:{ id:'VIJNANA',   peso:1.00, nombre:'3 Vijñana' },
+    6:{ id:'SPARSHA',   peso:1.00, nombre:'6 Sparsha' },
+    7:{ id:'VEDANA',    peso:1.05, nombre:'7 Vedana' },
+    8:{ id:'TRISHNA',   peso:1.25, nombre:'8 Trishna' },
+    9:{ id:'UPADANA',   peso:1.30, nombre:'9 Upadana' },
+    10:{ id:'BHAVA',    peso:1.15, nombre:'10 Bhava' },
+    11:{ id:'JATI',     peso:1.05, nombre:'11 Jati' },
+    12:{ id:'JARAMARANA', peso:1.20, nombre:'12 Jara-Marana' }
+  }
+};
+
+const venenoSel = document.getElementById('veneno');
+const reinoSel = document.getElementById('reino');
+const nidanasBox = document.getElementById('nidanasBox');
+const out = document.getElementById('out');
+const calcBtn = document.getElementById('calcBtn');
+const hint = document.getElementById('hint');
+
+/* Render de nidanas según veneno */
+function renderNidanas(){
+  nidanasBox.innerHTML = '';
+  const v = CONFIG.venenos[venenoSel.value];
+  v.nidanas.forEach(id=>{
+    const n = CONFIG.nidanas[id];
+    const wrap = document.createElement('label');
+    wrap.innerHTML = `
+      <input type="checkbox" value="${id}"> ${n.nombre}
+    `;
+    nidanasBox.appendChild(wrap);
+  });
+}
+venenoSel.addEventListener('change', renderNidanas);
+renderNidanas();
+
+/* Cálculo del multiplicador venenoso */
+function calcularValorVenenoso(){
+  const v = CONFIG.venenos[venenoSel.value];
+  const r = CONFIG.reinos[reinoSel.value];
+  const marcados = Array.from(nidanasBox.querySelectorAll('input[type="checkbox"]:checked'))
+                   .map(i=>parseInt(i.value,10));
+  const pesos = marcados.length ? marcados.map(id=>CONFIG.nidanas[id].peso) : [1.0];
+  const prom = pesos.reduce((a,b)=>a+b,0) / pesos.length;
+  const ajusteReino = (r.base||0)/10; // -0.3 .. +0.2 típico
+  let val = v.peso * prom * (1 + ajusteReino);
+  // límites de prueba
+  val = Math.max(0.70, Math.min(1.40, val));
+  return Math.round(val*1000)/1000;
+}
+
+/* Validación de 1–3 nidanas */
+function validarNidanas(){
+  const checks = nidanasBox.querySelectorAll('input[type="checkbox"]');
+  const sel = Array.from(checks).filter(c=>c.checked);
+  if(sel.length>3){
+    sel[sel.length-1].checked = false; // impide superar 3
+  }
+}
+nidanasBox.addEventListener('change', validarNidanas);
+
+/* Botón calcular */
+calcBtn.addEventListener('click', ()=>{
+  const val = calcularValorVenenoso();
+  out.textContent = val.toFixed(3);
+  hint.textContent = "Aplica este multiplicador a la salida de tu calculadora o ruleta. Límite temporal: 0.70–1.40.";
+});
+</script>
+</body>
+</html>

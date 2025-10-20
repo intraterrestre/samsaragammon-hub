@@ -2,154 +2,491 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Samsaragammon — Portal Curvista</title>
-  <link rel="stylesheet" href="css/estilos.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manual Samsaragammon — Matrix Edition</title>
+  <meta name="description" content="Manual interactivo del Samsaragammon con pestañas, efectos Matrix y Calculadora Curvista integrada." />
   <style>
-    body {
-      margin: 0;
-      font-family: "Quicksand", "Helvetica Neue", sans-serif;
-      background-color: #fdfcf9;
-      color: #333;
-      line-height: 1.6;
-      animation: fadeIn 1s ease-in;
-    }
+    /* ===== BASE MATRIX ===== */
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--green:#00ff00;--greenSoft:#88ff88;--bg:#000;--line:rgba(0,255,0,.25)}
+    html,body{height:100%}
+    body{background:var(--bg);color:var(--green);font-family:"Courier New",monospace;overflow-x:hidden;min-height:100vh;line-height:1.6}
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    /* Matrix rain */
+    .matrix-bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;opacity:.12}
 
-    header, section, footer {
-      text-align: center;
-      padding: 3rem 1.5rem;
-    }
+    /* Layout */
+    .container{max-width:1100px;margin:0 auto;padding:24px;position:relative;z-index:2}
+    .terminal-header{background:rgba(0,20,0,.9);border:2px solid var(--green);border-radius:12px;padding:20px;margin-bottom:22px;box-shadow:0 0 20px rgba(0,255,0,.25);position:relative;overflow:hidden}
+    .terminal-header::before{content:"";position:absolute;inset:-2px;background:linear-gradient(45deg,var(--green),#000,var(--green));z-index:-1;border-radius:14px;filter:blur(6px);opacity:.3}
+    .typing-text{font-size:18px;text-shadow:0 0 10px var(--green)}
+    .prompt{color:var(--green);font-weight:700}
+    .command{color:var(--greenSoft)}
 
-    h1 {
-      font-size: 2.5rem;
-      color: #1b263b;
-      margin-bottom: 1rem;
-    }
+    /* Tabs */
+    .tab-navigation{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 22px;justify-content:center}
+    .tab-btn{background:rgba(0,30,0,.8);color:var(--green);border:2px solid var(--green);padding:10px 18px;border-radius:24px;cursor:pointer;font:700 14px "Courier New",monospace;transition:.25s;text-shadow:0 0 5px var(--green)}
+    .tab-btn:hover{background:rgba(0,60,0,.9);box-shadow:0 0 15px var(--green);transform:translateY(-1px)}
+    .tab-btn.active{background:var(--green);color:#000;box-shadow:0 0 18px var(--green)}
+    .tab-content{display:none;animation:fadeIn .45s ease}
+    .tab-content.active{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-    h2 {
-      font-size: 1.8rem;
-      color: #222;
-      margin-bottom: 1rem;
-    }
+    /* Content boxes */
+    .content-box{background:rgba(0,25,0,.82);border:1px solid var(--green);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 0 12px rgba(0,255,0,.18)}
+    .content-box h2{color:var(--green);margin-bottom:12px;text-shadow:0 0 10px var(--green);border-bottom:2px solid var(--green);padding-bottom:8px;font-size:22px}
+    .content-box h3{color:var(--greenSoft);margin:10px 0 8px;font-size:18px}
+    .content-box p{margin-bottom:10px}
+    .content-box ul{list-style:none;padding-left:20px}
+    .content-box li{margin-bottom:8px;position:relative}
+    .content-box li::before{content:"▶";color:var(--green);position:absolute;left:-18px;text-shadow:0 0 5px var(--green)}
 
-    p {
-      max-width: 800px;
-      margin: 0 auto 1.2rem;
-      font-size: 1.1rem;
-      color: #555;
-    }
+    /* ===== CALCULADORA ===== */
+    .grid{display:grid;gap:14px}
+    @media(min-width:1000px){.grid-2{grid-template-columns:1.2fr .8fr}}
+    .panel{background:rgba(0,18,0,.85);border:1px solid var(--line);border-radius:10px;padding:14px}
+    .panel h3{margin-bottom:8px}
+    label{display:block;color:var(--greenSoft);font-weight:700;margin:10px 0 4px}
+    select,input[type="number"],input[type="range"]{width:100%;background:#041204;color:var(--green);border:1px solid var(--line);border-radius:8px;padding:8px}
+    .row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .muted{color:#78a678}
+    .btn{display:inline-block;background:var(--green);color:#001b00;border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}
+    .btn.secondary{background:#022; color:#9ff; border:1px solid #0aa}
+    .out{font-weight:800;color:var(--green)}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border:1px solid var(--line);padding:8px;text-align:left}
+    th{background:#062006}
+    .badge{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:.9em}
+    .ok{color:#9ff;border-color:#0aa}
+    .warn{color:#ff9;border-color:#aa0}
+    .bad{color:#f99;border-color:#a00}
 
-    a.button {
-      display: inline-block;
-      margin-top: 1.2rem;
-      padding: 0.7rem 1.4rem;
-      background-color: #1b263b;
-      color: #fff;
-      font-size: 1rem;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background 0.3s ease;
-    }
-
-    a.button:hover {
-      background-color: #2c3e50;
-    }
-
-    img {
-      max-width: 90%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.15);
-      margin: 1.5rem auto;
-    }
-
-    .luna-portal img {
-      width: 180px;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(240, 230, 140, 0.6);
-      animation: pulseLuna 3s infinite ease-in-out;
-      transition: transform 0.3s ease;
-      cursor: pointer;
-    }
-
-    .luna-portal img:hover {
-      transform: scale(1.05);
-    }
-
-    @keyframes pulseLuna {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.04); opacity: 0.85; }
-    }
-
-    footer {
-      background-color: #f1f1f1;
-      color: #666;
-      font-size: 0.9rem;
-      padding: 1rem;
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 1.8rem; }
-      h2 { font-size: 1.4rem; }
-      p { font-size: 1rem; }
-      .luna-portal img { width: 120px; }
+    /* Responsive */
+    @media(max-width:768px){
+      .container{padding:14px}
+      .tab-btn{width:100%;text-align:center}
+      .typing-text{font-size:15px}
+      .content-box{padding:16px}
+      .content-box h2{font-size:18px}
     }
   </style>
 </head>
 <body>
+  <!-- FONDO MATRIX -->
+  <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
 
-  <header>
-    <h1>Samsaragammon — Portal Curvista</h1>
-    <p>Aprende a jugar, reflexiona con nuevos términos budistas y descubre cómo el Curvismo puede transformar tu hogar y tu conciencia.</p>
-  </header>
-
-  <section>
-    <h2>El Juego Filosófico</h2>
-    <p>Samsaragammon es un juego ritual donde cada decisión te hace crecer en la curva. A través de su tablero trascendente, diccionario de términos milenarios y reinos históricamente curvistas, experimentarás el ciclo del Samsara y aprenderás a reconocer como salirte.</p>
-    <a class="button" href="juego.html">Entrar al Juego</a>
-    <p>
-      <a href="manual-curvista.html">Manual Curvista</a> · 
-      <a href="diccionario.html">Diccionario Interactivo</a> · 
-      <a href="tabla-curvista.html">Tabla Curvista + Reinos</a> · 
-      <a href="karma.html">Karma Curvista</a>
-    </p>
-  </section>
-
-  <section>
-    <h2>Esto es Curvismo para tu Hogar</h2>
-    <p>El mundo cúbico enferma. La curva libera.  
-    Con el Curvismo aprendemos a redondear rincones y transformar nuestros espacios, reduciendo el estrés y ampliando la creatividad.</p>
-    <a class="button" href="https://www.federicogarcia.art" target="_blank">Visita federicogarcia.art</a>
-  </section>
-
-  <section>
-    <h2>El Libro</h2>
-    <p>Este camino está explicado en mi libro <strong>“Esto es Curvismo no Cubismo”</strong>.  
-    Una guía práctica para ver más allá del paradigma cúbico, profundizando en la filosofía detrás del juego.</p>
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/Samsara24-direction-scaled.jpg" alt="Portada del libro Curvismo" />
-    <a class="button" href="https://www.amazon.com/dp/B0FS1VXTMN" target="_blank">Ver en Amazon</a>
-  </section>
-
-  <section>
-    <h2>La Luna como Portal</h2>
-    <p>El camino de liberación se abre al tocar la luna y entrar en <strong>Samsaragammon</strong>.<br>
-    Buda no señala la prisión del ciclo… señala la luna, refugio más allá del teatro de la vida.</p>
-    <div class="luna-portal">
-      <a href="juego.html">
-        <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png" alt="Portal lunar" />
-      </a>
-      <p><strong>Haz clic en la luna para comenzar</strong></p>
+  <div class="container">
+    <!-- HEADER -->
+    <div class="terminal-header">
+      <div class="typing-text"><span class="prompt">root@samsara:~$</span> <span class="command" id="typingCommand">cat manual_matrix.txt</span></div>
     </div>
-  </section>
 
-  <footer>
-    © 2025 Federico García · Curvismo, no Cubismo · Todos los derechos reservados
-  </footer>
+    <!-- NAVEGACIÓN -->
+    <nav class="tab-navigation" aria-label="Secciones del manual">
+      <button class="tab-btn active" data-tab="basico">BÁSICO</button>
+      <button class="tab-btn" data-tab="karma">KARMA / DHARMA</button>
+      <button class="tab-btn" data-tab="nidanas">NIDANAS</button>
+      <button class="tab-btn" data-tab="herramientas">HERRAMIENTAS</button>
+      <button class="tab-btn" data-tab="avanzado">AVANZADO</button>
+      <button class="tab-btn" data-tab="calculadora">CALCULADORA</button>
+    </nav>
 
+    <!-- BÁSICO -->
+    <section class="tab-content active" id="basico">
+      <div class="content-box">
+        <h2>Protocolo de inicio</h2>
+        <h3>Objetivo principal</h3>
+        <p>Liberar 7 fichas del ciclo del Samsara cubriendo los 7 ojos de Yama.</p>
+
+        <h3>Componentes del sistema</h3>
+        <ul>
+          <li><strong>Tablero:</strong> 6 reinos con 4 espacios cada uno (24 total)</li>
+          <li><strong>Fichas:</strong> 15 por jugador</li>
+          <li><strong>Dados:</strong> 3 (representan los 3 venenos: Ignorancia, Deseo, Aversión)</li>
+          <li><strong>Marcadores:</strong> Karma (rojo) y Dharma (verde)</li>
+        </ul>
+
+        <h3>Ciclo de turno</h3>
+        <ul>
+          <li><strong>Fase 1:</strong> Lanzar 3 dados</li>
+          <li><strong>Fase 2:</strong> 1 dado determina tu reino activo</li>
+          <li><strong>Fase 3:</strong> 2 dados para movimiento</li>
+          <li><strong>Fase 4:</strong> Acción opcional</li>
+        </ul>
+
+        <h3>Movimiento y capturas</h3>
+        <ul>
+          <li><strong>Movimiento:</strong> una ficha con la suma o dos fichas por separado</li>
+          <li><strong>Protección:</strong> 2+ fichas juntas no pueden ser capturadas</li>
+          <li><strong>Captura:</strong> fichas solas vuelven al inicio en reino elegido por quien captura</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- KARMA / DHARMA -->
+    <section class="tab-content" id="karma">
+      <div class="content-box">
+        <h2>Sistema Karma / Dharma</h2>
+        <h3>Acumular Karma (rojo)</h3>
+        <ul>
+          <li>+1 por sacar dobles</li>
+          <li>+1 por cruzar entre reinos</li>
+          <li>+1 por capturar fichas enemigas</li>
+          <li>+1 por terminar turno en Infierno</li>
+        </ul>
+
+        <h3>Acumular Dharma (verde)</h3>
+        <ul>
+          <li>+1 por perdonar (no capturar pudiendo)</li>
+          <li>+1 por enseñar (reflexión aceptada)</li>
+          <li>+2 por renunciar (sacrificio voluntario)</li>
+          <li>+1 por estar en Reino Humano con 0 Karma</li>
+        </ul>
+
+        <h3>Intercambio kármico</h3>
+        <ul>
+          <li><strong>Universal:</strong> 1 Dharma elimina 4 Karma</li>
+          <li><strong>Humano:</strong> en Reino Humano, 2 Karma → 1 Dharma</li>
+        </ul>
+
+        <div class="content-box" style="background:rgba(255,0,0,.1);border-color:#ff4444;">
+          <h3>Consecuencias del Karma alto</h3>
+          <p>Con 10+ Karma: −1 a todos los movimientos.</p>
+          <p>Con 15+ Karma: no puedes liberar fichas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NIDANAS -->
+    <section class="tab-content" id="nidanas">
+      <div class="content-box">
+        <h2>Las 12 vinculaciones (nidanas)</h2>
+        <p>Cadena de origen dependiente que explica el ciclo samsárico:</p>
+
+        <h3>Bloque de Ignorancia</h3>
+        <ul>
+          <li><strong>1. Ignorancia (Avidya):</strong> no ver la realidad tal como es</li>
+          <li><strong>2. Formaciones (Samskara):</strong> patrones kármicos mentales</li>
+          <li><strong>3. Conciencia (Vijñana):</strong> conciencia individualizada</li>
+          <li><strong>Representa:</strong> reinos inferiores (Animales, Pretas, Infierno)</li>
+        </ul>
+
+        <h3>Bloque de Manifestación</h3>
+        <ul>
+          <li><strong>4. Nombre/Forma:</strong> aspecto mental y físico</li>
+          <li><strong>5. Seis Sentidos:</strong> puertas sensoriales</li>
+          <li><strong>6. Contacto (Sparsha):</strong> encuentro sentido-objeto-conciencia</li>
+          <li><strong>Representa:</strong> Reino Humano</li>
+        </ul>
+
+        <h3>Bloque de Experiencia</h3>
+        <ul>
+          <li><strong>7. Sensación (Vedana)</strong></li>
+          <li><strong>8. Deseo (Trishna)</strong></li>
+          <li><strong>9. Apego (Upadana)</strong></li>
+          <li><strong>Representa:</strong> reinos superiores (Devas, Asuras)</li>
+        </ul>
+
+        <h3>Bloque de Renacimiento</h3>
+        <ul>
+          <li><strong>10. Devenir (Bhava)</strong></li>
+          <li><strong>11. Nacimiento (Jati)</strong></li>
+          <li><strong>12. Vejez/Muerte (Jara-Marana)</strong></li>
+        </ul>
+
+        <div class="content-box" style="background:rgba(0,255,0,.1);">
+          <h3>Aplicación en el juego</h3>
+          <p>Cada reino del tablero refleja estados de esta cadena. Comprenderla afina tus decisiones kármicas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HERRAMIENTAS -->
+    <section class="tab-content" id="herramientas">
+      <div class="content-box">
+        <h2>Herramientas digitales</h2>
+        <h3>Calculadora Kármica</h3>
+        <ul>
+          <li>Simula consecuencias antes de mover</li>
+          <li>Analiza dificultad y oportunidad por reinos</li>
+          <li>Propone estrategias inspiradas en doctrina</li>
+        </ul>
+
+        <h3>Ruletas</h3>
+        <ul>
+          <li><strong>Ruleta kármica:</strong> retrocesos, pérdida de turno, intercambios</li>
+          <li><strong>Ruleta dhármica:</strong> avances, inmunidad, bonificaciones</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- AVANZADO -->
+    <section class="tab-content" id="avanzado">
+      <div class="content-box">
+        <h2>Estrategias avanzadas</h2>
+        <h3>Liberación de fichas</h3>
+        <ul>
+          <li><strong>Duelo Humano:</strong> en Reino Humano y 0 Karma</li>
+          <li><strong>Triples místicos:</strong> 111, 222… liberación directa</li>
+          <li><strong>Iluminación:</strong> 7 Dharma → liberación garantizada</li>
+        </ul>
+
+        <h3>Efectos por reino</h3>
+        <ul>
+          <li><strong>Devas:</strong> no se gana Dharma</li>
+          <li><strong>Asuras:</strong> debes mover al menos dos fichas</li>
+          <li><strong>Humanos:</strong> 2 Karma → 1 Dharma</li>
+          <li><strong>Animales:</strong> solo números pares</li>
+          <li><strong>Pretas:</strong> si no avanzas 3+, pierdes 1 ficha</li>
+          <li><strong>Infierno:</strong> si sacas 6, pierdes turno</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CALCULADORA -->
+    <section class="tab-content" id="calculadora">
+      <div class="content-box">
+        <h2>Tabla–Calculadora Curvista</h2>
+        <p class="muted">Combina parámetros filosóficos del sistema (reino, veneno dominante, nivel de práctica) para obtener un índice orientativo y recomendaciones.</p>
+
+        <div class="grid grid-2">
+          <!-- Parámetros -->
+          <div class="panel">
+            <h3>Parámetros</h3>
+
+            <label for="reino">Reino activo</label>
+            <select id="reino">
+              <option value="devas">Devas</option>
+              <option value="asuras">Asuras</option>
+              <option value="humanos" selected>Humanos</option>
+              <option value="animales">Animales</option>
+              <option value="pretas">Pretas</option>
+              <option value="infierno">Infierno</option>
+            </select>
+
+            <label for="veneno" style="margin-top:8px">Veneno dominante</label>
+            <select id="veneno">
+              <option value="ignorancia">Ignorancia</option>
+              <option value="deseo">Deseo/Apego</option>
+              <option value="aversion">Aversión</option>
+            </select>
+
+            <label for="nivel" style="margin-top:8px">Nivel de práctica</label>
+            <select id="nivel">
+              <option value="novato" selected>Novato</option>
+              <option value="intermedio">Intermedio</option>
+              <option value="experto">Avanzado</option>
+            </select>
+
+            <label for="nidanas" style="margin-top:8px">Nidanas asociadas (0–3)</label>
+            <select id="nidanas" multiple size="6" title="Elige hasta tres">
+              <option value="1">1 Avidya</option>
+              <option value="2">2 Samskara</option>
+              <option value="3">3 Vijñana</option>
+              <option value="7">7 Vedana</option>
+              <option value="8">8 Trishna</option>
+              <option value="9">9 Upadana</option>
+              <option value="10">10 Bhava</option>
+              <option value="11">11 Jati</option>
+              <option value="12">12 Jara-Marana</option>
+            </select>
+
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn" id="calcular">Calcular índice</button>
+              <button class="btn secondary" id="limpiar">Limpiar</button>
+            </div>
+          </div>
+
+          <!-- Resultados -->
+          <div class="panel">
+            <h3>Resultados</h3>
+            <div class="row"><div>Índice curvista</div><div class="out mono" id="indiceOut">1.000</div></div>
+            <div class="row"><div>Rango sugerido</div><div class="mono">0.85 – 1.35</div></div>
+            <div class="row"><div>Lectura</div><div id="lecturaOut" class="badge ok">Equilibrado</div></div>
+
+            <h3 style="margin-top:12px">Recomendación</h3>
+            <p id="recoOut" class="muted">Elige parámetros y calcula para ver la sugerencia del sistema.</p>
+          </div>
+        </div>
+
+        <!-- Tabla de detalle -->
+        <div class="panel" style="margin-top:14px">
+          <h3>Detalle de pesos y ajustes</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Componente</th>
+                <th>Valor</th>
+                <th>Justificación breve</th>
+              </tr>
+            </thead>
+            <tbody id="detalleBody"></tbody>
+          </table>
+
+          <p class="muted" style="margin-top:8px">
+            Por qué estos “pesos”: ejercen presión mental inspirada en la función de cada veneno en la rueda del Samsara
+            y en su asociación con ciertos nidanas. No es doctrina: es un punto de partida para debate y ajuste.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    /* ===== Matrix Rain ===== */
+    (function(){
+      const canvas=document.getElementById("matrixBg");const ctx=canvas.getContext("2d");
+      function resize(){canvas.width=innerWidth;canvas.height=innerHeight} resize(); addEventListener("resize",resize);
+      const chars="アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789KARMADHARMAAVIDYATRISHNAUPADANA";
+      const arr=chars.split(""); const font=14; const cols=Math.floor(canvas.width/font); const drops=Array(cols).fill(1);
+      function draw(){ctx.fillStyle="rgba(0,0,0,.05)";ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle="#00ff00";ctx.font=font+"px monospace";
+        for(let i=0;i<drops.length;i++){const t=arr[Math.floor(Math.random()*arr.length)];
+          ctx.fillText(t,i*font,drops[i]*font); if(drops[i]*font>canvas.height&&Math.random()>0.975){drops[i]=0} drops[i]++}}
+      setInterval(draw,33);
+    })();
+
+    /* ===== Tabs ===== */
+    (function(){
+      const btns=document.querySelectorAll(".tab-btn"); const tabs=document.querySelectorAll(".tab-content");
+      btns.forEach(btn=>btn.addEventListener("click",()=>{
+        const id=btn.getAttribute("data-tab");
+        btns.forEach(b=>b.classList.remove("active")); tabs.forEach(t=>t.classList.remove("active"));
+        btn.classList.add("active"); document.getElementById(id).classList.add("active");
+      }));
+    })();
+
+    /* ===== Typing header ===== */
+    (function(){
+      const el=document.getElementById("typingCommand"); const txt=el.textContent; el.textContent="";
+      let i=0;(function type(){if(i<txt.length){el.textContent+=txt.charAt(i++);setTimeout(type,50)}})();
+    })();
+
+    /* ===== Reading progress ===== */
+    (function(){
+      const bar=document.createElement("div");
+      bar.style.cssText="position:fixed;top:0;left:0;height:3px;width:0;background:#00ff00;box-shadow:0 0 10px #00ff00;z-index:9999;transition:width .2s";
+      document.body.appendChild(bar);
+      const update=()=>{const h=document.documentElement.scrollHeight-innerHeight;const p=(scrollY/Math.max(1,h))*100;bar.style.width=p+"%"}; 
+      addEventListener("scroll",update); update();
+    })();
+
+    /* ===== CALCULADORA: datos y lógica ===== */
+    const PESO_REINO = {
+      devas:    {aj: +0.02,  nota:"comodidad que adormece; leve sesgo positivo"},
+      asuras:   {aj: +0.01,  nota:"rivalidad y mérito; sesgo competitivo"},
+      humanos:  {aj:  0.00,  nota:"equilibrio y oportunidad de despertar"},
+      animales: {aj: -0.10,  nota:"instinto/hábito; reduce claridad"},
+      pretas:   {aj: -0.18,  nota:"carencia/deseo sin fin; baja eficacia"},
+      infierno: {aj: -0.28,  nota:"sufrimiento intenso; fuerte freno"}
+    };
+
+    const PESO_VENENO = {
+      ignorancia:{peso:1.10, nota:"raíz estructural, efecto difuso medio-alto"},
+      deseo:     {peso:1.20, nota:"empuje a actuar y engancharse"},
+      aversion:  {peso:1.15, nota:"corta/separa; severidad situacional"}
+    };
+
+    const PESO_NIVEL = {
+      novato:    {peso:0.95, nota:"margen de seguridad didáctico"},
+      intermedio:{peso:1.00, nota:"base equilibrada"},
+      experto:   {peso:1.05, nota:"toma de riesgo consciente"}
+    };
+
+    const PESO_NIDANA = {
+      1:{p:1.30, n:"1 Avidya"},
+      2:{p:1.10, n:"2 Samskara"},
+      3:{p:1.00, n:"3 Vijñana"},
+      7:{p:1.05, n:"7 Vedana"},
+      8:{p:1.25, n:"8 Trishna"},
+      9:{p:1.30, n:"9 Upadana"},
+      10:{p:1.15, n:"10 Bhava"},
+      11:{p:1.05, n:"11 Jati"},
+      12:{p:1.20, n:"12 Jara-Marana"}
+    };
+
+    function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+    function promedio(arr){return arr.reduce((a,b)=>a+b,0)/arr.length}
+
+    function calcularIndice({reino,veneno,nivel,nidanas}){
+      const ajReino = PESO_REINO[reino].aj;         // -0.28 .. +0.02
+      const pesoVen = PESO_VENENO[veneno].peso;     // 1.10 / 1.20 / 1.15
+      const pesoNiv = PESO_NIVEL[nivel].peso;       // 0.95 / 1.00 / 1.05
+
+      const pesosNid = (nidanas.length? nidanas : [1]).map(id=> (PESO_NIDANA[id]||{p:1}).p);
+      const promNid  = promedio(pesosNid);
+
+      let idx = pesoVen * promNid * (1 + ajReino) * pesoNiv;
+      idx = clamp(idx, 0.60, 1.50);
+      return Math.round(idx*1000)/1000;
+    }
+
+    function lecturaIndice(val){
+      if(val < 0.85) return {t:"Conservador", cls:"bad", reco:"Reduce exigencia; prioriza aprendizaje y cohesión."}
+      if(val <= 1.35) return {t:"Equilibrado", cls:"ok", reco:"Buen punto de práctica; alterna reto y cuidado."}
+      return {t:"Exigente", cls:"warn", reco:"Alta intensidad; vigila agotamiento y sesgos de victoria."}
+    }
+
+    function detalleTabla({reino,veneno,nivel,nidanas}, indice){
+      const tbody=document.getElementById("detalleBody"); tbody.innerHTML="";
+      const addRow=(c,v,j)=>{const tr=document.createElement("tr"); tr.innerHTML=`<td>${c}</td><td class="mono">${v}</td><td>${j}</td>`; tbody.appendChild(tr)}
+
+      addRow("Reino", reino.toUpperCase(), PESO_REINO[reino].nota + ` (ajuste ${(PESO_REINO[reino].aj>=0?"+":"")}${PESO_REINO[reino].aj})`);
+      addRow("Veneno", veneno.toUpperCase(), `${PESO_VENENO[veneno].nota} (peso ${PESO_VENENO[veneno].peso})`);
+      addRow("Nivel", nivel.toUpperCase(), `factor ${PESO_NIVEL[nivel].peso}`);
+
+      const nombres = nidanas.length
+        ? nidanas.map(id=> (PESO_NIDANA[id]?.n||id)).join(", ")
+        : "—";
+      const prom = nidanas.length
+        ? promedio(nidanas.map(id=> (PESO_NIDANA[id]?.p||1))).toFixed(2)
+        : "1.00";
+      addRow("Nidanas", nombres, `promedio ${prom}`);
+
+      addRow("Índice final", indice.toFixed(3), "Rango sugerido 0.85 – 1.35");
+    }
+
+    /* ===== CALCULADORA: UI ===== */
+    (function(){
+      const reinoSel   = document.getElementById("reino");
+      const venenoSel  = document.getElementById("veneno");
+      const nivelSel   = document.getElementById("nivel");
+      const nidanasSel = document.getElementById("nidanas");
+
+      const indiceOut  = document.getElementById("indiceOut");
+      const lecturaOut = document.getElementById("lecturaOut");
+      const recoOut    = document.getElementById("recoOut");
+
+      document.getElementById("limpiar").addEventListener("click", ()=>{
+        reinoSel.value="humanos";
+        venenoSel.value="ignorancia";
+        nivelSel.value="novato";
+        Array.from(nidanasSel.options).forEach(o=>o.selected=false);
+        indiceOut.textContent="1.000";
+        lecturaOut.textContent="Equilibrado";
+        lecturaOut.className="badge ok";
+        recoOut.textContent="Elige parámetros y calcula para ver la sugerencia del sistema.";
+        document.getElementById("detalleBody").innerHTML="";
+      });
+
+      document.getElementById("calcular").addEventListener("click", ()=>{
+        const selNidanas = Array.from(nidanasSel.selectedOptions).map(o=>parseInt(o.value,10)).slice(0,3);
+        const params = {
+          reino:  reinoSel.value,
+          veneno: venenoSel.value,
+          nivel:  nivelSel.value,
+          nidanas: selNidanas
+        };
+        const idx = calcularIndice(params);
+        const lect = lecturaIndice(idx);
+        indiceOut.textContent = idx.toFixed(3);
+        lecturaOut.textContent = lect.t;
+        lecturaOut.className = `badge ${lect.cls}`;
+        recoOut.textContent = lect.reco;
+        detalleTabla(params, idx);
+      });
+    })();
+  </script>
 </body>
 </html>

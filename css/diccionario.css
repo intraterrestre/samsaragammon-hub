@@ -1,0 +1,26 @@
+#diccionario-curvista {
+  background: #fdf6e3;
+  border-top: 2px solid #ccc;
+  padding: 2em;
+  font-family: 'Georgia', serif;
+}
+
+#diccionario-curvista h2 {
+  color: #5a3e2b;
+  font-size: 1.8em;
+  margin-bottom: 1em;
+}
+
+#buscador {
+  width: 100%;
+  padding: 0.5em;
+  font-size: 1em;
+  margin-bottom: 1em;
+}
+
+#resultado {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 1em;
+  border-radius: 6px;
+}

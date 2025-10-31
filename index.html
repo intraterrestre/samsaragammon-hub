@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Manual Samsaragammon — Matrix Edition</title>
-  <meta name="description" content="Manual interactivo del Samsaragammon con pestañas, efectos Matrix y Calculadora Curvista integrada." />
+  <title>Dungeons & Samsara Dragons — Manual Curvista</title>
+  <meta name="description" content="Portal ritual del Samsaragammon. Diccionario curvista, tablero geométrico y calculadora espiritual para salir del Samsara rectangular." />
+
+  <!-- Estilo ritual exclusivo para el Diccionario Curvista -->
+  <link rel="stylesheet" href="css/diccionario.css">
+
   <style>
     /* ===== BASE MATRIX ===== */
     *{margin:0;padding:0;box-sizing:border-box}
@@ -72,7 +76,6 @@
     }
   </style>
 </head>
-<body>
   <!-- FONDO MATRIX -->
   <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
 
@@ -470,23 +473,40 @@
         document.getElementById("detalleBody").innerHTML="";
       });
 
-      document.getElementById("calcular").addEventListener("click", ()=>{
-        const selNidanas = Array.from(nidanasSel.selectedOptions).map(o=>parseInt(o.value,10)).slice(0,3);
+    document.getElementById("calcular").addEventListener("click", () => {
+        const selNidanas = Array.from(nidanasSel.selectedOptions)
+          .map(o => parseInt(o.value, 10))
+          .slice(0, 3);
+
         const params = {
-          reino:  reinoSel.value,
+          reino: reinoSel.value,
           veneno: venenoSel.value,
-          nivel:  nivelSel.value,
+          nivel: nivelSel.value,
           nidanas: selNidanas
         };
+
         const idx = calcularIndice(params);
         const lect = lecturaIndice(idx);
+
         indiceOut.textContent = idx.toFixed(3);
         lecturaOut.textContent = lect.t;
         lecturaOut.className = `badge ${lect.cls}`;
         recoOut.textContent = lect.reco;
+
         detalleTabla(params, idx);
       });
     })();
   </script>
+
+  <!-- Sección del Diccionario Curvista -->
+  <section id="diccionario-curvista" class="content-box">
+    <h2>Dungeons & Samsara Dragons — Diccionario Curvista</h2>
+    <p>Este diccionario ritual te permite explorar los términos clave del Samsaragammon. Cada entrada revela una definición simbólica y una frase pitonisiaca que puede activar tu conciencia geométrica.</p>
+    <input type="text" id="buscador" placeholder="Busca un término..." />
+    <div id="resultado"></div>
+  </section>
+
+  <!-- Script del Diccionario Curvista -->
+  <script src="js/diccionario.js"></script>
 </body>
 </html>

@@ -2,159 +2,177 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Samsaragammon — Portal Lunar</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Samsaragammon — Portal de Juego</title>
+  <meta name="description" content="Entrada ritual al juego: toca la luna para comenzar. Gira la carta para ver tu doble naturaleza: Hombre/Buda." />
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #fafaf7;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      color: #222;
-      text-align: center;
-      line-height: 1.6;
+    :root{
+      --green:#00ff7b; --green-soft:#8affbf; --line:#113c2d;
+      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background:#000;color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      line-height:1.55; overflow-x:hidden; padding:24px 16px;
+    }
+    .wrap{max-width:980px;margin:0 auto}
+    .lead{max-width:760px;margin:0 auto 18px; text-align:center; color:#c7fbe8}
+    .lead b{color:var(--green)}
+    .stage{
+      margin:22px auto; width:min(820px,92vw);
+      perspective: 1200px;
+      position:relative;
     }
 
-    .texto-ritual {
-      max-width: 640px;
-      margin: 2em auto;
-      padding: 0 1em;
+    /* Botón luna */
+    .moon-btn{
+      position:absolute; right:10px; top:-14px; z-index:5;
+      border:none; background:transparent; cursor:pointer;
+      filter: drop-shadow(0 0 10px rgba(0,255,150,.45));
     }
+    .moon-btn img{
+      width:min(120px,26vw); height:auto;
+      transition: transform .18s ease;
+    }
+    .moon-btn:hover img{ transform: scale(1.05) }
 
-    .texto-ritual p {
-      font-size: 1.2em;
-      margin-bottom: 0.8em;
+    /* Carta que gira */
+    .flip-card{
+      width:100%; aspect-ratio: 4 / 3;
+      position:relative; margin:40px auto 8px;
+      border-radius:16px; border:1px solid var(--line); overflow:hidden;
+      box-shadow:0 0 24px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04);
+      background:#000;
     }
+    .flip-inner{
+      width:100%; height:100%; position:relative;
+      transform-style: preserve-3d;
+      transition: transform .8s cubic-bezier(.2,.65,.2,1);
+    }
+    .flip-card.is-flipped .flip-inner{ transform: rotateY(180deg); }
 
-    .texto-ritual strong {
-      color: #0a580f;
+    .face{
+      position:absolute; inset:0;
+      backface-visibility:hidden;
+      display:flex; align-items:center; justify-content:center;
+      padding:8px;
     }
+    .face img{
+      width:100%; height:100%; object-fit:cover;
+      border-radius:16px;
+    }
+    .back{ transform: rotateY(180deg); }
 
-    .imagen-bloque {
-      margin: 2.2em auto;
-      max-width: 640px;
-      position: relative;
+    /* Botonera */
+    .actions{
+      display:flex; gap:10px; justify-content:center; margin:10px 0 4px;
     }
+    .btn{
+      --glow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 16px; border-radius:999px; border:1px solid var(--green);
+      background:linear-gradient(180deg,#02140f,#031b14);
+      color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
+      box-shadow:var(--glow); transition:transform .12s ease, box-shadow .2s ease;
+      cursor:pointer; user-select:none;
+    }
+    .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55) }
 
-    .imagen-bloque img.principal {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-      display: block;
-    }
-
-    .luna-port {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 120px;
-      border-radius: 50%;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
-      animation: pulseLuna 2.8s infinite ease-in-out;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      z-index: 2;
-    }
-
-    .luna-port:hover {
-      transform: scale(1.06);
-    }
-
-    @keyframes pulseLuna {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.75; transform: scale(1.04); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    .boton-luna {
-      display: inline-block;
-      margin-top: 1.2em;
-      background: #0b7a3a;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-weight: 700;
-      transition: background 0.3s ease;
-    }
-
-    .boton-luna:hover {
-      background: #0d9a4a;
-    }
-
-    footer {
-      margin: 3em 0 2em;
-      font-size: 0.9em;
-      color: #666;
-    }
-
-    @media (max-width: 600px) {
-      .luna-port {
-        width: 90px;
-        top: 12px;
-        right: 12px;
-      }
-    }
+    /* Pie */
+    .help{text-align:center; color:#9edfc9; margin:10px 0 6px}
+    .hint{opacity:.85; font-size:.95rem; text-align:center}
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <p class="lead">
+      La luna llena brilla en el horizonte, símbolo de iluminación.<br/>
+      <b>Toca la luna… y que el juego empiece.</b><br/>
+      Este es tu viaje por <b>Samsaragammon</b> para romper la rueda del Samsara.
+    </p>
 
-  <div class="texto-ritual">
-    <p>La luna llena brilla en el horizonte, símbolo de iluminación.</p>
-    <p><strong>Toca la luna… y que el juego empiece.</strong></p>
-    <p>Este es tu viaje por <strong>Samsaragammon</strong> para romper la rueda del Samsara.</p>
+    <div class="stage">
+      <!-- Botón/Luna: reproduce audio y abre el destino del juego -->
+      <button class="moon-btn" id="goMoon" aria-label="Entrar al juego">
+        <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png" alt="Luna portal" />
+      </button>
+
+      <!-- Carta que gira: Hombre ↔ Buda -->
+      <div class="flip-card" id="card">
+        <div class="flip-inner">
+          <!-- Frente: HUMANO -->
+          <figure class="face front" aria-label="Tu forma humana">
+            <img
+              src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-EN-POTENCIA.png"
+              alt="Hombre bajo la luna — Buda en potencia" />
+          </figure>
+
+          <!-- Reverso: BUDA -->
+          <figure class="face back" aria-label="Tu forma despierta">
+            <img
+              src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-SIN-LUNA-.png"
+              alt="Buda señala la luna — tú mismo del otro lado" />
+          </figure>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="toggleFlip">🔁 Girar (Hombre ↔ Buda)</button>
+        <a class="btn" href="/index.html">🏠 Volver al portal</a>
+      </div>
+
+      <p class="help"><b>Saca al Buda en ti.</b></p>
+      <p class="hint">La carta gira sola cada 6 s hasta que la toques. Toca la luna para comenzar la sesión.</p>
+    </div>
   </div>
 
-  <!-- Escena 1: Hombre + Luna -->
-  <div class="imagen-bloque">
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-EN-POTENCIA.png"
-         alt="El hombre señalando la luna — el inicio del viaje"
-         class="principal" />
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
-         alt="Luna portal"
-         class="luna-port"
-         id="luna1" />
-    <a class="boton-luna" href="https://karmalab-samsara.netlify.app/">Entrar al Juego</a>
-  </div>
-
-  <div class="texto-ritual">
-    <p><strong>Saca al Buda en ti.</strong></p>
-  </div>
-
-  <!-- Escena 2: Buda + Luna -->
-  <div class="imagen-bloque">
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-SIN-LUNA-.png"
-         alt="El Buda iluminado bajo la luna"
-         class="principal" />
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
-         alt="Luna portal"
-         class="luna-port"
-         id="luna2" />
-    <a class="boton-luna" href="https://karmalab-samsara.netlify.app/">Tocar la luna</a>
-  </div>
-
-  <footer>
-    © 2025 Federico García — Proyecto educativo y experimental Curvism instead cubism™
-  </footer>
+  <!-- Audios -->
+  <audio id="ritualAudio"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
+  <audio id="flipWhoosh"   src="https://assets.mixkit.co/sfx/preview/mixkit-fast-rocket-whoosh-1714.mp3" preload="auto" playsinline></audio>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const lunas = [document.getElementById('luna1'), document.getElementById('luna2')];
-      lunas.forEach(luna => {
-        if (luna) {
-          luna.addEventListener('click', () => {
-            const audio = new Audio('audio/ritual-l4d1c0m0.mp3');
-            audio.loop = true;
-            audio.play();
-            setTimeout(() => {
-              window.open('https://karmalab-samsara.netlify.app/', '_self');
-            }, 500);
-          });
-        }
-      });
+    // Util
+    const byId = (id)=>document.getElementById(id);
+
+    // ---- Giro con sonido + antispam de animación ----
+    const card      = byId('card');
+    const inner     = card.querySelector('.flip-inner');
+    const toggleBtn = byId('toggleFlip');
+    const whoosh    = byId('flipWhoosh');
+
+    let animLock = false;
+    function flip(playSound=true){
+      if (animLock) return;
+      animLock = true;
+      card.classList.toggle('is-flipped');
+      if (playSound){
+        try { whoosh.currentTime = 0; whoosh.volume = 0.5; whoosh.play(); } catch(e){}
+      }
+      setTimeout(()=>{ animLock = false; }, 900); // coincide con transition .8s
+    }
+
+    card.addEventListener('click', ()=>{ stopAuto(); flip(true); });
+    toggleBtn.addEventListener('click', ()=>{ stopAuto(); flip(true); });
+
+    // ---- Auto-giro hasta interacción del usuario ----
+    let autoTimer = null;
+    function startAuto(){ autoTimer = setInterval(()=>flip(false), 6000); }
+    function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; } }
+    startAuto();
+    ['pointerdown','keydown','scroll','wheel','touchstart'].forEach(ev=>{
+      window.addEventListener(ev, stopAuto, {once:true, passive:true});
+    });
+
+    // ---- Luna: sonido ritual + navegación ----
+    const goMoon = byId('goMoon');
+    const ritual = byId('ritualAudio');
+    const DESTINO = "https://manual-samsaragammon-9c38dd.netlify.app/"; // cámbialo si quieres
+
+    goMoon.addEventListener('click', () => {
+      try { ritual.currentTime = 0; ritual.volume = 0.8; ritual.play(); } catch(e){}
+      setTimeout(()=>{ window.location.href = DESTINO; }, 600);
     });
   </script>
-
 </body>
 </html>

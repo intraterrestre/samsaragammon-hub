@@ -1,86 +1,404 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Pitonisa Cantaora — Oráculo Nidánico</title>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pitonisa Cantaora — Teatro SamsaraDragon</title>
+<meta name="description" content="Oráculo curvista para Dungeons & Dragons: lecturas kármicas, consejos dhármicos y voz gitana andaluza.">
 <style>
-  body{background:#000;color:#0f0;font-family:"Courier New",monospace;margin:0;min-height:100vh}
-  .wrap{max-width:900px;margin:0 auto;padding:20px}
-  h1{font-size:clamp(22px,4vw,36px);text-shadow:0 0 14px #0f0;margin:8px 0 14px}
-  .card{background:rgba(0,25,0,.82);border:1px solid #0f0;border-radius:14px;padding:16px;margin:12px 0}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  select,button{width:100%;padding:12px;border-radius:10px;border:1px solid #0f0;background:#021; color:#0f0; font-weight:700}
-  .out{display:grid;gap:10px;margin-top:12px}
-  .pill{padding:10px;border-radius:10px;background:#010;border:1px solid #063}
-  .title{color:#8f8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-  .big{font-size:18px;line-height:1.5}
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap}
-  .btn{background:#031;border:1px solid #0f0;border-radius:999px;padding:10px 16px;cursor:pointer}
+  :root{
+    --green:#00ff7b; --line:#103527; --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
+    --accent:#ffd166;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:#000;color:var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    line-height:1.55; overflow-x:hidden;
+  }
+  .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.16; pointer-events:none}
+  .wrap{max-width:980px; margin:0 auto; padding:20px 16px}
+  header.hero{
+    margin-top:5vh; margin-bottom:18px; text-align:center;
+    padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel);
+    box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04);
+  }
+  .title{
+    font-size:clamp(26px,4vw,40px);
+    color:var(--green);
+    text-shadow:0 0 10px var(--green),0 0 24px rgba(0,255,150,.35);
+    letter-spacing:.06em; font-weight:800; margin-bottom:4px;
+  }
+  .subtitle{color:#bfeee0; opacity:.95; font-size:clamp(14px,1.9vw,16px)}
+  .grid{display:grid; gap:16px; grid-template-columns: 1fr;}
+  @media(min-width:900px){ .grid{grid-template-columns: 1.1fr .9fr;} }
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px;}
+  h2.section{color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:10px; text-shadow:0 0 10px rgba(0,255,150,.25);}
+  .muted{color:#cfe; opacity:.95}
+  .controls{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 16px; border-radius:999px; border:1px solid var(--green);
+    background:linear-gradient(180deg,#02140f,#031b14);
+    color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
+    box-shadow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
+    transition:transform .12s ease, box-shadow .2s ease;
+    cursor:pointer;
+  }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55) }
+  .btn.alt{ border-color:var(--accent); color:var(--accent); box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  select, textarea{
+    background:#031b14; color:#eafff5; border:1px solid var(--line); border-radius:10px;
+    padding:10px; width:100%; font:inherit;
+  }
+  .two-col{display:grid; gap:10px; grid-template-columns:1fr;}
+  @media(min-width:700px){ .two-col{grid-template-columns:1fr 1fr;} }
+  .reading{
+    background:rgba(0,0,0,.5); border:1px dashed var(--line); border-radius:12px; padding:14px;
+    min-height:140px; white-space:pre-line;
+  }
+  footer{
+    margin:26px 0 20px; text-align:center; color:#9edfc9; font-size:.95rem;
+    border-top:1px solid var(--line); padding-top:14px;
+  }
+  .mini{opacity:.75; font-size:.9rem; margin-top:6px}
+  #soundToggle{
+    position:fixed; right:16px; top:16px; z-index:9999;
+    background:#001100; color:#00ff7b; border:2px solid #00ff7b;
+    border-radius:24px; padding:8px 12px; font-family:monospace; cursor:pointer;
+    box-shadow:0 0 10px rgba(0,255,140,.35);
+  }
 </style>
-</head><body><div class="wrap">
-  <h1>🔮 Pitonisa Cantaora — Oráculo Nidánico</h1>
-  <div class="card">
-    <div class="row">
-      <div><label>Reino de origen</label><select id="from"></select></div>
-      <div><label>Reino de destino</label><select id="to"></select></div>
-    </div>
-    <div class="toolbar" style="margin-top:12px">
-      <button class="btn" id="btnLeer">Cantar veredicto</button>
-      <button class="btn" id="btnRuletaK">🎰 Ruleta kármica</button>
-      <button class="btn" id="btnRuletaD">🌀 Ruleta dhármica</button>
-    </div>
-    <div class="out">
-      <div class="pill"><div class="title">⚡ Riesgo kármico</div><div id="risk" class="big">—</div></div>
-      <div class="pill"><div class="title">💎 Oportunidad dhármica</div><div id="opp" class="big">—</div></div>
-      <div class="pill"><div class="title">💡 Estrategia curvista</div><div id="str" class="big">—</div></div>
-      <div class="pill"><div class="title">🎯 Dificultad</div><div id="dif" class="big">—</div></div>
-    </div>
+</head>
+<body>
+  <!-- Fondo Matrix -->
+  <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
+  <!-- Botón sonido global -->
+  <button id="soundToggle">🔇 Activar sonido</button>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="title">Pitonisa Cantaora</div>
+      <div class="subtitle">La gitana andaluza que canta tu destino kármico para el <strong>Teatro SamsaraDragon</strong>.</div>
+    </header>
+
+    <section class="grid">
+      <!-- Oráculo -->
+      <div class="card">
+        <h2 class="section">🔮 Invocación</h2>
+        <p class="muted">Pulsa el botón para que la Pitonisa lea tu última tirada kármica (si vienes de la Calculadora del mismo sitio) o genere una lectura ritual. Voz gitana andaluza, pausas, y consejo shaolín-curvista.</p>
+
+        <div class="controls">
+          <button id="btnInvoke" class="btn">🔮 Invocar Pitonisa</button>
+          <button id="btnRandom" class="btn alt">🎲 Lectura aleatoria</button>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="row">
+              <label for="voiceSelect" class="muted">Voz</label>
+            </div>
+            <select id="voiceSelect" aria-label="Seleccionar voz"></select>
+            <div class="row" style="margin-top:10px">
+              <label class="muted">Estilo</label>
+              <button id="btnGitana" class="btn" title="Gitana andaluza">🪭 Gitana</button>
+              <button id="btnNeutro" class="btn alt" title="Neutral">🎙️ Neutro</button>
+            </div>
+          </div>
+          <div>
+            <label for="manualJson" class="muted">Pegado manual (opcional): JSON de tu ruleta</label>
+            <textarea id="manualJson" rows="6" placeholder='{"type":"karma","result":"AUTOGOL: Retrocede 3 espacios"}'></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top:14px">
+          <div class="reading" id="readingText">Aún no he cantado ná… Invócame, criatura, y verás cómo se abren los velos del Samsara.</div>
+        </div>
+
+        <div class="controls" style="margin-top:12px">
+          <button id="btnSpeak" class="btn">🗣️ Repetir lectura</button>
+          <button id="btnStop" class="btn alt">⏹️ Silenciar</button>
+        </div>
+      </div>
+
+      <!-- Ayuda -->
+      <div class="card">
+        <h2 class="section">🧭 Cómo funciona</h2>
+        <ul class="muted" style="padding-left:18px; list-style:disc">
+          <li><strong>Lectura real</strong>: si tu Calculadora Kármica vive en este mismo dominio, la Pitonisa lee del <code>localStorage</code> (clave: <code>karmicCalculator</code>).</li>
+          <li><strong>Pegado manual</strong>: si vienes de otro dominio, pega el JSON arriba y dale a “🔮 Invocar”.</li>
+          <li><strong>Voz gitana</strong>: se selecciona una voz <code>es-*</code> automáticamente; puedes elegir otra voz en el selector.</li>
+          <li><strong>Estilo</strong>: “🪭 Gitana” ajusta ritmo y tono (rate 0.9, pitch 1.1). “🎙️ Neutro” vuelve a un timbre estándar.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
+      <div class="mini">The Singing Witchi (preview) · La Pitonisa Cantaora (en preparación).</div>
+    </footer>
   </div>
-  <p style="opacity:.7">Tip: el Master selecciona origen/destino cuando el jugador cambia de color en el tablero. Pulsa “Cantar veredicto” para teatralizar la transición.</p>
-</div>
+
+  <!-- Sonidos -->
+  <audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
+  <audio id="whooshAudio"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
+
 <script>
-// === Reinos (mismos ids que tu calculadora) ===
-const REALMS = {
-  god:{name:"DIOSES"}, titan:{name:"TITANES"}, human:{name:"HUMANOS"},
-  animal:{name:"ANIMALES"}, ghost:{name:"ESPÍRITUS"}, hell:{name:"INFIERNO"}
-};
+/* ===== Fondo Matrix ===== */
+(function(){
+  const c=document.getElementById('matrixBg'),x=c.getContext('2d');
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  resize(); addEventListener('resize',resize);
+  const chars='アカサタナハマヤラワ0123456789☯KARMADHARMANIDANAS';
+  const A=chars.split(''); const fs=14; let cols=Math.floor(c.width/fs);
+  let drops=Array(cols).fill(1);
+  setInterval(function(){
+    if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
+    x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
+    x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      const t=A[(Math.random()*A.length)|0];
+      x.fillText(t,i*fs,drops[i]*fs);
+      if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    }
+  },33);
+})();
 
-// === Interacciones (pega aquí tu objeto 'karmicInteractions' existente) ===
-const Data = /* pega tu objeto karmicInteractions aquí */ {};
+/* ===== Audio global (autoplay tras primer toque) ===== */
+(function(){
+  const ambient = document.getElementById("ambientAudio");
+  const whoosh  = document.getElementById("whooshAudio");
+  const toggle  = document.getElementById("soundToggle");
+  let audioReady = false;
 
-// === UI ===
-const $=id=>document.getElementById(id);
-const f=$('from'), t=$('to');
-Object.entries(REALMS).forEach(([k,v])=>{
-  const o1=new Option(v.name,k); const o2=new Option(v.name,k);
-  f.add(o1); t.add(o2);
+  function tryPlayAmbient(){
+    if (!ambient) return;
+    ambient.volume = 0.55;
+    ambient.play().then(()=>{
+      audioReady = true;
+      if (toggle) toggle.textContent = "🔊 Silenciar";
+    }).catch(()=>{ /* bloqueado hasta interacción */ });
+  }
+
+  function onFirst(){
+    tryPlayAmbient();
+    window.removeEventListener("pointerdown", onFirst);
+  }
+  window.addEventListener("pointerdown", onFirst);
+
+  if (toggle){
+    toggle.addEventListener("click", ()=>{
+      if (!audioReady){ tryPlayAmbient(); return; }
+      if (ambient.paused){ ambient.play(); toggle.textContent="🔊 Silenciar"; }
+      else { ambient.pause(); toggle.textContent="🔇 Activar sonido"; }
+    });
+  }
+
+  // Exponer para otras funciones
+  window._pitonisa_audio = { ambient, whoosh, ensure: tryPlayAmbient };
+})();
+
+/* ===== Dataset mínimo por si no hay calculadora ===== */
+const FALLBACK_KARMA = [
+  {type:"karma",   result:"AUTOGOL: Retrocede 3 espacios"},
+  {type:"karma",   result:"PÉRDIDA DE TURNO por arrogancia espiritual"},
+  {type:"karma",   result:"REGALA 1 DHARMA a tu oponente"},
+  {type:"dharma",  result:"AVANCE RÁPIDO: +4 espacios"},
+  {type:"dharma",  result:"INMUNIDAD KÁRMICA por 1 turno"},
+  {type:"dharma",  result:"DOBLE MOVIMIENTO en tu siguiente ronda"}
+];
+
+/* ===== Helpers: querystring y postMessage ===== */
+function getQueryPayload(){
+  try{
+    const q = new URLSearchParams(location.search);
+    if (!q.has("payload")) return null;
+    const raw = q.get("payload");
+    let txt;
+    try { txt = decodeURIComponent(raw); } catch(_) { txt = raw; }
+    try {
+      if (/^[A-Za-z0-9\-_]+=*$/.test(txt)) {
+        const norm = txt.replace(/-/g,'+').replace(/_/g,'/');
+        txt = atob(norm);
+      }
+    } catch(_) {}
+    return JSON.parse(txt);
+  }catch(e){ return null; }
+}
+let __lastExternalPayload = getQueryPayload();
+
+window.addEventListener("message",(ev)=>{
+  try{
+    const d = ev.data;
+    if (d && d.type === "karmicPayload" && d.data){
+      __lastExternalPayload = d.data;
+      const txt = forgeGypsyReading(__lastExternalPayload);
+      document.getElementById("readingText").textContent = txt;
+      speakText(txt);
+    }
+  }catch(_){}
 });
-f.value='human'; t.value='human';
 
-function render(){
-  const a=f.value,b=t.value;
-  const it = Data?.[a]?.[b];
-  if(!it){ $('risk').textContent='—';$('opp').textContent='—';$('str').textContent='—';$('dif').textContent='—'; return; }
-  $('risk').textContent = it.risk;
-  $('opp').textContent  = it.opportunity;
-  $('str').textContent  = it.strategy;
-  $('dif').textContent  = String(it.difficulty);
+/* ===== Lectura desde localStorage (misma calculadora) ===== */
+function getLastKarmicFromLocalStorage(){
+  try{
+    const raw = localStorage.getItem("karmicCalculator");
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    const hist = Array.isArray(data.history)? data.history : [];
+    if (!hist.length) return null;
+    const last = hist[0];
+
+    if (last.from === 'roulette' && last.fullData?.result){
+      return { type: last.to, result: last.fullData.result };
+    }
+
+    if (last.fullData?.difficulty !== undefined){
+      const desc = last.description || "";
+      const from = (desc.split("→")[0]||"Humanos").trim();
+      const to   = ((desc.split("→")[1]||"Humanos").split(":")[0]||"Humanos").trim();
+      return {
+        type: "interaction",
+        result: `Interacción ${from} → ${to} (dif. ${last.fullData.difficulty})`,
+        meta: {from,to,difficulty:last.fullData.difficulty}
+      };
+    }
+  }catch(e){}
+  return null;
 }
-f.onchange=render; t.onchange=render; render();
 
-// === Voz (Web Speech API nativa) ===
-function speak(txt){
-  const u=new SpeechSynthesisUtterance(txt);
-  u.lang='es-ES'; u.rate=0.95; u.pitch=1.02; u.volume=1;
-  speechSynthesis.cancel(); speechSynthesis.speak(u);
+/* ===== Utilidades ===== */
+function pickRandom(arr){ return arr[(Math.random()*arr.length)|0]; }
+
+/* ===== Forja del mensaje “gitana” ===== */
+function forgeGypsyReading(payload){
+  const baseIntro = pickRandom([
+    "Ay, criatura mía, escucha bien lo que te canto:",
+    "Cariño, que la rueda está parlando, atiende:",
+    "Vida mía, que me vibra er anillo… mira lo que veo:",
+    "Niño del Samsara, abre er pecho, que te lo desgrano:"
+  ]);
+  let cuerpo = "";
+  if (payload?.type === "karma"){
+    cuerpo = `Eso que traes es carga, ${payload.result}. No te me hundas: suerta orgullo, pide perdón a tiempo y ofrese compasión.`;
+  } else if (payload?.type === "dharma"){
+    cuerpo = `Te ha besao la suerte buena: ${payload.result}. Aprovecha, pero sin vanidá: comparte er paso y la senda se te hase curva y liviana.`;
+  } else {
+    const d = payload?.meta?.difficulty ?? 0;
+    const tono = d <= -3 ? "oscuro como brasero de fragua" :
+                 d <= -1 ? "denso y pegajoso" :
+                 d === 0 ? "templao, ni frío ni caliente" :
+                 "clarito y propicio";
+    cuerpo = `Veo un cruce: ${payload?.result||"movimiento en reinos"}. El aire viene ${tono}. Camina sin ansia, mira con compasión y suerta lo que no es tuyo.`;
+  }
+  const cierre = pickRandom([
+    "Y ahora anda, que er dado decide… pero tu corazón manda.",
+    "Aligera el alma, que no hay cárcel pa’ quien aprende a sortar.",
+    "Mira la luna, mi vida: ahí está la salida der teatro.",
+    "Canta bajito al moverte, que el Samsara se abre si no lo empujas."
+  ]);
+  return `${baseIntro} ${cuerpo}\n${cierre}`;
 }
-$('btnLeer').onclick=()=>{
-  const a=f.value,b=t.value; const A=REALMS[a].name, B=REALMS[b].name;
-  const risk=$('risk').textContent; const opp=$('opp').textContent;
-  const line = `Has dejado ${A}. Entras en ${B}. Atención: ${risk}. Oportunidad: ${opp}. Decide con sabiduría.`;
-  speak(line);
-};
 
-// Ganchos mínimos a tus ruletas actuales (abre en nueva pestaña)
-$('btnRuletaK').onclick=()=>window.open('https://karmalab-samsara.netlify.app/?open=karma','_blank');
-$('btnRuletaD').onclick=()=>window.open('https://karmalab-samsara.netlify.app/?open=dharma','_blank');
+/* ===== SpeechSynthesis (voz gitana es-*) ===== */
+const voiceSelect = document.getElementById("voiceSelect");
+let voices = [];
+let currentVoice = null;
+let style = { rate: 0.9, pitch: 1.1 }; // gitana por defecto
+
+function populateVoices(){
+  voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML = "";
+  // Prioriza voces en español
+  const esVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+  const list = esVoices.length ? esVoices : voices;
+  list.forEach((v)=>{
+    const opt = document.createElement("option");
+    opt.value = v.name;
+    opt.textContent = `${v.name} — ${v.lang}`;
+    voiceSelect.appendChild(opt);
+  });
+  currentVoice = list[0] || voices[0] || null;
+}
+if ('speechSynthesis' in window){
+  populateVoices();
+  window.speechSynthesis.onvoiceschanged = populateVoices;
+}
+
+function speakText(text){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  if (currentVoice) u.voice = voices.find(v => v.name === currentVoice.name) || currentVoice;
+  u.lang = (u.voice && u.voice.lang) ? u.voice.lang : "es-ES";
+  u.rate = style.rate;   // pausado
+  u.pitch = style.pitch; // un pelín más agudo
+  u.volume = 1.0;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+/* ===== UI handlers ===== */
+const readingEl = document.getElementById("readingText");
+const btnInvoke  = document.getElementById("btnInvoke");
+const btnRandom  = document.getElementById("btnRandom");
+const btnSpeak   = document.getElementById("btnSpeak");
+const btnStop    = document.getElementById("btnStop");
+const manualJson = document.getElementById("manualJson");
+const btnGitana  = document.getElementById("btnGitana");
+const btnNeutro  = document.getElementById("btnNeutro");
+
+voiceSelect.addEventListener("change", ()=>{
+  const v = voices.find(v => v.name === voiceSelect.value);
+  if (v) currentVoice = v;
+});
+btnGitana.addEventListener("click", ()=>{ style = { rate:0.9, pitch:1.1 }; });
+btnNeutro.addEventListener("click", ()=>{ style = { rate:1.0, pitch:1.0 }; });
+
+function getPriorityPayload(){
+  // 1) querystring payload (si viene encadenado desde otra página)
+  const q = getQueryPayload();
+  if (q) return q;
+  // 2) textarea manual
+  if (manualJson.value.trim()){
+    try { return JSON.parse(manualJson.value.trim()); } catch(_) {}
+  }
+  // 3) localStorage (misma calculadora)
+  const ls = getLastKarmicFromLocalStorage();
+  if (ls) return ls;
+  // 4) fallback
+  return pickRandom(FALLBACK_KARMA);
+}
+
+btnInvoke.addEventListener("click", ()=>{
+  const A = window._pitonisa_audio;
+  if (A?.ensure) A.ensure();
+  if (A?.ambient && !A.ambient.paused) A.ambient.pause();
+  if (A?.whoosh){ A.whoosh.currentTime=0; A.whoosh.volume=0.7; A.whoosh.play().catch(()=>{}); }
+
+  const payload = getPriorityPayload();
+  const text = forgeGypsyReading(payload);
+  readingEl.textContent = text;
+  speakText(text);
+});
+
+btnRandom.addEventListener("click", ()=>{
+  const A = window._pitonisa_audio;
+  if (A?.ensure) A.ensure();
+  const payload = pickRandom(FALLBACK_KARMA);
+  const text = forgeGypsyReading(payload);
+  readingEl.textContent = text;
+  speakText(text);
+});
+btnSpeak.addEventListener("click", ()=>{
+  const text = readingEl.textContent.trim();
+  if (text) speakText(text);
+});
+btnStop.addEventListener("click", ()=>{
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+});
 </script>
-</body></html>
+</body>
+</html>

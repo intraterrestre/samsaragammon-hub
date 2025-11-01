@@ -1,178 +1,184 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Samsaragammon — Portal de Juego</title>
-  <meta name="description" content="Entrada ritual al juego: toca la luna para comenzar. Gira la carta para ver tu doble naturaleza: Hombre/Buda." />
-  <style>
-    :root{
-      --green:#00ff7b; --green-soft:#8affbf; --line:#113c2d;
-      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      background:#000;color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      line-height:1.55; overflow-x:hidden; padding:24px 16px;
-    }
-    .wrap{max-width:980px;margin:0 auto}
-    .lead{max-width:760px;margin:0 auto 18px; text-align:center; color:#c7fbe8}
-    .lead b{color:var(--green)}
-    .stage{
-      margin:22px auto; width:min(820px,92vw);
-      perspective: 1200px;
-      position:relative;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Carta ritual: Hombre ↔ Buda</title>
+<style>
+  :root{--green:#00ff7b;--panel:#0b1713;--panel2:#0e211a;--line:#173f30}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#000;color:#eafff5;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;min-height:100vh;overflow-x:hidden}
+  .matrix{position:fixed;inset:0;z-index:-1;opacity:.18;pointer-events:none}
 
-    /* Botón luna */
-    .moon-btn{
-      position:absolute; right:10px; top:-14px; z-index:5;
-      border:none; background:transparent; cursor:pointer;
-      filter: drop-shadow(0 0 10px rgba(0,255,150,.45));
-    }
-    .moon-btn img{
-      width:min(120px,26vw); height:auto;
-      transition: transform .18s ease;
-    }
-    .moon-btn:hover img{ transform: scale(1.05) }
+  .wrap{max-width:1000px;margin:0 auto;padding:24px 16px}
+  h1{font-size:clamp(26px,4vw,40px);color:var(--green);text-align:center;
+     text-shadow:0 0 10px var(--green),0 0 20px rgba(0,255,140,.35);margin:16px 0 6px}
+  .sub{opacity:.9;text-align:center;margin-bottom:18px}
 
-    /* Carta que gira */
-    .flip-card{
-      width:100%; aspect-ratio: 4 / 3;
-      position:relative; margin:40px auto 8px;
-      border-radius:16px; border:1px solid var(--line); overflow:hidden;
-      box-shadow:0 0 24px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04);
-      background:#000;
-    }
-    .flip-inner{
-      width:100%; height:100%; position:relative;
-      transform-style: preserve-3d;
-      transition: transform .8s cubic-bezier(.2,.65,.2,1);
-    }
-    .flip-card.is-flipped .flip-inner{ transform: rotateY(180deg); }
+  /* Card frame */
+  .frame{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+         padding:18px;box-shadow:0 0 32px rgba(0,255,140,.08), inset 0 0 16px rgba(0,255,140,.04)}
+  .stage{display:flex;justify-content:center}
 
-    .face{
-      position:absolute; inset:0;
-      backface-visibility:hidden;
-      display:flex; align-items:center; justify-content:center;
-      padding:8px;
-    }
-    .face img{
-      width:100%; height:100%; object-fit:cover;
-      border-radius:16px;
-    }
-    .back{ transform: rotateY(180deg); }
+   /* Flip card */
+  .card{
+    width:min(860px,92vw);
+    aspect-ratio: 4 / 3;          /* ← ahora es más alto, no corta la imagen */
+    position:relative;
+    perspective:1200px;
+  }
+  .card-inner{
+    position:absolute; inset:0; transform-style:preserve-3d;
+    transition:transform .9s ease;
+  }
+  .is-flipped .card-inner{ transform:rotateY(180deg); }
 
-    /* Botonera */
-    .actions{
-      display:flex; gap:10px; justify-content:center; margin:10px 0 4px;
-    }
-    .btn{
-      --glow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 16px; border-radius:999px; border:1px solid var(--green);
-      background:linear-gradient(180deg,#02140f,#031b14);
-      color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
-      box-shadow:var(--glow); transition:transform .12s ease, box-shadow .2s ease;
-      cursor:pointer; user-select:none;
-    }
-    .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55) }
+  .face{
+    position:absolute; inset:0;
+    border-radius:18px; border:1px solid var(--line);
+    overflow:hidden; backface-visibility:hidden;
+    background:#000;                       /* ← fondo negro para que se integre */
+    box-shadow:0 0 26px rgba(0,255,140,.06);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .face img{
+    width:100%; height:100%;
+    object-fit: contain;                   /* ← muestra la imagen completa */
+    object-position: center;
+    display:block;
+    padding:12px;                          /* ← evita que toque los bordes redondeados */
+  }
+  .back{ transform:rotateY(180deg); }
 
-    /* Pie */
-    .help{text-align:center; color:#9edfc9; margin:10px 0 6px}
-    .hint{opacity:.85; font-size:.95rem; text-align:center}
-  </style>
+  /* Controls */
+  .actions{display:flex; gap:10px; justify-content:center; margin:14px 0 6px}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px;
+    border:1px solid var(--green); background:linear-gradient(180deg,#06130f,#0b1f19);
+    color:var(--green); font-weight:800; text-decoration:none; cursor:pointer;
+    box-shadow:0 0 10px var(--green),0 0 20px rgba(0,255,140,.35);
+    transition:transform .12s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 0 16px var(--green),0 0 30px rgba(0,255,140,.55)}
+  .tip{opacity:.85; text-align:center; margin-bottom:10px}
+  footer{margin:18px 0 24px; text-align:center; color:#9edfc9; font-size:.95rem;}
+
+  /* Sound toggle */
+  #soundToggle{position:fixed; right:16px; top:16px; z-index:9;
+    background:#001100; color:#00ff7b; border:2px solid #00ff7b; border-radius:22px;
+    padding:7px 11px; font-family:monospace; cursor:pointer; box-shadow:0 0 10px rgba(0,255,140,.35)}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <p class="lead">
-      La luna llena brilla en el horizonte, símbolo de iluminación.<br/>
-      <b>Toca la luna… y que el juego empiece.</b><br/>
-      Este es tu viaje por <b>Samsaragammon</b> para romper la rueda del Samsara.
-    </p>
+<canvas class="matrix" id="bg"></canvas>
+<button id="soundToggle">🔇 Activar sonido</button>
 
+<div class="wrap">
+  <h1>Carta ritual: Hombre ↔ Buda</h1>
+  <p class="sub">Toca la carta para girarla. Cada giro, una decisión. Cada decisión, un paso hacia la salida del Samsara.</p>
+
+  <div class="frame">
     <div class="stage">
-      <!-- Botón/Luna: reproduce audio y abre el destino del juego -->
-      <button class="moon-btn" id="goMoon" aria-label="Entrar al juego">
-        <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png" alt="Luna portal" />
-      </button>
-
-      <!-- Carta que gira: Hombre ↔ Buda -->
-      <div class="flip-card" id="card">
-        <div class="flip-inner">
-          <!-- Frente: HUMANO -->
-          <figure class="face front" aria-label="Tu forma humana">
+      <div class="card" id="card">
+        <div class="card-inner">
+          <!-- Frente: Buda -->
+          <div class="face front">
             <img
-              src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-EN-POTENCIA.png"
-              alt="Hombre bajo la luna — Buda en potencia" />
-          </figure>
-
-          <!-- Reverso: BUDA -->
-          <figure class="face back" aria-label="Tu forma despierta">
+              src="https://federicogarcia.art/wp-content/uploads/2025/11/Buda-moon-Fake-World-1-1.png"
+              alt="Buda señalando la luna" />
+          </div>
+          <!-- Reverso: Hombre -->
+          <div class="face back">
             <img
-              src="https://federicogarcia.art/wp-content/uploads/2025/10/BUDA-SIN-LUNA-.png"
-              alt="Buda señala la luna — tú mismo del otro lado" />
-          </figure>
+              src="https://federicogarcia.art/wp-content/uploads/2025/11/hombre-y-buda.png"
+              alt="Hombre occidental en la misma postura" />
+          </div>
         </div>
       </div>
-
-      <div class="actions">
-        <button class="btn" id="toggleFlip">🔁 Girar (Hombre ↔ Buda)</button>
-        <a class="btn" href="/index.html">🏠 Volver al portal</a>
-      </div>
-
-      <p class="help"><b>Saca al Buda en ti.</b></p>
-      <p class="hint">La carta gira sola cada 6 s hasta que la toques. Toca la luna para comenzar la sesión.</p>
     </div>
+
+    <div class="actions">
+      <button class="btn" id="btnFlip">🔁 Gira la carta del destino. Entre la ilusión y el despertar, la diferencia es una mirada.</button>
+      <a class="btn" id="btnPlay" href="pitonisa.html">🎮 Entrar al juego</a>
+    </div>
+    <p class="tip">Tip: también puedes pasar el mouse por encima, tocar la carta, o presionar <strong>Barra espaciadora</strong>.</p>
   </div>
 
-  <!-- Audios -->
-  <audio id="ritualAudio"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
-  <audio id="flipWhoosh"   src="https://assets.mixkit.co/sfx/preview/mixkit-fast-rocket-whoosh-1714.mp3" preload="auto" playsinline></audio>
+  <footer>© 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.</footer>
+</div>
 
-  <script>
-    // Util
-    const byId = (id)=>document.getElementById(id);
+<!-- Audio -->
+<audio id="ambient" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
+<audio id="whoosh"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
 
-    // ---- Giro con sonido + antispam de animación ----
-    const card      = byId('card');
-    const inner     = card.querySelector('.flip-inner');
-    const toggleBtn = byId('toggleFlip');
-    const whoosh    = byId('flipWhoosh');
-
-    let animLock = false;
-    function flip(playSound=true){
-      if (animLock) return;
-      animLock = true;
-      card.classList.toggle('is-flipped');
-      if (playSound){
-        try { whoosh.currentTime = 0; whoosh.volume = 0.5; whoosh.play(); } catch(e){}
+<script>
+  // ===== Fondo Matrix =====
+  (function(){
+    const c=document.getElementById('bg'),x=c.getContext('2d');
+    function R(){ c.width=innerWidth; c.height=innerHeight } R(); addEventListener('resize',R);
+    const A='アカサタナハマヤラワ0123456789☯KARMADHARMA'.split(''); const fs=14;
+    let cols=Math.floor(c.width/fs), drops=Array(cols).fill(1);
+    setInterval(()=>{
+      if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
+      x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
+      x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
+      for(let i=0;i<drops.length;i++){
+        const t=A[(Math.random()*A.length)|0]; x.fillText(t,i*fs,drops[i]*fs);
+        if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0; drops[i]++;
       }
-      setTimeout(()=>{ animLock = false; }, 900); // coincide con transition .8s
+    },33);
+  })();
+
+  // ===== Carta: flip + auto-giro =====
+  (function(){
+    const card = document.getElementById('card');
+    const inner = card.querySelector('.card-inner');
+    const btnFlip = document.getElementById('btnFlip');
+    const ambient = document.getElementById('ambient');
+    const whoosh  = document.getElementById('whoosh');
+    const toggle  = document.getElementById('soundToggle');
+    let audioReady=false, autoTimer=null, hovering=false;
+
+    function flip(){
+      inner.parentElement.classList.toggle('is-flipped');
+      if (whoosh){ try{ whoosh.currentTime=0; whoosh.volume=.65; whoosh.play().catch(()=>{});}catch(e){} }
     }
 
-    card.addEventListener('click', ()=>{ stopAuto(); flip(true); });
-    toggleBtn.addEventListener('click', ()=>{ stopAuto(); flip(true); });
-
-    // ---- Auto-giro hasta interacción del usuario ----
-    let autoTimer = null;
-    function startAuto(){ autoTimer = setInterval(()=>flip(false), 6000); }
+    // Auto-giro cada 6s hasta la primera interacción/hover
+    function startAuto(){ stopAuto(); autoTimer=setInterval(()=>{ if(!hovering) flip(); }, 6000); }
     function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; } }
     startAuto();
-    ['pointerdown','keydown','scroll','wheel','touchstart'].forEach(ev=>{
-      window.addEventListener(ev, stopAuto, {once:true, passive:true});
+
+    card.addEventListener('mouseenter',()=>{ hovering=true; });
+    card.addEventListener('mouseleave',()=>{ hovering=false; });
+    card.addEventListener('click', flip);
+    btnFlip.addEventListener('click', flip);
+    window.addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); flip(); } });
+
+    // Audio desbloqueo/Toggle
+    function tryPlayAmbient(){
+      if(!ambient) return;
+      ambient.volume=.5;
+      ambient.play().then(()=>{ audioReady=true; toggle.textContent='🔊 Silenciar'; })
+                   .catch(()=>{ /* espera interacción */ });
+    }
+    function onFirst(){ tryPlayAmbient(); stopAuto(); window.removeEventListener('pointerdown', onFirst); }
+    window.addEventListener('pointerdown', onFirst);
+
+    toggle.addEventListener('click', ()=>{
+      if(!audioReady){ tryPlayAmbient(); return; }
+      if(ambient.paused){ ambient.play(); toggle.textContent='🔊 Silenciar'; }
+      else { ambient.pause(); toggle.textContent='🔇 Activar sonido'; }
     });
 
-    // ---- Luna: sonido ritual + navegación ----
-    const goMoon = byId('goMoon');
-    const ritual = byId('ritualAudio');
-    const DESTINO = "https://manual-samsaragammon-9c38dd.netlify.app/"; // cámbialo si quieres
-
-    goMoon.addEventListener('click', () => {
-      try { ritual.currentTime = 0; ritual.volume = 0.8; ritual.play(); } catch(e){}
-      setTimeout(()=>{ window.location.href = DESTINO; }, 600);
+    // “Entrar al juego”: pequeño delay para que suene el whoosh y navegue
+    document.getElementById('btnPlay').addEventListener('click', (e)=>{
+      e.preventDefault();
+      stopAuto();
+      flip(); // giro final teatral
+      setTimeout(()=>{ window.location.href = 'pitonisa.html'; }, 300);
     });
-  </script>
+  })();
+</script>
 </body>
 </html>

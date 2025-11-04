@@ -3,155 +3,339 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Maestro Shaolín — Consejos del Samsara</title>
-<meta name="description" content="El Maestro Shaolín te revela la enseñanza detrás de tu tirada kármica: calma, virtud y sabiduría en el tablero del Samsara.">
+<title>Maestro Shaolín — Turbo Master Dragon</title>
+<meta name="description" content="Consejero kármico para D&D: lee tu última tirada, da consejo dhármico y suena un gong al finalizar." />
+<meta name="theme-color" content="#00ff7b" />
 <style>
-:root{ --green:#00ff7b; --line:#103527; --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; }
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#000;color:var(--text);font-family:system-ui,sans-serif;line-height:1.6;}
-.matrix-bg{position:fixed;inset:0;z-index:-1;opacity:.15;pointer-events:none}
-.wrap{max-width:900px;margin:0 auto;padding:20px 16px}
-header{text-align:center;margin-top:5vh;margin-bottom:20px;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:0 0 30px rgba(0,255,150,.1)}
-.title{color:var(--green);font-size:clamp(28px,4vw,40px);text-shadow:0 0 12px var(--green);font-weight:800;margin-bottom:6px}
-.subtitle{color:#bfeee0;opacity:.9;font-size:clamp(14px,2vw,16px)}
-.controls{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
-button{cursor:pointer;border-radius:999px;border:1px solid var(--green);background:linear-gradient(180deg,#02140f,#031b14);color:var(--green);font-weight:700;padding:10px 16px;}
-button:hover{transform:translateY(-1px);box-shadow:0 0 14px var(--green)}
-.reading{background:rgba(0,0,0,.5);border:1px dashed var(--line);border-radius:12px;padding:16px;min-height:120px;margin:14px 0;white-space:pre-line}
-footer{text-align:center;color:#9edfc9;font-size:.9rem;margin:28px 0;border-top:1px solid var(--line);padding-top:12px}
+  :root{
+    --green:#00ff7b; --line:#103527; --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; --accent:#ffd166;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#000;color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:1.55;overflow-x:hidden}
+  .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.16; pointer-events:none}
+  .wrap{max-width:980px; margin:0 auto; padding:20px 16px}
+  header.hero{margin-top:5vh; margin-bottom:18px; text-align:center; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel);
+    box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04)}
+  .title{font-size:clamp(26px,4vw,40px); color:var(--green); text-shadow:0 0 10px var(--green),0 0 24px rgba(0,255,150,.35); letter-spacing:.06em; font-weight:800; margin-bottom:4px}
+  .subtitle{color:#bfeee0; opacity:.95; font-size:clamp(14px,1.9vw,16px)}
+  .grid{display:grid; gap:16px; grid-template-columns:1fr}
+  @media(min-width:900px){ .grid{grid-template-columns: 1.1fr .9fr;} }
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px}
+  h2.section{color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:10px; text-shadow:0 0 10px rgba(0,255,150,.25)}
+  .muted{color:#cfe; opacity:.95}
+  .controls{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 16px; border-radius:999px; border:1px solid var(--green);
+    background:linear-gradient(180deg,#02140f,#031b14); color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
+    box-shadow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45); transition:transform .12s ease, box-shadow .2s ease; cursor:pointer}
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55) }
+  .btn.alt{ border-color:var(--accent); color:var(--accent); box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
+  .reading{background:rgba(0,0,0,.5); border:1px dashed var(--line); border-radius:12px; padding:14px; min-height:140px; white-space:pre-line}
+  select, textarea{background:#031b14; color:#eafff5; border:1px solid var(--line); border-radius:10px; padding:10px; width:100%; font:inherit}
+  .two-col{display:grid; gap:10px; grid-template-columns:1fr}
+  @media(min-width:700px){ .two-col{grid-template-columns:1fr 1fr} }
+  footer{margin:26px 0 20px; text-align:center; color:#9edfc9; font-size:.95rem; border-top:1px solid var(--line); padding-top:14px}
+  .mini{opacity:.75; font-size:.9rem; margin-top:6px}
+  #soundToggle{position:fixed; right:16px; top:16px; z-index:9999; background:#001100; color:#00ff7b; border:2px solid #00ff7b;
+    border-radius:24px; padding:8px 12px; font-family:monospace; cursor:pointer; box-shadow:0 0 10px rgba(0,255,140,.35)}
+  .flag{font-size:.9rem; opacity:.9}
 </style>
 </head>
 <body>
-<canvas class="matrix-bg" id="matrixBg"></canvas>
+  <!-- Fondo Matrix -->
+  <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
+  <!-- Botón sonido general -->
+  <button id="soundToggle" aria-pressed="false">🔇 Activar sonido</button>
 
-<div class="wrap">
-  <header>
-    <div class="title">Maestro Shaolín</div>
-    <div class="subtitle">Escucha el consejo que disuelve tu karma y fortalece tu dharma.</div>
-  </header>
+  <div class="wrap">
+    <header class="hero">
+      <div class="title">Maestro Shaolín</div>
+      <div class="subtitle">Consejero kármico del <strong>Turbo Master Dragon™</strong> para tus partidas de D&D.</div>
+    </header>
 
-  <section>
-    <div class="controls">
-      <button id="btnReadLast">📜 Leer última tirada</button>
-      <button id="btnInvoke">🧘 Escuchar consejo</button>
-      <button id="btnRandom">🎲 Tirada aleatoria</button>
-    </div>
+    <section class="grid">
+      <!-- Oráculo -->
+      <div class="card">
+        <h2 class="section">🧘 Lectura del Maestro</h2>
+        <p class="muted">
+          Al abrir esta página, el Maestro intenta leer tu <strong>última tirada</strong> de la Calculadora Kármica
+          (misma web, clave <code>karmicCalculator</code>). Puedes forzar una lectura con los botones.
+        </p>
 
-    <div class="reading" id="readingText">Respira... el silencio también enseña.</div>
+        <div class="controls">
+          <button id="btnReadLast" class="btn">📖 Leer última tirada</button>
+          <button id="btnRandom" class="btn alt">🎲 Lectura aleatoria</button>
+          <button id="btnToggleVoice" class="btn" aria-pressed="true">🗣️ Voz del Maestro: ON</button>
+        </div>
 
-    <div class="controls">
-      <button id="btnSpeak">🔈 Repetir</button>
-      <button id="btnStop">⏹️ Silenciar</button>
-    </div>
-  </section>
+        <div class="reading" id="readingText">El viento está quieto. Trae tu tirada o pide una lectura y escucharás el consejo.</div>
 
-  <footer>© 2025 Curvism instead cubism™ — El camino es la curva, no la línea recta.</footer>
-</div>
+        <div class="controls" style="margin-top:12px">
+          <button id="btnSpeak" class="btn">🔁 Repetir</button>
+          <button id="btnStop"  class="btn alt">⏹️ Parar</button>
+        </div>
+
+        <p class="muted flag" id="sourceFlag"></p>
+      </div>
+
+      <!-- Ajustes de voz -->
+      <div class="card">
+        <h2 class="section">🎛️ Voz y estilo</h2>
+        <div class="two-col">
+          <div>
+            <label for="voiceSelect" class="muted">Voz</label>
+            <select id="voiceSelect" aria-label="Seleccionar voz"></select>
+          </div>
+          <div>
+            <label for="manualJson" class="muted">(Opcional) Pegar JSON de tirada</label>
+            <textarea id="manualJson" rows="6" placeholder='{"type":"dharma","result":"INMUNIDAD por 1 turno"}'></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
+      <div class="mini">Turbo Master Dragon™ · Maestro Shaolín (v2).</div>
+    </footer>
+  </div>
+
+  <!-- Audios -->
+  <audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
+  <audio id="gongAudio"    src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_3b6a6c9e61.mp3?filename=gong-hit-105527.mp3" preload="auto" playsinline></audio>
 
 <script>
-/* Fondo matrix */
+/* ===== Fondo Matrix ===== */
 (function(){
- const c=document.getElementById('matrixBg'),x=c.getContext('2d');
- function resize(){c.width=innerWidth;c.height=innerHeight}resize();addEventListener('resize',resize);
- const A='☯禅龍心0123456789KARMA'.split('');const fs=14;let cols=Math.floor(c.width/fs);
- let drops=Array(cols).fill(1);
- setInterval(()=>{if(cols!==Math.floor(c.width/fs)){cols=Math.floor(c.width/fs);drops=Array(cols).fill(1)}
-  x.fillStyle='rgba(0,0,0,0.06)';x.fillRect(0,0,c.width,c.height);
-  x.fillStyle='#00ff7b';x.font=fs+'px monospace';
-  for(let i=0;i<drops.length;i++){x.fillText(A[(Math.random()*A.length)|0],i*fs,drops[i]*fs);
-  if(drops[i]*fs>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++}},33);
+  const c=document.getElementById('matrixBg'),x=c.getContext('2d');
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  resize(); addEventListener('resize',resize);
+  const chars='アカサタナハマヤラワ0123456789☯KARMADHARMANIDANAS';
+  const A=chars.split(''); const fs=14; let cols=Math.floor(c.width/fs);
+  let drops=Array(cols).fill(1);
+  setInterval(function(){
+    if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
+    x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
+    x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      const t=A[(Math.random()*A.length)|0];
+      x.fillText(t,i*fs,drops[i]*fs);
+      if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    }
+  },33);
 })();
 
-/* Dataset mínimo */
-const FALLBACK = [
- {type:"karma",  result:"Error cometido: orgullo en el combate."},
- {type:"dharma", result:"Has ofrecido tu ayuda sin pedir recompensa."},
- {type:"karma",  result:"Dejaste que la ira dirigiera tu espada."},
- {type:"dharma", result:"Guardaste silencio en lugar de herir con palabras."}
+/* ===== Audio global (autoplay con primer toque) ===== */
+(function(){
+  const ambient = document.getElementById("ambientAudio");
+  const toggle  = document.getElementById("soundToggle");
+  let audioReady = false;
+
+  function tryPlayAmbient(){
+    if (!ambient) return;
+    ambient.volume = 0.45;
+    ambient.play().then(()=>{
+      audioReady = true;
+      if (toggle){ toggle.textContent = "🔊 Silenciar"; toggle.setAttribute("aria-pressed","true"); }
+    }).catch(()=>{});
+  }
+  function onFirst(){ tryPlayAmbient(); window.removeEventListener("pointerdown", onFirst); }
+  window.addEventListener("pointerdown", onFirst, {once:true});
+  if (toggle){
+    toggle.addEventListener("click", ()=>{
+      if (!audioReady){ tryPlayAmbient(); return; }
+      if (ambient.paused){ ambient.play(); toggle.textContent="🔊 Silenciar"; toggle.setAttribute("aria-pressed","true"); }
+      else { ambient.pause(); toggle.textContent="🔇 Activar sonido"; toggle.setAttribute("aria-pressed","false"); }
+    });
+  }
+  window._audio_ready = ()=>audioReady;
+})();
+
+/* ===== Dataset mínimo por si no hay calculadora ===== */
+const FALLBACK_KARMA = [
+  {type:"karma",   result:"AUTOGOL: Retrocede 3 espacios"},
+  {type:"karma",   result:"PÉRDIDA DE TURNO por arrogancia espiritual"},
+  {type:"dharma",  result:"AVANCE RÁPIDO: +4 espacios"},
+  {type:"dharma",  result:"INMUNIDAD KÁRMICA por 1 turno"},
+  {type:"dharma",  result:"DOBLE MOVIMIENTO en tu siguiente ronda"}
 ];
 
-function pick(a){return a[(Math.random()*a.length)|0];}
-
-/* Lectura Shaolín */
-function forgeReading(p){
- const intro = pick([
-   "Hijo del dragón, escucha el susurro del bambú:",
-   "Viaje interior, atención presente:",
-   "Nada se gana luchando, se conquista en quietud:",
-   "Camina como si cada paso fuera oración:"
- ]);
- let cuerpo = (p.type === "karma")
-   ? `${p.result} No es caída, sino señal de ajuste. Agradece la lección y vuelve a respirar.`
-   : `${p.result} Este mérito se disuelve si nace orgullo. Sé humilde, sé espejo del vacío.`;
- const cierre = pick([
-   "Cuando el ego se disuelve, el dado cae en paz.",
-   "La victoria sin enemigos es la más alta.",
-   "Mira la luna, y verás que el reflejo eres tú.",
-   "No camines más rápido que tu sombra."
- ]);
- return `${intro}\n${cuerpo}\n${cierre}`;
-}
-
-/* Voz */
-let voices=[],currentVoice=null;
-function populateVoices(){ voices=speechSynthesis.getVoices(); currentVoice=voices.find(v=>v.lang.startsWith("es"))||voices[0]||null; }
-if("speechSynthesis"in window){ populateVoices(); window.speechSynthesis.onvoiceschanged=populateVoices; }
-function speak(t){
- if(!("speechSynthesis"in window))return;
- const u=new SpeechSynthesisUtterance(t);
- if(currentVoice)u.voice=currentVoice; u.lang="es-ES"; u.rate=0.8; u.pitch=0.9; u.volume=1;
- speechSynthesis.cancel(); speechSynthesis.speak(u);
-}
-
-/* Intentar leer la última tirada guardada por la Calculadora Kármica */
+/* ===== Helpers: última tirada de la calculadora ===== */
 function getLastKarmicFromLocalStorage(){
- try{
-   const raw = localStorage.getItem("karmicCalculator");
-   if(!raw) return null;
-   const data = JSON.parse(raw);
-   const hist = Array.isArray(data.history) ? data.history : [];
-   if(!hist.length) return null;
+  try{
+    const raw = localStorage.getItem("karmicCalculator");
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    const hist = Array.isArray(data.history)? data.history : [];
+    if (!hist.length) return null;
+    const last = hist[0];
 
-   const last = hist[0]; // la más reciente
-   // Formatos posibles
-   if (last.from === "roulette" && last.fullData?.result) {
-     return { type: last.to || "karma", result: last.fullData.result };
-   }
-   if (typeof last.description === "string") {
-     const desc = last.description.trim();
-     if (desc.startsWith("KARMA") || desc.startsWith("DHARMA")) {
-       const [kind, ...rest] = desc.split(":");
-       return { type: kind.toLowerCase(), result: rest.join(":").trim() || "Movimiento" };
-     }
-   }
- }catch(e){}
- return null;
+    // Ruletas modernas
+    if (last.from === 'roulette' && last.fullData?.result){
+      return { type: last.to, result: last.fullData.result };
+    }
+    // Texto plano
+    if (last.description && (last.description.startsWith("KARMA") || last.description.startsWith("DHARMA"))){
+      const [kind, ...rest] = last.description.split(":");
+      return { type: kind.toLowerCase(), result: rest.join(":").trim() };
+    }
+    // Interacción de reinos
+    if (last.fullData?.difficulty !== undefined){
+      const desc = last.description || "";
+      const parts = desc.split("→");
+      const from = (parts[0]||"Humano").trim();
+      const to = (parts[1]||"Humano").split(":")[0].trim();
+      return { type:"interaction", result:`Interacción ${from} → ${to} (dif. ${last.fullData.difficulty})` };
+    }
+  }catch(e){}
+  return null;
 }
 
-/* UI */
-const out = document.getElementById("readingText");
-document.getElementById("btnInvoke").onclick = ()=>{
-  const p = pick(FALLBACK); const t = forgeReading(p); out.textContent = t; speak(t);
-};
-document.getElementById("btnRandom").onclick = ()=>{
-  const p = pick(FALLBACK); const t = forgeReading(p); out.textContent = t; speak(t);
-};
-document.getElementById("btnSpeak").onclick = ()=>{
-  const t = out.textContent.trim(); if(t) speak(t);
-};
-document.getElementById("btnStop").onclick = ()=>{
-  if('speechSynthesis' in window) speechSynthesis.cancel();
-};
-document.getElementById("btnReadLast").onclick = ()=>{
-  const payload = getLastKarmicFromLocalStorage();
-  if(!payload){
-    const msg = "No encuentro una tirada reciente en este dominio. Abre la Calculadora Kármica aquí, gira una ruleta y vuelve.";
-    out.textContent = msg; speak(msg);
-    return;
+/* ===== Forja del mensaje (tono Shaolín) ===== */
+function forgeShaolinReading(payload){
+  const intros = [
+    "El bambú se inclina, pero no se quiebra.",
+    "Respira hondo. Observa sin juicio.",
+    "Cuando la mente se aquieta, el camino aparece.",
+    "Quien empuja el río, solo se cansa."
+  ];
+  const outro = [
+    "Camina suave. La salida está en tu siguiente decisión.",
+    "Suelta un poco hoy, para andar más lejos mañana.",
+    "El dado cae, pero tu intención lo guía.",
+    "Mira la luna y recuerda: no eres tus sombras."
+  ];
+  let cuerpo = "";
+  if (payload?.type === "karma"){
+    cuerpo = `Veo carga activa: ${payload.result}. No luches contra el golpe; absorbe y redirige. Practica una renuncia pequeña ahora.`;
+  } else if (payload?.type === "dharma"){
+    cuerpo = `Llega viento propicio: ${payload.result}. Úsalo para levantar también a otro. Compartir te hará más ligero.`;
+  } else if (payload?.type === "interaction"){
+    cuerpo = `Cruce entre fuerzas: ${payload.result}. Observa el apego que empuja. Si puedes, escoge la opción con menos orgullo.`;
+  } else {
+    const rnd = FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0];
+    cuerpo = `Sin señales recientes, leo el pulso: ${rnd.type.toUpperCase()} — ${rnd.result}. Toma el siguiente paso con humildad.`;
   }
-  const t = forgeReading(payload);
-  out.textContent = t; speak(t);
-};
+  const t = `${intros[(Math.random()*intros.length)|0]}\n${cuerpo}\n${outro[(Math.random()*outro.length)|0]}`;
+  return t;
+}
+
+/* ===== SpeechSynthesis ===== */
+const voiceSelect = document.getElementById("voiceSelect");
+let voices = [], currentVoice = null, voiceOn = true;
+
+function populateVoices(){
+  voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML = "";
+  const esVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+  const list = esVoices.length ? esVoices : voices;
+  list.forEach((v)=>{
+    const opt = document.createElement("option");
+    opt.value = v.name;
+    opt.textContent = `${v.name} — ${v.lang}`;
+    voiceSelect.appendChild(opt);
+  });
+  currentVoice = list[0] || voices[0] || null;
+}
+if ('speechSynthesis' in window){
+  populateVoices();
+  window.speechSynthesis.onvoiceschanged = populateVoices;
+}
+
+function speakText(text){
+  if (!voiceOn || !('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  if (currentVoice) u.voice = voices.find(v => v.name === currentVoice.name) || currentVoice;
+  u.lang = (u.voice && u.voice.lang) ? u.voice.lang : "es-ES";
+  u.rate = 0.95; u.pitch = 1.0; u.volume = 1.0;
+
+  // Al terminar: gong
+  const gong = document.getElementById("gongAudio");
+  u.onend = ()=>{ if (gong){ try{ gong.currentTime=0; gong.volume=0.6; gong.play().catch(()=>{});}catch(_){} } };
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+/* ===== UI ===== */
+const readingEl   = document.getElementById("readingText");
+const btnReadLast = document.getElementById("btnReadLast");
+const btnRandom   = document.getElementById("btnRandom");
+const btnSpeak    = document.getElementById("btnSpeak");
+const btnStop     = document.getElementById("btnStop");
+const btnToggle   = document.getElementById("btnToggleVoice");
+const manualJson  = document.getElementById("manualJson");
+const sourceFlag  = document.getElementById("sourceFlag");
+
+voiceSelect.addEventListener("change", ()=>{
+  const v = voices.find(v => v.name === voiceSelect.value);
+  if (v) currentVoice = v;
+});
+
+btnToggle.addEventListener("click", ()=>{
+  voiceOn = !voiceOn;
+  btnToggle.textContent = voiceOn ? "🗣️ Voz del Maestro: ON" : "🤫 Voz del Maestro: OFF";
+  btnToggle.setAttribute("aria-pressed", voiceOn ? "true" : "false");
+});
+
+btnReadLast.addEventListener("click", ()=>{
+  const manual = manualJson.value.trim();
+  let payload = null, source = "";
+  if (manual){
+    try { payload = JSON.parse(manual); source="Fuente: JSON pegado manualmente.";} catch(_){}
+  }
+  if (!payload){ payload = getLastKarmicFromLocalStorage(); source = payload ? "Fuente: Calculadora (localStorage)." : ""; }
+  if (!payload){ payload = FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0]; source = "Fuente: Plantilla de respaldo."; }
+
+  const txt = forgeShaolinReading(payload);
+  readingEl.textContent = txt;
+  sourceFlag.textContent = source;
+  speakText(txt);
+});
+
+btnRandom.addEventListener("click", ()=>{
+  const payload = FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0];
+  const txt = forgeShaolinReading(payload);
+  readingEl.textContent = txt;
+  sourceFlag.textContent = "Fuente: Aleatoria (fallback).";
+  speakText(txt);
+});
+
+btnSpeak.addEventListener("click", ()=>{
+  const txt = readingEl.textContent.trim();
+  if (txt) speakText(txt);
+});
+
+btnStop.addEventListener("click", ()=>{
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+});
+
+/* ===== Autolectura al entrar (prioridad: JSON pegado > localStorage > fallback) ===== */
+window.addEventListener("DOMContentLoaded", ()=>{
+  // intenta JSON manual
+  let payload = null, source = "";
+  const manual = manualJson.value.trim();
+  if (manual){
+    try { payload = JSON.parse(manual); source = "Fuente: JSON pegado manualmente."; } catch(_){}
+  }
+  // si no, localStorage
+  if (!payload){
+    payload = getLastKarmicFromLocalStorage();
+    if (payload) source = "Fuente: Calculadora (localStorage).";
+  }
+  // si nada, muestra mensaje neutro (no habla hasta que pulses)
+  if (payload){
+    const txt = forgeShaolinReading(payload);
+    readingEl.textContent = txt;
+    sourceFlag.textContent = source;
+    // auto-speak (si la voz está ON)
+    speakText(txt);
+  } else {
+    readingEl.textContent = "No encuentro una tirada reciente. Pulsa “📖 Leer última tirada” o “🎲 Lectura aleatoria”.";
+    sourceFlag.textContent = "";
+  }
+});
 </script>
 </body>
 </html>

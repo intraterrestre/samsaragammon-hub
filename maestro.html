@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Maestro Shaolín — Consejos del Samsara</title>
+<meta name="description" content="El Maestro Shaolín te revela la enseñanza detrás de tu tirada kármica: calma, virtud y sabiduría en el tablero del Samsara.">
+<style>
+:root{ --green:#00ff7b; --line:#103527; --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:var(--text);font-family:system-ui,sans-serif;line-height:1.6;}
+.matrix-bg{position:fixed;inset:0;z-index:-1;opacity:.15;pointer-events:none}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px}
+header{text-align:center;margin-top:5vh;margin-bottom:20px;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:0 0 30px rgba(0,255,150,.1)}
+.title{color:var(--green);font-size:clamp(28px,4vw,40px);text-shadow:0 0 12px var(--green);font-weight:800;margin-bottom:6px}
+.subtitle{color:#bfeee0;opacity:.9;font-size:clamp(14px,2vw,16px)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+button{cursor:pointer;border-radius:999px;border:1px solid var(--green);background:linear-gradient(180deg,#02140f,#031b14);color:var(--green);font-weight:700;padding:10px 16px;}
+button:hover{transform:translateY(-1px);box-shadow:0 0 14px var(--green)}
+.reading{background:rgba(0,0,0,.5);border:1px dashed var(--line);border-radius:12px;padding:16px;min-height:120px;margin:14px 0;white-space:pre-line}
+footer{text-align:center;color:#9edfc9;font-size:.9rem;margin:28px 0;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<canvas class="matrix-bg" id="matrixBg"></canvas>
+
+<div class="wrap">
+  <header>
+    <div class="title">Maestro Shaolín</div>
+    <div class="subtitle">Escucha el consejo que disuelve tu karma y fortalece tu dharma.</div>
+  </header>
+
+  <section>
+    <div class="controls">
+      <button id="btnReadLast">📜 Leer última tirada</button>
+      <button id="btnInvoke">🧘 Escuchar consejo</button>
+      <button id="btnRandom">🎲 Tirada aleatoria</button>
+    </div>
+
+    <div class="reading" id="readingText">Respira... el silencio también enseña.</div>
+
+    <div class="controls">
+      <button id="btnSpeak">🔈 Repetir</button>
+      <button id="btnStop">⏹️ Silenciar</button>
+    </div>
+  </section>
+
+  <footer>© 2025 Curvism instead cubism™ — El camino es la curva, no la línea recta.</footer>
+</div>
+
+<script>
+/* Fondo matrix */
+(function(){
+ const c=document.getElementById('matrixBg'),x=c.getContext('2d');
+ function resize(){c.width=innerWidth;c.height=innerHeight}resize();addEventListener('resize',resize);
+ const A='☯禅龍心0123456789KARMA'.split('');const fs=14;let cols=Math.floor(c.width/fs);
+ let drops=Array(cols).fill(1);
+ setInterval(()=>{if(cols!==Math.floor(c.width/fs)){cols=Math.floor(c.width/fs);drops=Array(cols).fill(1)}
+  x.fillStyle='rgba(0,0,0,0.06)';x.fillRect(0,0,c.width,c.height);
+  x.fillStyle='#00ff7b';x.font=fs+'px monospace';
+  for(let i=0;i<drops.length;i++){x.fillText(A[(Math.random()*A.length)|0],i*fs,drops[i]*fs);
+  if(drops[i]*fs>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++}},33);
+})();
+
+/* Dataset mínimo */
+const FALLBACK = [
+ {type:"karma",  result:"Error cometido: orgullo en el combate."},
+ {type:"dharma", result:"Has ofrecido tu ayuda sin pedir recompensa."},
+ {type:"karma",  result:"Dejaste que la ira dirigiera tu espada."},
+ {type:"dharma", result:"Guardaste silencio en lugar de herir con palabras."}
+];
+
+function pick(a){return a[(Math.random()*a.length)|0];}
+
+/* Lectura Shaolín */
+function forgeReading(p){
+ const intro = pick([
+   "Hijo del dragón, escucha el susurro del bambú:",
+   "Viaje interior, atención presente:",
+   "Nada se gana luchando, se conquista en quietud:",
+   "Camina como si cada paso fuera oración:"
+ ]);
+ let cuerpo = (p.type === "karma")
+   ? `${p.result} No es caída, sino señal de ajuste. Agradece la lección y vuelve a respirar.`
+   : `${p.result} Este mérito se disuelve si nace orgullo. Sé humilde, sé espejo del vacío.`;
+ const cierre = pick([
+   "Cuando el ego se disuelve, el dado cae en paz.",
+   "La victoria sin enemigos es la más alta.",
+   "Mira la luna, y verás que el reflejo eres tú.",
+   "No camines más rápido que tu sombra."
+ ]);
+ return `${intro}\n${cuerpo}\n${cierre}`;
+}
+
+/* Voz */
+let voices=[],currentVoice=null;
+function populateVoices(){ voices=speechSynthesis.getVoices(); currentVoice=voices.find(v=>v.lang.startsWith("es"))||voices[0]||null; }
+if("speechSynthesis"in window){ populateVoices(); window.speechSynthesis.onvoiceschanged=populateVoices; }
+function speak(t){
+ if(!("speechSynthesis"in window))return;
+ const u=new SpeechSynthesisUtterance(t);
+ if(currentVoice)u.voice=currentVoice; u.lang="es-ES"; u.rate=0.8; u.pitch=0.9; u.volume=1;
+ speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+/* Intentar leer la última tirada guardada por la Calculadora Kármica */
+function getLastKarmicFromLocalStorage(){
+ try{
+   const raw = localStorage.getItem("karmicCalculator");
+   if(!raw) return null;
+   const data = JSON.parse(raw);
+   const hist = Array.isArray(data.history) ? data.history : [];
+   if(!hist.length) return null;
+
+   const last = hist[0]; // la más reciente
+   // Formatos posibles
+   if (last.from === "roulette" && last.fullData?.result) {
+     return { type: last.to || "karma", result: last.fullData.result };
+   }
+   if (typeof last.description === "string") {
+     const desc = last.description.trim();
+     if (desc.startsWith("KARMA") || desc.startsWith("DHARMA")) {
+       const [kind, ...rest] = desc.split(":");
+       return { type: kind.toLowerCase(), result: rest.join(":").trim() || "Movimiento" };
+     }
+   }
+ }catch(e){}
+ return null;
+}
+
+/* UI */
+const out = document.getElementById("readingText");
+document.getElementById("btnInvoke").onclick = ()=>{
+  const p = pick(FALLBACK); const t = forgeReading(p); out.textContent = t; speak(t);
+};
+document.getElementById("btnRandom").onclick = ()=>{
+  const p = pick(FALLBACK); const t = forgeReading(p); out.textContent = t; speak(t);
+};
+document.getElementById("btnSpeak").onclick = ()=>{
+  const t = out.textContent.trim(); if(t) speak(t);
+};
+document.getElementById("btnStop").onclick = ()=>{
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+};
+document.getElementById("btnReadLast").onclick = ()=>{
+  const payload = getLastKarmicFromLocalStorage();
+  if(!payload){
+    const msg = "No encuentro una tirada reciente en este dominio. Abre la Calculadora Kármica aquí, gira una ruleta y vuelve.";
+    out.textContent = msg; speak(msg);
+    return;
+  }
+  const t = forgeReading(payload);
+  out.textContent = t; speak(t);
+};
+</script>
+</body>
+</html>

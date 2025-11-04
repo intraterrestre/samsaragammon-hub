@@ -406,7 +406,7 @@ async function cargarFrase(evento, meta={}) {
     audio.play().catch(()=>{});
   });
 })();
-</script><!-- === Panel de Efectos Shaolin === -->
+</script><!-- === Panel de Efectos Shaolin PRO+ === -->
 <script>
 (function(){
   const efectosShaolin = [
@@ -428,22 +428,89 @@ async function cargarFrase(evento, meta={}) {
     "tibetan-buddhist-drum-314994.mp3"
   ];
 
+  // === Crea el botón Shaolin Pro+ ===
   const btn = document.createElement("button");
-  btn.textContent = "🎛️ Efecto Shaolin";
+  btn.innerHTML = `
+    🧘 <strong>Shaolin Pro+</strong><br>
+    <span style="font-size:0.8em;opacity:.85">Usa efectos especiales para crear ambiente</span>
+  `;
   Object.assign(btn.style, {
     position:"fixed", left:"16px", bottom:"16px", zIndex:9999,
     background:"#031b14", border:"2px solid #00ff7b",
-    borderRadius:"999px", color:"#00ff7b",
-    fontWeight:"bold", padding:"10px 18px",
-    cursor:"pointer", boxShadow:"0 0 15px rgba(0,255,150,.4)"
+    borderRadius:"14px", color:"#00ff7b", textAlign:"center",
+    fontWeight:"bold", fontSize:"14px", padding:"12px 18px",
+    cursor:"pointer", boxShadow:"0 0 20px rgba(0,255,150,.4)",
+    transition:"all .25s ease", fontFamily:"ui-sans-serif"
   });
   document.body.appendChild(btn);
 
+  // === Animación constante tipo respiración (pulso de energía)
+  const glowPulse = document.createElement("style");
+  glowPulse.textContent = `
+    @keyframes shaolinGlow {
+      0% { box-shadow: 0 0 10px rgba(0,255,150,.3); transform: scale(1); }
+      50% { box-shadow: 0 0 30px rgba(0,255,150,.7); transform: scale(1.05); }
+      100% { box-shadow: 0 0 10px rgba(0,255,150,.3); transform: scale(1); }
+    }
+    button.shaolin-active { animation: shaolinGlow 2.5s infinite ease-in-out; }
+  `;
+  document.head.appendChild(glowPulse);
+  btn.classList.add("shaolin-active");
+
+  // === Vibración al pasar el mouse
+  btn.addEventListener("mouseenter", ()=>{
+    btn.style.transform = "scale(1.07)";
+    btn.style.boxShadow = "0 0 30px rgba(255,209,102,.6)";
+  });
+  btn.addEventListener("mouseleave", ()=>{
+    btn.style.transform = "scale(1)";
+    btn.style.boxShadow = "0 0 20px rgba(0,255,150,.4)";
+  });
+
+  // === Colores cíclicos según energía
+  const colores = ["#00ff7b","#ffd166","#ff6b6b","#66aaff","#ff9e00"];
+  let colorIndex = 0;
+
+  // === Al hacer clic: vibra, cambia color y lanza sonido Shaolin ===
   btn.addEventListener("click", ()=>{
     const aleatorio = efectosShaolin[Math.floor(Math.random()*efectosShaolin.length)];
     const audio = new Audio(`audio/shaolin/${aleatorio}`);
-    audio.volume = 0.8;
+    audio.volume = 0.85;
     audio.play().catch(()=>{});
+
+    // Color y vibración
+    colorIndex = (colorIndex + 1) % colores.length;
+    const c = colores[colorIndex];
+    btn.style.borderColor = c;
+    btn.style.color = c;
+    btn.style.boxShadow = `0 0 25px ${c}`;
+    btn.style.transform = "scale(1.15)";
+    btn.innerHTML = `🔥 <strong>Ambiente activado</strong><br><span style="font-size:0.8em;opacity:.85">El templo vibra contigo...</span>`;
+    navigator.vibrate?.([40,80,40]); // vibración móvil si está disponible
+
+    // Efecto “brillo circular” desde el botón
+    const ring = document.createElement("div");
+    Object.assign(ring.style, {
+      position:"fixed", left:"16px", bottom:"16px", width:"120px", height:"120px",
+      border:`2px solid ${c}`, borderRadius:"50%", opacity:"0.6", pointerEvents:"none",
+      transform:"translate(-15px,-60px) scale(0)", transition:"all 1s ease-out"
+    });
+    document.body.appendChild(ring);
+    setTimeout(()=>ring.style.transform="translate(-15px,-60px) scale(1.5)",10);
+    setTimeout(()=>ring.style.opacity="0",900);
+    setTimeout(()=>ring.remove(),1500);
+
+    // Regresa al estado base
+    setTimeout(()=>{
+      btn.innerHTML = `
+        🧘 <strong>Shaolin Pro+</strong><br>
+        <span style="font-size:0.8em;opacity:.85">Usa efectos especiales para crear ambiente</span>
+      `;
+      btn.style.borderColor = "#00ff7b";
+      btn.style.color = "#00ff7b";
+      btn.style.transform = "scale(1)";
+      btn.style.boxShadow = "0 0 20px rgba(0,255,150,.4)";
+    }, 3000);
   });
 })();
 </script>

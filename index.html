@@ -9,19 +9,51 @@
   <style>
     :root{
       --green:#00ff7b; --green-soft:#8affbf; --line:#113c2d;
-      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
+      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; --accent:#ffd166;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
       background:#000;color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
       line-height:1.55; overflow-x:hidden;
     }
     .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.18; pointer-events:none}
     .wrap{max-width:1024px; margin:0 auto; padding:20px 16px}
+
+    /* Promo superior */
+    .promo{
+      background: radial-gradient(1100px 500px at 50% 0%, #042218 0%, #000 70%);
+      border-bottom:1px solid #0a3; padding:42px 18px; text-align:center;
+      box-shadow:inset 0 0 40px rgba(0,255,150,.12);
+      animation:promoFade .9s ease-out;
+    }
+    @keyframes promoFade{from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none}}
+    .promo-title{
+      color:var(--green); font-size:clamp(30px,4vw,50px); font-weight:900; letter-spacing:.05em;
+      text-shadow:0 0 16px rgba(0,255,150,.6);
+      margin-bottom:12px;
+    }
+    .promo-sub{color:#cfe; font-size:clamp(15px,2vw,18px); max-width:880px; margin:0 auto}
+    .promo-note{ color:#88ffbf; font-size:.92rem; opacity:.95; margin-top:14px }
+
+    /* Botonera neón */
+    .neon-bar{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:16px 0 6px}
+    .btn-neon{
+      --glow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
+      display:inline-flex; align-items:center; gap:8px; justify-content:center;
+      padding:12px 18px; border-radius:999px; border:1px solid var(--green);
+      background:linear-gradient(180deg, #02140f, #031b14);
+      color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
+      box-shadow:var(--glow); transition:transform .12s, box-shadow .2s, background .2s;
+    }
+    .btn-neon:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55)}
+    .btn-neon.alt{ border-color:var(--accent); color:var(--accent);
+      box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
+
+    /* Header/hero */
     header.hero{
-      margin-top:6vh; margin-bottom:20px; text-align:center;
+      margin-top:28px; margin-bottom:20px; text-align:center;
       padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel);
       box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04);
     }
@@ -31,44 +63,33 @@
       text-shadow:0 0 10px var(--green), 0 0 24px rgba(0,255,150,.35);
       letter-spacing:.06em; font-weight:800; margin-bottom:6px;
     }
-    .subtitle{color:var(--green-soft); opacity:.9; font-size:clamp(14px,1.8vw,16px)}
+    .subtitle{color:var(--green-soft); opacity:.95; font-size:clamp(14px,1.8vw,16px)}
 
-    .neon-bar{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:16px 0 4px}
-    .btn-neon{
-      --glow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
-      display:inline-flex; align-items:center; gap:8px; justify-content:center;
-      padding:12px 18px; border-radius:999px; border:1px solid var(--green);
-      background:linear-gradient(180deg, #02140f, #031b14);
-      color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
-      box-shadow:var(--glow); transition:transform .12s ease, box-shadow .2s ease, background .2s ease;
-    }
-    .btn-neon:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55)}
-    .btn-neon.small{ padding:9px 14px; font-weight:700 }
-
+    /* Secciones */
     section.card{
-      margin-top:18px; background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px;
+      margin-top:18px; background:var(--panel2); border:1px solid var(--line);
+      border-radius:14px; padding:16px;
     }
     h2.section{
       color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:8px;
       text-shadow:0 0 10px rgba(0,255,150,.25);
     }
-    p.muted{color:#bfeee0; opacity:.9}
-    .media{display:flex; flex-direction:column; align-items:center; gap:12px; margin:14px 0;}
+    p.muted{color:#bfeee0; opacity:.92}
+    .media{display:flex; flex-direction:column; align-items:center; gap:12px; margin:14px 0}
     .media img{
       width:100%; height:auto; max-width:880px; border-radius:14px;
       border:1px solid var(--line); background:#000;
       box-shadow:0 0 24px rgba(0,255,150,.06);
     }
     .moon{width:min(360px,58vw); border-radius:16px; background:transparent; border:none; box-shadow:none}
+    @media (min-width:900px){ .grid-2{display:grid; grid-template-columns:1.1fr .9fr; gap:16px} }
+
+    /* Footer */
     footer{
       margin:28px 0 24px; text-align:center; color:#9edfc9; font-size:.95rem;
       border-top:1px solid var(--line); padding-top:14px;
     }
-    footer .mini{opacity:.7; font-size:.9rem; margin-top:6px}
-    .links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px}
-    .links a{color:var(--green); text-decoration:none; border-bottom:1px dotted var(--green)}
-    .links a:hover{opacity:.9}
-    @media (min-width:900px){ .grid-2{display:grid; grid-template-columns:1.1fr .9fr; gap:16px} }
+    footer .mini{opacity:.75; font-size:.9rem; margin-top:6px}
 
     /* Botón de sonido */
     #soundToggle{
@@ -83,10 +104,26 @@
   <!-- Fondo Matrix -->
   <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
 
+  <!-- PROMO TURBO MASTER DRAGON -->
+  <section class="promo">
+    <h1 class="promo-title">🔥 Convierte tu rol en un Camino hacia el Nirvana</h1>
+    <p class="promo-sub">
+      Presentamos el <strong>Turbo Master Dragon™</strong> — el panel curvista que fusiona
+      <strong>Dungeons & Dragons</strong> con la sabiduría del <strong>Samsara</strong>.<br>
+      Mide tu Karma, invoca consejos del <strong>Maestro Shaolin</strong> y transforma cada partida en una experiencia espiritual real.
+    </p>
+    <div class="neon-bar" style="margin-top:18px">
+      <a class="btn-neon" href="maestro.html">🧘 Invocar al Maestro Shaolin</a>
+      <a class="btn-neon alt" href="https://karmalab-samsara.netlify.app/" target="_blank" rel="noopener">🧮 Probar Calculadora Kármica</a>
+    </div>
+    <p class="promo-note">⚙️ Compatible con cualquier módulo D&D 5e — mejora tu narrativa, mide tus reinos y alcanza la curva de la iluminación.</p>
+  </section>
+
   <!-- Botón sonido -->
   <button id="soundToggle" aria-pressed="false">🔇 Activar sonido</button>
 
   <div class="wrap">
+    <!-- HERO -->
     <header class="hero">
       <div class="title">Samsaragammon — Portal Curvista</div>
       <div class="subtitle">Entrada oficial al Manual, Diccionario, Tabla de Reinos, Calculadora Kármica y Juego.</div>
@@ -98,16 +135,18 @@
       </nav>
     </header>
 
+    <!-- BLOQUE: LUNA COMO PORTAL -->
     <section class="card grid-2">
       <div>
         <h2 class="section">La Luna como portal</h2>
         <p class="muted">
-          La luna que Buda señaló no era un símbolo, sino una salida. Desde Dungeons &amp; Dragons atraviesa este portal
-          y deja que el tablero se vuelva tu mandala: cada tirada, una elección; cada elección, un paso hacia el Nirvana.
+          La luna que Buda señaló no era un símbolo, sino una salida. Desde <strong>Dungeons &amp; Dragons</strong>
+          atraviesa este portal y deja que el tablero se vuelva tu mandala: cada tirada, una elección; cada elección,
+          un paso hacia el Nirvana.
         </p>
         <div class="neon-bar" style="justify-content:flex-start">
-          <a class="btn-neon small" href="juego.html">✨ Iniciar sesión</a>
-          <a class="btn-neon small" href="MANUAL-MATRIX/index.html">🔎 Cómo se juega</a>
+          <a class="btn-neon" href="juego.html">✨ Iniciar sesión</a>
+          <a class="btn-neon" href="MANUAL-MATRIX/index.html">🔎 Cómo se juega</a>
         </div>
       </div>
       <div class="media">
@@ -115,6 +154,7 @@
       </div>
     </section>
 
+    <!-- BLOQUE: RUEDA / TABLERO -->
     <section class="card">
       <h2 class="section">La rueda del Samsara como tablero</h2>
       <p class="muted">La rueda refleja tus elecciones. No es arte decorativo: es el espejo de tu camino.</p>
@@ -123,86 +163,57 @@
       </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
-      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos los redondeamos con reserva.
+      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
       <div class="mini">The Singing Witchi (preview) · La Pitonisa Cantaora (en preparación).</div>
     </footer>
   </div>
 
-  <!-- Audio (cumple autoplay policies) -->
+  <!-- Audio -->
   <audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
   <audio id="ritualAudio"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
 
   <script>
-    // ===== Fondo Matrix =====
+    /* Fondo matrix */
     (function(){
       const c=document.getElementById('matrixBg'),x=c.getContext('2d');
-      function resize(){ c.width=innerWidth; c.height=innerHeight; }
-      resize(); addEventListener('resize',resize);
-      const chars='アカサタナハマヤラワ0123456789☯KARMADHARMA';
-      const A=chars.split(''); const fs=14; let cols=Math.floor(c.width/fs);
-      let drops=Array(cols).fill(1);
-      setInterval(function(){
-        if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
-        x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
+      function R(){c.width=innerWidth;c.height=innerHeight} R(); addEventListener('resize',R);
+      const A='アカサタナハマヤラワ0123456789☯KARMADHARMA'.split(''), fs=14;
+      let cols=Math.floor(c.width/fs), drops=Array(cols).fill(1);
+      setInterval(()=>{ if(cols!==Math.floor(c.width/fs)){cols=Math.floor(c.width/fs);drops=Array(cols).fill(1)}
+        x.fillStyle='rgba(0,0,0,.06)'; x.fillRect(0,0,c.width,c.height);
         x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
         for(let i=0;i<drops.length;i++){
-          const t=A[(Math.random()*A.length)|0];
-          x.fillText(t,i*fs,drops[i]*fs);
-          if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0;
-          drops[i]++;
-        }
+          x.fillText(A[(Math.random()*A.length)|0],i*fs,drops[i]*fs);
+          if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0; drops[i]++; }
       },33);
     })();
 
-    // ===== Audio: desbloqueo por interacción + toggle =====
+    /* Audio + navegación suave a juego */
     (function(){
       const ambient = document.getElementById("ambientAudio");
       const ritual  = document.getElementById("ritualAudio");
       const toggle  = document.getElementById("soundToggle");
-      let audioReady = false;
-
-      function tryPlayAmbient(){
-        ambient.volume = 0.55;
-        ambient.play().then(()=>{
-          audioReady = true;
-          toggle.textContent = "🔊 Silenciar";
-          toggle.setAttribute("aria-pressed","true");
-        }).catch(()=>{/* Autoplay bloqueado hasta interacción */});
+      let ready=false;
+      function playAmbient(){
+        ambient.volume=.55;
+        ambient.play().then(()=>{ready=true;toggle.textContent="🔊 Silenciar";toggle.setAttribute("aria-pressed","true")}).catch(()=>{});
       }
-
-      // Primer gesto del usuario → intenta reproducir
-      window.addEventListener("pointerdown", function onFirst(){
-        tryPlayAmbient();
-        window.removeEventListener("pointerdown", onFirst);
-      }, { once:true });
-
-      // Botón activar/silenciar
-      toggle.addEventListener("click", ()=>{
-        if (!audioReady){
-          tryPlayAmbient();
-          return;
-        }
-        if (ambient.paused){
-          ambient.play();
-          toggle.textContent="🔊 Silenciar";
-          toggle.setAttribute("aria-pressed","true");
-        } else {
-          ambient.pause();
-          toggle.textContent="🔇 Activar sonido";
-          toggle.setAttribute("aria-pressed","false");
-        }
+      addEventListener("pointerdown",function onFirst(){playAmbient();removeEventListener("pointerdown",onFirst)},{once:true});
+      toggle.addEventListener("click",()=>{
+        if(!ready){playAmbient();return;}
+        if(ambient.paused){ambient.play();toggle.textContent="🔊 Silenciar";toggle.setAttribute("aria-pressed","true")}
+        else{ambient.pause();toggle.textContent="🔇 Activar sonido";toggle.setAttribute("aria-pressed","false")}
       });
-
-      // Al entrar al juego: pausa ambiente y dispara ritual
-      const btnJugar = document.getElementById("btnJugar");
-      if(btnJugar){
-        btnJugar.addEventListener("click", ()=>{
-          if (!audioReady) tryPlayAmbient();
-          if (!ambient.paused) ambient.pause();
-          if (ritual){ ritual.currentTime = 0; ritual.volume = 0.7; ritual.play().catch(()=>{}); }
+      document.querySelectorAll('a[href$="juego.html"]').forEach(a=>{
+        a.addEventListener("click",ev=>{
+          ev.preventDefault(); const url=a.getAttribute("href");
+          if(!ambient.paused) ambient.pause();
+          if(ritual){ritual.currentTime=0;ritual.volume=.7;ritual.play().catch(()=>{});}
+          setTimeout(()=>{location.href=url},250);
         });
-      }
+      });
     })();
   </script>
 </body>

@@ -336,6 +336,74 @@ window.addEventListener("DOMContentLoaded", ()=>{
     sourceFlag.textContent = "";
   }
 });
+<script>
+async function cargarFrase(evento, meta={}) {
+  const res = await fetch('archivoshaolin.json');
+  const data = await res.json();
+
+  // 1) 50% plantilla generativa, 50% frase cerrada
+  const useTemplate = Math.random() < 0.5 && data.plantillas && data.diccionarios;
+  let texto;
+
+  if (useTemplate) {
+    const T = data.plantillas[Math.floor(Math.random() * data.plantillas.length)];
+    texto = T.replace(/\{(\w+)\}/g, (_, k) => {
+      if (k in meta) return meta[k]; // {from},{to},{dif},{evento}
+      const bag = data.diccionarios[k];
+      return bag ? bag[Math.floor(Math.random() * bag.length)] : `{${k}}`;
+    });
+  } else {
+    const pool = evento ? data.frases.filter(f => f.cuando === evento) : data.frases;
+    const pick = pool.length ? pool : data.frases;
+    texto = pick[Math.floor(Math.random() * pick.length)].frase;
+    // post-procesa placeholders si los hay
+    texto = texto.replace(/\{(\w+)\}/g, (_, k) => meta[k] ?? `{${k}}`);
+  }
+
+  return texto;
+}
+
+// === Panel de efectos Shaolin ===
+(function(){
+  const efectosShaolin = [
+    "alone-samurai-in-mountain-430719.mp3",
+    "asiatic-intro_3-283719.mp3",
+    "birds-chirping-67827.mp3",
+    "China-cymbal-transition-sound-effect.mp3",
+    "chinese-beat-190047.mp3",
+    "chinese-flute-hulusi-76116.mp3",
+    "chinese-ident-transition-1-283708.mp3",
+    "CHINITO COLTICO.mp3",
+    "dizi-flute-02-72563.mp3",
+    "fireworks-07-419025.mp3",
+    "Gong-sound.mp3",
+    "gongfeb11-91065.mp3",
+    "INTROCHINO.mp3",
+    "music-transition-ancient-back-etlx-247347.mp3",
+    "spike-one-31462.mp3",
+    "tibetan-buddhist-drum-314994.mp3"
+  ];
+
+  const btn = document.createElement("button");
+  btn.textContent = "🎛️ Efecto Shaolin";
+  btn.style.position = "fixed";
+  btn.style.left = "16px";
+  btn.style.bottom = "16px";
+  btn.style.background = "#031b14";
+  btn.style.border = "2px solid #00ff7b";
+  btn.style.borderRadius = "999px";
+  btn.style.color = "#00ff7b";
+  btn.style.fontWeight = "bold";
+  btn.style.padding = "10px 18px";
+  btn.style.cursor = "pointer";
+  btn.style.boxShadow = "0 0 15px rgba(0,255,150,.4)";
+  document.body.appendChild(btn);
+
+  btn.addEventListener("click", ()=>{
+    const aleatorio = efectosShaolin[Math.floor(Math.random()*efectosShaolin.length)];
+    const audio = new Audio(`audio/shaolin/${aleatorio}`);
+    audio.volume = 0.8;
+    audio.play().catch(()=>{});
+  });
+})();
 </script>
-</body>
-</html>

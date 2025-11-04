@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>HUB Curvista — Dungeon Master Panel</title>
+<meta name="description" content="Panel para dirigir Teatro SamsaraDragon integrado con ruletas, Pitonisa y tablero." />
+<style>
+  :root{
+    --green:#00ff7b; --green-soft:#8affbf; --line:#113c2d;
+    --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; --accent:#ffd166;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#000;color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:1.55;overflow-x:hidden}
+  .matrix-bg{position:fixed;inset:0;z-index:-1;opacity:.16;pointer-events:none}
+  .wrap{max-width:1280px;margin:0 auto;padding:18px 14px}
+  header.top{
+    display:flex;gap:10px;align-items:center;justify-content:space-between;
+    padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+    box-shadow:0 0 28px rgba(0,255,150,.06), inset 0 0 18px rgba(0,255,140,.03);
+    margin-top:14px;margin-bottom:14px
+  }
+  .brand{color:var(--green);font-weight:800;letter-spacing:.04em;text-shadow:0 0 10px var(--green)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tab{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#091811;color:#bfeee0;font-weight:700;cursor:pointer}
+  .tab.active{border-color:var(--green);color:var(--green)}
+  .grid3{display:grid;gap:12px;grid-template-columns: 300px 1fr 360px}
+  @media (max-width:1100px){ .grid3{grid-template-columns:1fr} }
+  .card{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  h2.section{color:var(--green);font-size:16px;margin-bottom:10px;text-shadow:0 0 10px rgba(0,255,150,.25)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .stack{display:flex;flex-direction:column;gap:8px}
+  label{font-size:.9rem;color:#cfe}
+  input,select,textarea{
+    width:100%;background:#031b14;color:#eafff5;border:1px solid var(--line);border-radius:10px;padding:9px;font:inherit
+  }
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--green);background:linear-gradient(180deg,#02140f,#031b14);color:var(--green);font-weight:800;cursor:pointer;box-shadow:0 0 10px var(--green),0 0 18px rgba(0,255,140,.45)}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
+  .btn.alt{border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
+  .help{font-size:.85rem;color:#bfeee0;opacity:.9}
+  .board{
+    position:relative;display:flex;justify-content:center;align-items:center;min-height:420px;background:#000;border-radius:12px;border:1px solid var(--line);overflow:hidden
+  }
+  .board img{width:100%;height:auto;max-height:70vh;object-fit:contain;display:block}
+  .overlay{
+    position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:.9rem
+  }
+  .log{min-height:140px;max-height:260px;overflow:auto;background:rgba(0,0,0,.45);border:1px dashed var(--line);border-radius:10px;padding:10px;white-space:pre-line}
+  .rightCol .card + .card{margin-top:12px}
+  #soundToggle{
+    position:fixed;right:16px;top:16px;z-index:9999;background:#001100;color:#00ff7b;border:2px solid #00ff7b;border-radius:24px;padding:8px 12px;font-family:monospace;cursor:pointer;box-shadow:0 0 10px rgba(0,255,140,.35)
+  }
+</style>
+</head>
+<body>
+<canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
+<button id="soundToggle">🔇 Activar sonido</button>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">HUB Curvista — DM Panel</div>
+    <nav class="tabs">
+      <button class="tab active">Sesión</button>
+      <button class="tab">Ruletas</button>
+      <button class="tab">Diccionario</button>
+      <button class="tab">Exportar</button>
+    </nav>
+  </header>
+
+  <section class="grid3">
+    <!-- Columna izquierda: Controles -->
+    <aside class="card">
+      <h2 class="section">🎛️ Controles de Sesión</h2>
+
+      <div class="stack">
+        <div>
+          <label>Nombre de mesa / sesión</label>
+          <input id="sessionName" placeholder="Ej. Campaña ‘Luna Púrpura’" />
+        </div>
+
+        <div class="row">
+          <div style="flex:1">
+            <label>Reino activo</label>
+            <select id="realm">
+              <option value="human">Humanos</option>
+              <option value="animal">Animales</option>
+              <option value="ghost">Espíritus</option>
+              <option value="hell">Infierno</option>
+              <option value="titan">Titanes</option>
+              <option value="god">Dioses</option>
+            </select>
+          </div>
+          <div style="flex:1">
+            <label>Cielo (Ramtha)</label>
+            <select id="sky">
+              <option>1. Sufrimiento</option><option>2. Aprendizaje</option><option>3. Poder</option>
+              <option>4. Amor</option><option>5. Sabiduría</option><option>6. Paz</option><option>7. Unidad</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div style="flex:1">
+            <label>Era histórica</label>
+            <select id="era">
+              <option>Paleolítico</option><option>Neolítico</option><option>Edad de los Metales</option>
+              <option>Clásica</option><option>Medieval</option><option>Industrial</option><option>Digital</option>
+            </select>
+          </div>
+          <div style="flex:1">
+            <label>Vicio dominante</label>
+            <select id="veneno">
+              <option value="pig">Cochino (Apego)</option>
+              <option value="snake">Serpiente (Aversión)</option>
+              <option value="rooster">Gallo (Ignorancia)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label>Resumen de escena (para la Pitonisa)</label>
+          <textarea id="scene" rows="3" placeholder="Qué pasó en la última tirada/decisión…"></textarea>
+          <div class="help">Este texto se añade al payload que escucha la Pitonisa.</div>
+        </div>
+
+        <div class="row" style="margin-top:6px">
+          <button class="btn" id="btnKarma">🎰 Ruleta Kármica</button>
+          <button class="btn alt" id="btnDharma">🕊️ Ruleta Dhármica</button>
+        </div>
+
+        <div class="row">
+          <button class="btn" id="btnSendPitonisa">🔮 Invocar Pitonisa</button>
+          <button class="btn" id="btnSave">💾 Guardar snapshot</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Centro: Tablero -->
+    <main class="card">
+      <h2 class="section">🌀 Tablero Samsara</h2>
+      <div class="board">
+        <img alt="Tablero Samsaragammon"
+             src="https://federicogarcia.art/wp-content/uploads/2025/10/Samsara24-direction-scaled.jpg" />
+        <div class="overlay" id="overlayInfo">
+          Reino: Humanos · Cielo: Aprendizaje · Era: Neolítico
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="btnFullscreen">⤢ Ver tablero a pantalla completa</button>
+        <a class="btn alt" href="MANUAL-MATRIX/index.html" target="_blank" rel="noopener">📘 Manual</a>
+      </div>
+    </main>
+
+    <!-- Derecha: Pitonisa + Log -->
+    <aside class="rightCol">
+      <div class="card">
+        <h2 class="section">🔮 Pitonisa (integrada)</h2>
+        <div class="help" style="margin-bottom:6px">La Pitonisa recibe el payload y canta la lectura. Abre en pestaña aparte si la quieres en ventana completa.</div>
+        <div class="row" style="margin-bottom:8px">
+          <a class="btn" href="pitonisa.html" target="_blank" rel="noopener">🪭 Abrir Pitonisa</a>
+        </div>
+        <iframe id="pitonisaFrame" src="pitonisa.html" style="width:100%;height:300px;border:1px solid var(--line);border-radius:10px;background:#000"></iframe>
+      </div>
+
+      <div class="card">
+        <h2 class="section">🗒️ Registro de mesa</h2>
+        <div id="log" class="log">—</div>
+      </div>
+    </aside>
+  </section>
+
+  <footer style="margin:16px 0 10px;text-align:center;color:#9edfc9">
+    © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
+  </footer>
+</div>
+
+<!-- Audio -->
+<audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
+<audio id="whooshAudio"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
+
+<script>
+/* ===== Fondo Matrix ===== */
+(function(){
+  const c=document.getElementById('matrixBg'),x=c.getContext('2d');
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  resize(); addEventListener('resize',resize);
+  const chars='アカサタナハマヤラワ0123456789☯KARMADHARMANIDANAS';
+  const A=chars.split(''); const fs=14; let cols=Math.floor(c.width/fs);
+  let drops=Array(cols).fill(1);
+  setInterval(function(){
+    if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
+    x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
+    x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      const t=A[(Math.random()*A.length)|0];
+      x.fillText(t,i*fs,drops[i]*fs);
+      if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    }
+  },33);
+})();
+
+/* ===== Audio global ===== */
+(function(){
+  const ambient = document.getElementById("ambientAudio");
+  const whoosh  = document.getElementById("whooshAudio");
+  const toggle  = document.getElementById("soundToggle");
+  let audioReady = false;
+
+  function tryPlayAmbient(){
+    if (!ambient) return;
+    ambient.volume = 0.45;
+    ambient.play().then(()=>{
+      audioReady = true;
+      if (toggle) toggle.textContent = "🔊 Silenciar";
+    }).catch(()=>{ /* bloqueado hasta interacción */ });
+  }
+  function onFirst(){
+    tryPlayAmbient();
+    window.removeEventListener("pointerdown", onFirst);
+  }
+  window.addEventListener("pointerdown", onFirst);
+
+  if (toggle){
+    toggle.addEventListener("click", ()=>{
+      if (!audioReady){ tryPlayAmbient(); return; }
+      if (ambient.paused){ ambient.play(); toggle.textContent="🔊 Silenciar"; }
+      else { ambient.pause(); toggle.textContent="🔇 Activar sonido"; }
+    });
+  }
+  window._audio = {ambient,whoosh,ensure:tryPlayAmbient};
+})();
+
+/* ===== Estado, Log y Overlay ===== */
+const el = {
+  realm: document.getElementById('realm'),
+  sky: document.getElementById('sky'),
+  era: document.getElementById('era'),
+  veneno: document.getElementById('veneno'),
+  scene: document.getElementById('scene'),
+  overlay: document.getElementById('overlayInfo'),
+  log: document.getElementById('log'),
+  pitonisaFrame: document.getElementById('pitonisaFrame'),
+  btnKarma: document.getElementById('btnKarma'),
+  btnDharma: document.getElementById('btnDharma'),
+  btnSend: document.getElementById('btnSendPitonisa'),
+  btnSave: document.getElementById('btnSave'),
+  sessionName: document.getElementById('sessionName'),
+  fullscreen: document.getElementById('btnFullscreen'),
+};
+
+function updateOverlay(){
+  el.overlay.textContent = `Reino: ${prettyRealm(el.realm.value)} · Cielo: ${el.sky.value} · Era: ${el.era.value}`;
+}
+['change','input'].forEach(evt=>{
+  el.realm.addEventListener(evt, updateOverlay);
+  el.sky.addEventListener(evt, updateOverlay);
+  el.era.addEventListener(evt, updateOverlay);
+});
+updateOverlay();
+
+function prettyRealm(k){
+  return {human:'Humanos',animal:'Animales',ghost:'Espíritus',hell:'Infierno',titan:'Titanes',god:'Dioses'}[k]||k;
+}
+function logLine(t){
+  const now = new Date().toLocaleTimeString();
+  el.log.textContent = (el.log.textContent==='—'?'':el.log.textContent+'\n') + `[${now}] ${t}`;
+}
+
+/* ===== Generadores de ruleta mínima (placeholder) ===== */
+const KARMA_EVENTS = [
+  "AUTOGOL: Retrocede 3 espacios","PÉRDIDA DE TURNO por arrogancia",
+  "REGALA 1 DHARMA a tu oponente","Vuelves al inicio del reino actual"
+];
+const DHARMA_EVENTS = [
+  "AVANCE RÁPIDO: +4 espacios","INMUNIDAD KÁRMICA por 1 turno",
+  "DOBLE MOVIMIENTO en la siguiente ronda","Gana 1 Dharma y limpia 2 Karma"
+];
+function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
+
+/* ===== Persistencia para Pitonisa (localStorage) ===== */
+function writeKarmicHistory(entry){
+  // Estructura compatible con la que ya hemos usado
+  const key = 'karmicCalculator';
+  let data = { history: [] };
+  try{
+    const raw = localStorage.getItem(key);
+    if (raw) data = JSON.parse(raw);
+    if (!Array.isArray(data.history)) data.history = [];
+  }catch(_){}
+  data.history.unshift(entry);
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+/* ===== Envío a Pitonisa (postMessage) ===== */
+function sendToPitonisa(payload){
+  const frame = el.pitonisaFrame?.contentWindow;
+  if (frame){
+    frame.postMessage({type:'karmicPayload', data:payload}, '*');
+  }
+}
+
+/* ===== Botones principales ===== */
+el.btnKarma.addEventListener('click', ()=>{
+  window._audio?.ensure?.();
+  if (window._audio?.whoosh){ window._audio.whoosh.currentTime=0; window._audio.whoosh.play().catch(()=>{}); }
+
+  const result = pick(KARMA_EVENTS);
+  const entry = {
+    from:'roulette', to:'karma',
+    description:`KARMA: ${result}`,
+    fullData:{ result, realm: el.realm.value, sky: el.sky.value, era: el.era.value, veneno: el.veneno.value, scene: el.scene.value, session: el.sessionName.value||'Mesa sin nombre' }
+  };
+  writeKarmicHistory(entry);
+  logLine(`Ruleta KÁRMICA → ${result}`);
+  sendToPitonisa({type:'karma', result});
+});
+
+el.btnDharma.addEventListener('click', ()=>{
+  window._audio?.ensure?.();
+  if (window._audio?.whoosh){ window._audio.whoosh.currentTime=0; window._audio.whoosh.play().catch(()=>{}); }
+
+  const result = pick(DHARMA_EVENTS);
+  const entry = {
+    from:'roulette', to:'dharma',
+    description:`DHARMA: ${result}`,
+    fullData:{ result, realm: el.realm.value, sky: el.sky.value, era: el.era.value, veneno: el.veneno.value, scene: el.scene.value, session: el.sessionName.value||'Mesa sin nombre' }
+  };
+  writeKarmicHistory(entry);
+  logLine(`Ruleta DHÁRMICA → ${result}`);
+  sendToPitonisa({type:'dharma', result});
+});
+
+el.btnSend.addEventListener('click', ()=>{
+  window._audio?.ensure?.();
+  const payload = {
+    type:'interaction',
+    result:`${prettyRealm(el.realm.value)} · ${el.sky.value} · ${el.era.value}`,
+    meta:{ realm:el.realm.value, sky:el.sky.value, era:el.era.value, veneno:el.veneno.value, scene:el.scene.value }
+  };
+  // también persistimos como “interacción”
+  writeKarmicHistory({
+    from:'dm-panel', to:'interaction',
+    description:`INTERACCIÓN: ${payload.result}`,
+    fullData:payload.meta
+  });
+  logLine(`Enviado a Pitonisa → ${payload.result}`);
+  sendToPitonisa(payload);
+});
+
+el.btnSave.addEventListener('click', ()=>{
+  try{
+    const key='karmicCalculator';
+    const raw = localStorage.getItem(key)||'{"history":[]}';
+    const blob = new Blob([raw], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const name = (el.sessionName.value||'mesa') + '-snapshot.json';
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    logLine(`Snapshot guardado: ${name}`);
+  }catch(e){ logLine('⚠️ No se pudo exportar snapshot'); }
+});
+
+/* ===== Fullscreen tablero ===== */
+el.fullscreen.addEventListener('click', ()=>{
+  const img = document.querySelector('.board img');
+  if (img?.requestFullscreen) img.requestFullscreen();
+});
+
+/* ===== Sincroniza overlay al cargar ===== */
+updateOverlay();
+</script>
+</body>
+</html>

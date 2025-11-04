@@ -15,21 +15,21 @@
   body{background:#000;color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:1.55;overflow-x:hidden}
   .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.16; pointer-events:none}
   .wrap{max-width:980px; margin:0 auto; padding:20px 16px}
-  header.hero{margin-top:5vh; margin-bottom:18px; text-align:center; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel);
+  header.hero{margin-top:5vh; margin-bottom:14px; text-align:center; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel);
     box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04)}
   .title{font-size:clamp(26px,4vw,40px); color:var(--green); text-shadow:0 0 10px var(--green),0 0 24px rgba(0,255,150,.35); letter-spacing:.06em; font-weight:800; margin-bottom:4px}
   .subtitle{color:#bfeee0; opacity:.95; font-size:clamp(14px,1.9vw,16px)}
-  .grid{display:grid; gap:16px; grid-template-columns:1fr}
-  @media(min-width:900px){ .grid{grid-template-columns: 1.1fr .9fr;} }
-  .card{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px}
-  h2.section{color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:10px; text-shadow:0 0 10px rgba(0,255,150,.25)}
-  .muted{color:#cfe; opacity:.95}
-  .controls{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0}
+  .cta-bar{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:14px 0 4px}
   .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 16px; border-radius:999px; border:1px solid var(--green);
     background:linear-gradient(180deg,#02140f,#031b14); color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
     box-shadow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45); transition:transform .12s ease, box-shadow .2s ease; cursor:pointer}
   .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55) }
   .btn.alt{ border-color:var(--accent); color:var(--accent); box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
+  .grid{display:grid; gap:16px; grid-template-columns:1fr}
+  @media(min-width:900px){ .grid{grid-template-columns: 1.1fr .9fr;} }
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px}
+  h2.section{color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:10px; text-shadow:0 0 10px rgba(0,255,150,.25)}
+  .muted{color:#cfe; opacity:.95}
   .reading{background:rgba(0,0,0,.5); border:1px dashed var(--line); border-radius:12px; padding:14px; min-height:140px; white-space:pre-line}
   select, textarea{background:#031b14; color:#eafff5; border:1px solid var(--line); border-radius:10px; padding:10px; width:100%; font:inherit}
   .two-col{display:grid; gap:10px; grid-template-columns:1fr}
@@ -51,6 +51,15 @@
     <header class="hero">
       <div class="title">Maestro Shaolín</div>
       <div class="subtitle">Consejero kármico del <strong>Turbo Master Dragon™</strong> para tus partidas de D&D.</div>
+
+      <!-- CTA centrada: FX + lectura + voz -->
+      <div class="cta-bar">
+        <button id="btnFx" class="btn alt" title="Usa efectos especiales para crear ambiente Shaolín PRO">🧘 Shaolin Pro+</button>
+        <button id="btnReadLast" class="btn">📖 Leer última tirada</button>
+        <button id="btnRandom"   class="btn">🎲 Lectura aleatoria</button>
+        <button id="btnToggleVoice" class="btn" aria-pressed="true">🗣️ Voz del Maestro: ON</button>
+      </div>
+      <p class="muted" style="text-align:center;opacity:.9">Tip: usa <em>Shaolín Pro+</em> para ambientar. La voz y los efectos conviven sin cortarse.</p>
     </header>
 
     <section class="grid">
@@ -58,19 +67,13 @@
       <div class="card">
         <h2 class="section">🧘 Lectura del Maestro</h2>
         <p class="muted">
-          Al abrir esta página, el Maestro intenta leer tu <strong>última tirada</strong> de la Calculadora Kármica
-          (misma web, clave <code>karmicCalculator</code>). Puedes forzar una lectura con los botones.
+          El Maestro puede leer tu <strong>última tirada</strong> de la Calculadora Kármica (misma web, clave <code>karmicCalculator</code>),
+          o generar una lectura ritual. También puedes pegar un JSON manual al lado.
         </p>
-
-        <div class="controls">
-          <button id="btnReadLast" class="btn">📖 Leer última tirada</button>
-          <button id="btnRandom" class="btn alt">🎲 Lectura aleatoria</button>
-          <button id="btnToggleVoice" class="btn" aria-pressed="true">🗣️ Voz del Maestro: ON</button>
-        </div>
 
         <div class="reading" id="readingText">El viento está quieto. Trae tu tirada o pide una lectura y escucharás el consejo.</div>
 
-        <div class="controls" style="margin-top:12px">
+        <div class="cta-bar" style="margin-top:12px">
           <button id="btnSpeak" class="btn">🔁 Repetir</button>
           <button id="btnStop"  class="btn alt">⏹️ Parar</button>
         </div>
@@ -78,9 +81,9 @@
         <p class="muted flag" id="sourceFlag"></p>
       </div>
 
-      <!-- Ajustes de voz -->
+      <!-- Ajustes de voz / Entrada manual -->
       <div class="card">
-        <h2 class="section">🎛️ Voz y estilo</h2>
+        <h2 class="section">🎛️ Voz y entrada manual</h2>
         <div class="two-col">
           <div>
             <label for="voiceSelect" class="muted">Voz</label>
@@ -88,7 +91,7 @@
           </div>
           <div>
             <label for="manualJson" class="muted">(Opcional) Pegar JSON de tirada</label>
-            <textarea id="manualJson" rows="6" placeholder='{"type":"dharma","result":"INMUNIDAD por 1 turno"}'></textarea>
+            <textarea id="manualJson" rows="7" placeholder='{"type":"dharma","result":"INMUNIDAD KÁRMICA por 1 turno"}'></textarea>
           </div>
         </div>
       </div>
@@ -96,13 +99,14 @@
 
     <footer>
       © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
-      <div class="mini">Turbo Master Dragon™ · Maestro Shaolín (v2).</div>
+      <div class="mini">Turbo Master Dragon™ · Maestro Shaolín (v3).</div>
     </footer>
   </div>
 
   <!-- Audios -->
   <audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
   <audio id="gongAudio"    src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_3b6a6c9e61.mp3?filename=gong-hit-105527.mp3" preload="auto" playsinline></audio>
+  <audio id="fxAudio"      preload="auto" playsinline></audio>
 
 <script>
 /* ===== Fondo Matrix ===== */
@@ -134,7 +138,7 @@
 
   function tryPlayAmbient(){
     if (!ambient) return;
-    ambient.volume = 0.45;
+    ambient.volume = 0.35;
     ambient.play().then(()=>{
       audioReady = true;
       if (toggle){ toggle.textContent = "🔊 Silenciar"; toggle.setAttribute("aria-pressed","true"); }
@@ -149,10 +153,9 @@
       else { ambient.pause(); toggle.textContent="🔇 Activar sonido"; toggle.setAttribute("aria-pressed","false"); }
     });
   }
-  window._audio_ready = ()=>audioReady;
 })();
 
-/* ===== Dataset mínimo por si no hay calculadora ===== */
+/* ===== Datos de respaldo ===== */
 const FALLBACK_KARMA = [
   {type:"karma",   result:"AUTOGOL: Retrocede 3 espacios"},
   {type:"karma",   result:"PÉRDIDA DE TURNO por arrogancia espiritual"},
@@ -171,16 +174,13 @@ function getLastKarmicFromLocalStorage(){
     if (!hist.length) return null;
     const last = hist[0];
 
-    // Ruletas modernas
     if (last.from === 'roulette' && last.fullData?.result){
       return { type: last.to, result: last.fullData.result };
     }
-    // Texto plano
     if (last.description && (last.description.startsWith("KARMA") || last.description.startsWith("DHARMA"))){
       const [kind, ...rest] = last.description.split(":");
       return { type: kind.toLowerCase(), result: rest.join(":").trim() };
     }
-    // Interacción de reinos
     if (last.fullData?.difficulty !== undefined){
       const desc = last.description || "";
       const parts = desc.split("→");
@@ -249,11 +249,8 @@ function speakText(text){
   if (currentVoice) u.voice = voices.find(v => v.name === currentVoice.name) || currentVoice;
   u.lang = (u.voice && u.voice.lang) ? u.voice.lang : "es-ES";
   u.rate = 0.95; u.pitch = 1.0; u.volume = 1.0;
-
-  // Al terminar: gong
   const gong = document.getElementById("gongAudio");
   u.onend = ()=>{ if (gong){ try{ gong.currentTime=0; gong.volume=0.6; gong.play().catch(()=>{});}catch(_){} } };
-
   speechSynthesis.cancel();
   speechSynthesis.speak(u);
 }
@@ -313,58 +310,31 @@ btnStop.addEventListener("click", ()=>{
 
 /* ===== Autolectura al entrar (prioridad: JSON pegado > localStorage > fallback) ===== */
 window.addEventListener("DOMContentLoaded", ()=>{
-  // intenta JSON manual
   let payload = null, source = "";
-  const manual = manualJson.value.trim();
+  const manual = manualJson.value?.trim?.() || "";
   if (manual){
     try { payload = JSON.parse(manual); source = "Fuente: JSON pegado manualmente."; } catch(_){}
   }
-  // si no, localStorage
   if (!payload){
     payload = getLastKarmicFromLocalStorage();
     if (payload) source = "Fuente: Calculadora (localStorage).";
   }
-  // si nada, muestra mensaje neutro (no habla hasta que pulses)
   if (payload){
     const txt = forgeShaolinReading(payload);
     readingEl.textContent = txt;
     sourceFlag.textContent = source;
-    // auto-speak (si la voz está ON)
     speakText(txt);
   } else {
     readingEl.textContent = "No encuentro una tirada reciente. Pulsa “📖 Leer última tirada” o “🎲 Lectura aleatoria”.";
     sourceFlag.textContent = "";
   }
 });
-<script>
-async function cargarFrase(evento, meta={}) {
-  const res = await fetch('archivoshaolin.json');
-  const data = await res.json();
 
-  // 1) 50% plantilla generativa, 50% frase cerrada
-  const useTemplate = Math.random() < 0.5 && data.plantillas && data.diccionarios;
-  let texto;
-
-  if (useTemplate) {
-    const T = data.plantillas[Math.floor(Math.random() * data.plantillas.length)];
-    texto = T.replace(/\{(\w+)\}/g, (_, k) => {
-      if (k in meta) return meta[k]; // {from},{to},{dif},{evento}
-      const bag = data.diccionarios[k];
-      return bag ? bag[Math.floor(Math.random() * bag.length)] : `{${k}}`;
-    });
-  } else {
-    const pool = evento ? data.frases.filter(f => f.cuando === evento) : data.frases;
-    const pick = pool.length ? pool : data.frases;
-    texto = pick[Math.floor(Math.random() * pick.length)].frase;
-    // post-procesa placeholders si los hay
-    texto = texto.replace(/\{(\w+)\}/g, (_, k) => meta[k] ?? `{${k}}`);
-  }
-
-  return texto;
-}
-
-// === Panel de efectos Shaolin ===
+/* ===== Panel de Efectos Shaolin (centrado) ===== */
 (function(){
+  const fx = document.getElementById('fxAudio');
+  fx.volume = 0.7; // no pisa la voz
+
   const efectosShaolin = [
     "alone-samurai-in-mountain-430719.mp3",
     "asiatic-intro_3-283719.mp3",
@@ -384,133 +354,14 @@ async function cargarFrase(evento, meta={}) {
     "tibetan-buddhist-drum-314994.mp3"
   ];
 
-  const btn = document.createElement("button");
-  btn.textContent = "🎛️ Efecto Shaolin";
-  btn.style.position = "fixed";
-  btn.style.left = "16px";
-  btn.style.bottom = "16px";
-  btn.style.background = "#031b14";
-  btn.style.border = "2px solid #00ff7b";
-  btn.style.borderRadius = "999px";
-  btn.style.color = "#00ff7b";
-  btn.style.fontWeight = "bold";
-  btn.style.padding = "10px 18px";
-  btn.style.cursor = "pointer";
-  btn.style.boxShadow = "0 0 15px rgba(0,255,150,.4)";
-  document.body.appendChild(btn);
-
-  btn.addEventListener("click", ()=>{
-    const aleatorio = efectosShaolin[Math.floor(Math.random()*efectosShaolin.length)];
-    const audio = new Audio(`audio/shaolin/${aleatorio}`);
-    audio.volume = 0.8;
-    audio.play().catch(()=>{});
-  });
-})();
-</script><!-- === Panel de Efectos Shaolin PRO+ === -->
-<script>
-(function(){
-  const efectosShaolin = [
-    "alone-samurai-in-mountain-430719.mp3",
-    "asiatic-intro_3-283719.mp3",
-    "birds-chirping-67827.mp3",
-    "China-cymbal-transition-sound-effect.mp3",
-    "chinese-beat-190047.mp3",
-    "chinese-flute-hulusi-76116.mp3",
-    "chinese-ident-transition-1-283708.mp3",
-    "CHINITO COLTICO.mp3",
-    "dizi-flute-02-72563.mp3",
-    "fireworks-07-419025.mp3",
-    "Gong-sound.mp3",
-    "gongfeb11-91065.mp3",
-    "INTROCHINO.mp3",
-    "music-transition-ancient-back-etlx-247347.mp3",
-    "spike-one-31462.mp3",
-    "tibetan-buddhist-drum-314994.mp3"
-  ];
-
-  // === Crea el botón Shaolin Pro+ ===
-  const btn = document.createElement("button");
-  btn.innerHTML = `
-    🧘 <strong>Shaolin Pro+</strong><br>
-    <span style="font-size:0.8em;opacity:.85">Usa efectos especiales para crear ambiente</span>
-  `;
-  Object.assign(btn.style, {
-    position:"fixed", left:"16px", bottom:"16px", zIndex:9999,
-    background:"#031b14", border:"2px solid #00ff7b",
-    borderRadius:"14px", color:"#00ff7b", textAlign:"center",
-    fontWeight:"bold", fontSize:"14px", padding:"12px 18px",
-    cursor:"pointer", boxShadow:"0 0 20px rgba(0,255,150,.4)",
-    transition:"all .25s ease", fontFamily:"ui-sans-serif"
-  });
-  document.body.appendChild(btn);
-
-  // === Animación constante tipo respiración (pulso de energía)
-  const glowPulse = document.createElement("style");
-  glowPulse.textContent = `
-    @keyframes shaolinGlow {
-      0% { box-shadow: 0 0 10px rgba(0,255,150,.3); transform: scale(1); }
-      50% { box-shadow: 0 0 30px rgba(0,255,150,.7); transform: scale(1.05); }
-      100% { box-shadow: 0 0 10px rgba(0,255,150,.3); transform: scale(1); }
-    }
-    button.shaolin-active { animation: shaolinGlow 2.5s infinite ease-in-out; }
-  `;
-  document.head.appendChild(glowPulse);
-  btn.classList.add("shaolin-active");
-
-  // === Vibración al pasar el mouse
-  btn.addEventListener("mouseenter", ()=>{
-    btn.style.transform = "scale(1.07)";
-    btn.style.boxShadow = "0 0 30px rgba(255,209,102,.6)";
-  });
-  btn.addEventListener("mouseleave", ()=>{
-    btn.style.transform = "scale(1)";
-    btn.style.boxShadow = "0 0 20px rgba(0,255,150,.4)";
-  });
-
-  // === Colores cíclicos según energía
-  const colores = ["#00ff7b","#ffd166","#ff6b6b","#66aaff","#ff9e00"];
-  let colorIndex = 0;
-
-  // === Al hacer clic: vibra, cambia color y lanza sonido Shaolin ===
-  btn.addEventListener("click", ()=>{
-    const aleatorio = efectosShaolin[Math.floor(Math.random()*efectosShaolin.length)];
-    const audio = new Audio(`audio/shaolin/${aleatorio}`);
-    audio.volume = 0.85;
-    audio.play().catch(()=>{});
-
-    // Color y vibración
-    colorIndex = (colorIndex + 1) % colores.length;
-    const c = colores[colorIndex];
-    btn.style.borderColor = c;
-    btn.style.color = c;
-    btn.style.boxShadow = `0 0 25px ${c}`;
-    btn.style.transform = "scale(1.15)";
-    btn.innerHTML = `🔥 <strong>Ambiente activado</strong><br><span style="font-size:0.8em;opacity:.85">El templo vibra contigo...</span>`;
-    navigator.vibrate?.([40,80,40]); // vibración móvil si está disponible
-
-    // Efecto “brillo circular” desde el botón
-    const ring = document.createElement("div");
-    Object.assign(ring.style, {
-      position:"fixed", left:"16px", bottom:"16px", width:"120px", height:"120px",
-      border:`2px solid ${c}`, borderRadius:"50%", opacity:"0.6", pointerEvents:"none",
-      transform:"translate(-15px,-60px) scale(0)", transition:"all 1s ease-out"
-    });
-    document.body.appendChild(ring);
-    setTimeout(()=>ring.style.transform="translate(-15px,-60px) scale(1.5)",10);
-    setTimeout(()=>ring.style.opacity="0",900);
-    setTimeout(()=>ring.remove(),1500);
-
-    // Regresa al estado base
-    setTimeout(()=>{
-      btn.innerHTML = `
-        🧘 <strong>Shaolin Pro+</strong><br>
-        <span style="font-size:0.8em;opacity:.85">Usa efectos especiales para crear ambiente</span>
-      `;
-      btn.style.borderColor = "#00ff7b";
-      btn.style.color = "#00ff7b";
-      btn.style.transform = "scale(1)";
-      btn.style.boxShadow = "0 0 20px rgba(0,255,150,.4)";
-    }, 3000);
+  const btnFx = document.getElementById('btnFx');
+  btnFx.addEventListener('click', ()=>{
+    const pick = efectosShaolin[(Math.random()*efectosShaolin.length)|0];
+    fx.src = `audio/shaolin/${pick}`;
+    fx.currentTime = 0;
+    fx.play().catch(()=>{});
   });
 })();
 </script>
+</body>
+</html>

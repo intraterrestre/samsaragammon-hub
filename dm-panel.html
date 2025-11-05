@@ -3,375 +3,428 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>HUB Curvista — Dungeon Master Panel</title>
-<meta name="description" content="Panel para dirigir Teatro SamsaraDragon integrado con ruletas, Pitonisa y tablero." />
+<title>DM Panel PRO — Turbo Master Dragon™</title>
+<meta name="theme-color" content="#00ff7b" />
+<meta name="description" content="Panel para Dungeon Masters: Maestro Shaolín con lectura kármica, ambiente musical, SFX y modal Shaolín Pro+." />
 <style>
   :root{
-    --green:#00ff7b; --green-soft:#8affbf; --line:#113c2d;
-    --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; --accent:#ffd166;
+    --green:#00ff7b; --accent:#ffd166; --line:#113c2d;
+    --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{background:#000;color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:1.55;overflow-x:hidden}
-  .matrix-bg{position:fixed;inset:0;z-index:-1;opacity:.16;pointer-events:none}
-  .wrap{max-width:1280px;margin:0 auto;padding:18px 14px}
-  header.top{
-    display:flex;gap:10px;align-items:center;justify-content:space-between;
-    padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
-    box-shadow:0 0 28px rgba(0,255,150,.06), inset 0 0 18px rgba(0,255,140,.03);
-    margin-top:14px;margin-bottom:14px
+  body{
+    background:#000; color:var(--text);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    line-height:1.55; overflow-x:hidden;
   }
-  .brand{color:var(--green);font-weight:800;letter-spacing:.04em;text-shadow:0 0 10px var(--green)}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap}
-  .tab{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#091811;color:#bfeee0;font-weight:700;cursor:pointer}
-  .tab.active{border-color:var(--green);color:var(--green)}
-  .grid3{display:grid;gap:12px;grid-template-columns: 300px 1fr 360px}
-  @media (max-width:1100px){ .grid3{grid-template-columns:1fr} }
-  .card{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
-  h2.section{color:var(--green);font-size:16px;margin-bottom:10px;text-shadow:0 0 10px rgba(0,255,150,.25)}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .stack{display:flex;flex-direction:column;gap:8px}
-  label{font-size:.9rem;color:#cfe}
-  input,select,textarea{
-    width:100%;background:#031b14;color:#eafff5;border:1px solid var(--line);border-radius:10px;padding:9px;font:inherit
+  .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.12; pointer-events:none}
+  .wrap{max-width:1100px; margin:0 auto; padding:20px 14px}
+
+  /* Hero / Promo */
+  .promo{
+    background:radial-gradient(1100px 520px at 50% 0%, #042218 0%, #000 72%);
+    border-bottom:1px solid #0a3; padding:28px 14px 22px; text-align:center;
+    box-shadow:inset 0 0 40px rgba(0,255,150,.12);
   }
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--green);background:linear-gradient(180deg,#02140f,#031b14);color:var(--green);font-weight:800;cursor:pointer;box-shadow:0 0 10px var(--green),0 0 18px rgba(0,255,140,.45)}
-  .btn:hover{transform:translateY(-1px);box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
-  .btn.alt{border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
-  .help{font-size:.85rem;color:#bfeee0;opacity:.9}
-  .board{
-    position:relative;display:flex;justify-content:center;align-items:center;min-height:420px;background:#000;border-radius:12px;border:1px solid var(--line);overflow:hidden
+  .title{
+    font-size:clamp(24px,4.4vw,40px); font-weight:900; letter-spacing:.04em;
+    color:var(--green); text-shadow:0 0 16px rgba(0,255,150,.6);
   }
-  .board img{width:100%;height:auto;max-height:70vh;object-fit:contain;display:block}
-  .overlay{
-    position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:.9rem
+  .subtitle{color:#cfe; opacity:.95; margin-top:6px}
+  .cta{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:14px}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 16px; border-radius:999px; border:1px solid var(--green);
+    background:linear-gradient(180deg,#02140f,#031b14); color:var(--green); text-decoration:none;
+    font-weight:800; letter-spacing:.02em; cursor:pointer;
+    box-shadow:0 0 10px var(--green),0 0 18px rgba(0,255,140,.45);
+    transition:transform .12s ease, box-shadow .2s ease;
   }
-  .log{min-height:140px;max-height:260px;overflow:auto;background:rgba(0,0,0,.45);border:1px dashed var(--line);border-radius:10px;padding:10px;white-space:pre-line}
-  .rightCol .card + .card{margin-top:12px}
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55) }
+  .btn.alt{ border-color:var(--accent); color:var(--accent);
+    box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
+
+  /* Grid principal */
+  .grid{display:grid; gap:14px; grid-template-columns:1fr}
+  @media(min-width:900px){ .grid{grid-template-columns:1.2fr .8fr} }
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px}
+  h2.section{color:var(--green); font-size:clamp(18px,2.2vw,22px); margin-bottom:8px; text-shadow:0 0 10px rgba(0,255,150,.25)}
+  .muted{color:#cfe; opacity:.95}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .stack{display:grid; gap:10px}
+  .reading{
+    background:rgba(0,0,0,.5); border:1px dashed var(--line); border-radius:12px;
+    padding:12px; min-height:120px; white-space:pre-line
+  }
+  select, input[type="text"], textarea{
+    background:#031b14; color:#eafff5; border:1px solid var(--line); border-radius:10px;
+    padding:10px; width:100%; font:inherit;
+  }
+  .controls{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
+  .small{font-size:.92rem; opacity:.92}
+
+  /* Modal Shaolin Pro+ */
+  dialog#sfxModal{
+    width:min(720px,92vw); background:#041510; border:1px solid var(--line); border-radius:16px; color:var(--text);
+    box-shadow:0 10px 40px rgba(0,0,0,.6), 0 0 32px rgba(0,255,150,.15);
+  }
+  dialog::backdrop{ background:rgba(0,0,0,.6) }
+  .modal-hdr{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line)}
+  .modal-grid{display:grid; gap:10px; grid-template-columns:1fr 1fr}
+  @media(max-width:640px){ .modal-grid{grid-template-columns:1fr} }
+  .sfx-item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border:1px solid var(--line); border-radius:10px; background:#071c16}
+  .x{background:transparent; border:1px solid var(--line); color:#9edfc9; padding:8px 10px; border-radius:10px; cursor:pointer}
+
+  /* Footer */
+  footer{margin:24px 0 18px; text-align:center; color:#9edfc9; font-size:.95rem; border-top:1px solid var(--line); padding-top:12px}
+  .mini{opacity:.75; font-size:.9rem; margin-top:6px}
+
+  /* Flotante de sonido general */
   #soundToggle{
-    position:fixed;right:16px;top:16px;z-index:9999;background:#001100;color:#00ff7b;border:2px solid #00ff7b;border-radius:24px;padding:8px 12px;font-family:monospace;cursor:pointer;box-shadow:0 0 10px rgba(0,255,140,.35)
+    position:fixed; right:14px; top:14px; z-index:9999;
+    background:#001100; color:#00ff7b; border:2px solid #00ff7b;
+    border-radius:24px; padding:8px 12px; font-family:monospace; cursor:pointer;
+    box-shadow:0 0 10px rgba(0,255,140,.35)
   }
+  .slider{accent-color:#00ff7b; width:min(280px,60vw)}
 </style>
 </head>
 <body>
 <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
-<button id="soundToggle">🔇 Activar sonido</button>
+
+<section class="promo">
+  <h1 class="title">DM Panel PRO — Turbo Master Dragon™</h1>
+  <p class="subtitle">Ambientación Shaolín + Consejos kármicos. <strong>Abre, pulsa, juega</strong>. Sin distracciones.</p>
+  <div class="cta">
+    <button class="btn" id="btnAmbient"><span id="icoAmbient">▶</span> Ambient: Iniciar</button>
+    <button class="btn alt" id="btnSfxRandom">🎲 SFX aleatorio</button>
+    <button class="btn" id="btnStopAll">⏹️ Parar todo</button>
+  </div>
+  <div class="cta">
+    <label class="small">Volumen
+      <input type="range" id="volMaster" class="slider" min="0" max="1" step="0.01" value="0.65" />
+    </label>
+    <label class="small">
+      <input type="checkbox" id="ducking" checked />
+      Bajar música mientras habla el Maestro
+    </label>
+  </div>
+  <div class="cta">
+    <button class="btn alt" id="btnOpenModal">🧘 Shaolín Pro+ — Selección de efectos</button>
+  </div>
+</section>
+
+<button id="soundToggle" aria-pressed="false">🔇 Activar sonido</button>
 
 <div class="wrap">
-  <header class="top">
-    <div class="brand">HUB Curvista — DM Panel</div>
-    <nav class="tabs">
-      <button class="tab active">Sesión</button>
-      <button class="tab">Ruletas</button>
-      <button class="tab">Diccionario</button>
-      <button class="tab">Exportar</button>
-    </nav>
-  </header>
+  <section class="grid">
+    <!-- Maestro -->
+    <div class="card">
+      <h2 class="section">🧘 Lectura del Maestro</h2>
+      <p class="muted small">Pulsa para leer tu <strong>última tirada</strong> (misma web, clave <code>karmicCalculator</code>) o pide una lectura aleatoria.</p>
+      <div class="controls">
+        <button class="btn" id="btnReadLast">📖 Leer última tirada</button>
+        <button class="btn alt" id="btnRandomRead">🎲 Lectura aleatoria</button>
+        <button class="btn" id="btnVoiceToggle" aria-pressed="true">🗣️ Voz del Maestro: ON</button>
+      </div>
+      <div id="readingText" class="reading">El templo está en silencio. Pide una lectura…</div>
+      <div class="controls">
+        <button class="btn" id="btnRepeat">🔁 Repetir</button>
+        <button class="btn alt" id="btnSpeakStop">⏹️ Parar voz</button>
+      </div>
+      <p id="sourceFlag" class="muted small"></p>
+    </div>
+<!-- ===== REVISAR KARMA (CTA) ===== -->
+<section class="card" style="margin-top:16px; text-align:center">
+  <h2 class="section">🧮 Revisa tu Karma</h2>
+  <p class="muted" style="max-width:720px;margin:0 auto 12px">
+    Mira tu tirada actual en la Calculadora Kármica. Cada resultado es un espejo:
+    no es castigo, es una lección para romper el Samsara.
+  </p>
 
-  <section class="grid3">
-    <!-- Columna izquierda: Controles -->
-    <aside class="card">
-      <h2 class="section">🎛️ Controles de Sesión</h2>
-
+  <div class="neon-bar" style="justify-content:center">
+    <a class="btn-neon alt"
+       href="https://karmalab-samsara.netlify.app/"
+       target="_blank" rel="noopener">
+      🧮 Abrir Calculadora Kármica
+    </a>
+  </div>
+<p class="muted" style="text-align:center;margin:8px 0 0">
+  Haz tu tirada en la Calculadora y vuelve aquí para el consejo del Maestro.
+</p>
+  <p class="muted" style="max-width:680px;margin:10px auto 0; font-size:.92rem">
+    Consejo: haz tu tirada y vuelve al Maestro Shaolín para escuchar el consejo.
+  </p>
+</section>
+    <!-- Voz y entrada simple -->
+    <div class="card">
+      <h2 class="section">🎛️ Voz y entrada manual</h2>
       <div class="stack">
-        <div>
-          <label>Nombre de mesa / sesión</label>
-          <input id="sessionName" placeholder="Ej. Campaña ‘Luna Púrpura’" />
-        </div>
+        <label class="muted">Voz</label>
+        <select id="voiceSelect" aria-label="Seleccionar voz"></select>
+      </div>
 
+      <div class="stack" style="margin-top:10px">
+        <label class="muted">Resultado manual (rápido)</label>
         <div class="row">
-          <div style="flex:1">
-            <label>Reino activo</label>
-            <select id="realm">
-              <option value="human">Humanos</option>
-              <option value="animal">Animales</option>
-              <option value="ghost">Espíritus</option>
-              <option value="hell">Infierno</option>
-              <option value="titan">Titanes</option>
-              <option value="god">Dioses</option>
-            </select>
-          </div>
-          <div style="flex:1">
-            <label>Cielo (Ramtha)</label>
-            <select id="sky">
-              <option>1. Sufrimiento</option><option>2. Aprendizaje</option><option>3. Poder</option>
-              <option>4. Amor</option><option>5. Sabiduría</option><option>6. Paz</option><option>7. Unidad</option>
-            </select>
-          </div>
+          <select id="quickType" style="max-width:170px">
+            <option value="dharma">DHARMA</option>
+            <option value="karma">KARMA</option>
+            <option value="interaction">INTERACCIÓN</option>
+          </select>
+          <input id="quickText" type="text" placeholder="Ej: AVANCE RÁPIDO: +4 espacios" />
         </div>
-
-        <div class="row">
-          <div style="flex:1">
-            <label>Era histórica</label>
-            <select id="era">
-              <option>Paleolítico</option><option>Neolítico</option><option>Edad de los Metales</option>
-              <option>Clásica</option><option>Medieval</option><option>Industrial</option><option>Digital</option>
-            </select>
-          </div>
-          <div style="flex:1">
-            <label>Vicio dominante</label>
-            <select id="veneno">
-              <option value="pig">Cochino (Apego)</option>
-              <option value="snake">Serpiente (Aversión)</option>
-              <option value="rooster">Gallo (Ignorancia)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label>Resumen de escena (para la Pitonisa)</label>
-          <textarea id="scene" rows="3" placeholder="Qué pasó en la última tirada/decisión…"></textarea>
-          <div class="help">Este texto se añade al payload que escucha la Pitonisa.</div>
-        </div>
-
-        <div class="row" style="margin-top:6px">
-          <button class="btn" id="btnKarma">🎰 Ruleta Kármica</button>
-          <button class="btn alt" id="btnDharma">🕊️ Ruleta Dhármica</button>
-        </div>
-
-        <div class="row">
-          <button class="btn" id="btnSendPitonisa">🔮 Invocar Pitonisa</button>
-          <button class="btn" id="btnSave">💾 Guardar snapshot</button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Centro: Tablero -->
-    <main class="card">
-      <h2 class="section">🌀 Tablero Samsara</h2>
-      <div class="board">
-        <img alt="Tablero Samsaragammon"
-             src="https://federicogarcia.art/wp-content/uploads/2025/10/Samsara24-direction-scaled.jpg" />
-        <div class="overlay" id="overlayInfo">
-          Reino: Humanos · Cielo: Aprendizaje · Era: Neolítico
-        </div>
-      </div>
-      <div class="row" style="margin-top:10px">
-        <button class="btn" id="btnFullscreen">⤢ Ver tablero a pantalla completa</button>
-        <a class="btn alt" href="MANUAL-MATRIX/index.html" target="_blank" rel="noopener">📘 Manual</a>
-      </div>
-    </main>
-
-    <!-- Derecha: Pitonisa + Log -->
-    <aside class="rightCol">
-      <div class="card">
-        <h2 class="section">🔮 Pitonisa (integrada)</h2>
-        <div class="help" style="margin-bottom:6px">La Pitonisa recibe el payload y canta la lectura. Abre en pestaña aparte si la quieres en ventana completa.</div>
-        <div class="row" style="margin-bottom:8px">
-          <a class="btn" href="pitonisa.html" target="_blank" rel="noopener">🪭 Abrir Pitonisa</a>
-        </div>
-        <iframe id="pitonisaFrame" src="pitonisa.html" style="width:100%;height:300px;border:1px solid var(--line);border-radius:10px;background:#000"></iframe>
+        <button class="btn" id="btnQuickUse">✅ Usar</button>
       </div>
 
-      <div class="card">
-        <h2 class="section">🗒️ Registro de mesa</h2>
-        <div id="log" class="log">—</div>
-      </div>
-    </aside>
+      <p class="muted small" style="margin-top:12px">Tip: Usa <strong>Shaolín Pro+</strong> para dar ambiente musical y <em>toques</em> en momentos clave.</p>
+    </div>
   </section>
 
-  <footer style="margin:16px 0 10px;text-align:center;color:#9edfc9">
-    © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
+  <footer>
+    © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>.
+    <div class="mini">Turbo Master Dragon™ · DM Panel PRO (v1).</div>
   </footer>
 </div>
 
-<!-- Audio -->
+<!-- Modal SFX -->
+<dialog id="sfxModal">
+  <div class="modal-hdr">
+    <strong>🧘 Shaolín Pro+ — Efectos Especiales</strong>
+    <button class="x" id="btnCloseModal">Cerrar</button>
+  </div>
+  <div class="stack" style="padding:12px 14px">
+    <p class="muted small">Toca para disparar un efecto. Puedes encadenarlos; “⏹️ Parar todo” corta el ambiente y los SFX.</p>
+    <div class="modal-grid" id="sfxList"></div>
+  </div>
+</dialog>
+
+<!-- Audios base -->
 <audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
-<audio id="whooshAudio"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
+<audio id="gongAudio"    src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_3b6a6c9e61.mp3?filename=gong-hit-105527.mp3" preload="auto" playsinline></audio>
 
 <script>
 /* ===== Fondo Matrix ===== */
-(function(){
-  const c=document.getElementById('matrixBg'),x=c.getContext('2d');
-  function resize(){ c.width=innerWidth; c.height=innerHeight; }
-  resize(); addEventListener('resize',resize);
-  const chars='アカサタナハマヤラワ0123456789☯KARMADHARMANIDANAS';
-  const A=chars.split(''); const fs=14; let cols=Math.floor(c.width/fs);
-  let drops=Array(cols).fill(1);
-  setInterval(function(){
-    if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
-    x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
-    x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
-    for(let i=0;i<drops.length;i++){
-      const t=A[(Math.random()*A.length)|0];
-      x.fillText(t,i*fs,drops[i]*fs);
-      if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0;
-      drops[i]++;
-    }
-  },33);
-})();
+(()=>{const c=document.getElementById('matrixBg'),x=c.getContext('2d');function R(){c.width=innerWidth;c.height=innerHeight}R();addEventListener('resize',R);
+const A='アカサタナハマヤラワ0123456789☯KARMADHARMA'.split(''), fs=14;let cols=Math.floor(c.width/fs), drops=Array(cols).fill(1);
+setInterval(()=>{ if(cols!==Math.floor(c.width/fs)){cols=Math.floor(c.width/fs);drops=Array(cols).fill(1)}
+x.fillStyle='rgba(0,0,0,.06)'; x.fillRect(0,0,c.width,c.height);
+x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
+for(let i=0;i<drops.length;i++){ x.fillText(A[(Math.random()*A.length)|0],i*fs,drops[i]*fs);
+if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0; drops[i]++; }
+},33);})();
 
-/* ===== Audio global ===== */
-(function(){
-  const ambient = document.getElementById("ambientAudio");
-  const whoosh  = document.getElementById("whooshAudio");
-  const toggle  = document.getElementById("soundToggle");
-  let audioReady = false;
+/* ===== Audio Manager (ambient + SFX + ducking) ===== */
+const ambient = document.getElementById('ambientAudio');
+const gong = document.getElementById('gongAudio');
+const btnAmbient = document.getElementById('btnAmbient');
+const icoAmbient = document.getElementById('icoAmbient');
+const btnSfxRandom = document.getElementById('btnSfxRandom');
+const btnStopAll = document.getElementById('btnStopAll');
+const volMaster = document.getElementById('volMaster');
+const ducking = document.getElementById('ducking');
+const soundToggle = document.getElementById('soundToggle');
 
-  function tryPlayAmbient(){
-    if (!ambient) return;
-    ambient.volume = 0.45;
-    ambient.play().then(()=>{
-      audioReady = true;
-      if (toggle) toggle.textContent = "🔊 Silenciar";
-    }).catch(()=>{ /* bloqueado hasta interacción */ });
-  }
-  function onFirst(){
-    tryPlayAmbient();
-    window.removeEventListener("pointerdown", onFirst);
-  }
-  window.addEventListener("pointerdown", onFirst);
-
-  if (toggle){
-    toggle.addEventListener("click", ()=>{
-      if (!audioReady){ tryPlayAmbient(); return; }
-      if (ambient.paused){ ambient.play(); toggle.textContent="🔊 Silenciar"; }
-      else { ambient.pause(); toggle.textContent="🔇 Activar sonido"; }
-    });
-  }
-  window._audio = {ambient,whoosh,ensure:tryPlayAmbient};
-})();
-
-/* ===== Estado, Log y Overlay ===== */
-const el = {
-  realm: document.getElementById('realm'),
-  sky: document.getElementById('sky'),
-  era: document.getElementById('era'),
-  veneno: document.getElementById('veneno'),
-  scene: document.getElementById('scene'),
-  overlay: document.getElementById('overlayInfo'),
-  log: document.getElementById('log'),
-  pitonisaFrame: document.getElementById('pitonisaFrame'),
-  btnKarma: document.getElementById('btnKarma'),
-  btnDharma: document.getElementById('btnDharma'),
-  btnSend: document.getElementById('btnSendPitonisa'),
-  btnSave: document.getElementById('btnSave'),
-  sessionName: document.getElementById('sessionName'),
-  fullscreen: document.getElementById('btnFullscreen'),
-};
-
-function updateOverlay(){
-  el.overlay.textContent = `Reino: ${prettyRealm(el.realm.value)} · Cielo: ${el.sky.value} · Era: ${el.era.value}`;
+let audioReady=false;
+function ensureAmbientUnlock(){
+  if(audioReady) return;
+  ambient.volume = volMaster.value;
+  ambient.play().then(()=>{audioReady=true; soundToggle.textContent="🔊 Silenciar"; soundToggle.setAttribute("aria-pressed","true");})
+  .catch(()=>{});
 }
-['change','input'].forEach(evt=>{
-  el.realm.addEventListener(evt, updateOverlay);
-  el.sky.addEventListener(evt, updateOverlay);
-  el.era.addEventListener(evt, updateOverlay);
+addEventListener('pointerdown', function onFirst(){ensureAmbientUnlock(); removeEventListener('pointerdown', onFirst)}, {once:true});
+
+soundToggle.addEventListener('click', ()=>{
+  if(!audioReady){ensureAmbientUnlock(); return;}
+  if(ambient.paused){ambient.play(); soundToggle.textContent="🔊 Silenciar"; soundToggle.setAttribute("aria-pressed","true")}
+  else{ambient.pause(); soundToggle.textContent="🔇 Activar sonido"; soundToggle.setAttribute("aria-pressed","false")}
 });
-updateOverlay();
 
-function prettyRealm(k){
-  return {human:'Humanos',animal:'Animales',ghost:'Espíritus',hell:'Infierno',titan:'Titanes',god:'Dioses'}[k]||k;
-}
-function logLine(t){
-  const now = new Date().toLocaleTimeString();
-  el.log.textContent = (el.log.textContent==='—'?'':el.log.textContent+'\n') + `[${now}] ${t}`;
-}
+btnAmbient.addEventListener('click', ()=>{
+  ensureAmbientUnlock();
+  if(ambient.paused){ ambient.volume = volMaster.value; ambient.play(); icoAmbient.textContent='⏸'; btnAmbient.innerHTML = `${icoAmbient.outerText} Ambient: Pausar`; }
+  else { ambient.pause(); icoAmbient.textContent='▶'; btnAmbient.innerHTML = `${icoAmbient.outerText} Ambient: Iniciar`; }
+});
 
-/* ===== Generadores de ruleta mínima (placeholder) ===== */
-const KARMA_EVENTS = [
-  "AUTOGOL: Retrocede 3 espacios","PÉRDIDA DE TURNO por arrogancia",
-  "REGALA 1 DHARMA a tu oponente","Vuelves al inicio del reino actual"
+volMaster.addEventListener('input', ()=>{
+  const v = parseFloat(volMaster.value||'0.6');
+  ambient.volume = v * (speakingActive && ducking.checked ? 0.35 : 1.0);
+});
+
+/* SFX library (pon tus archivos en /audio/shaolin/) */
+const SFX = [
+  "alone-samurai-in-mountain-430719.mp3",
+  "asiatic-intro_3-283719.mp3",
+  "birds-chirping-67827.mp3",
+  "China-cymbal-transition-sound-effect.mp3",
+  "chinese-beat-190047.mp3",
+  "chinese-flute-hulusi-76116.mp3",
+  "chinese-ident-transition-1-283708.mp3",
+  "dizi-flute-02-72563.mp3",
+  "fireworks-07-419025.mp3",
+  "Gong-sound.mp3",
+  "gongfeb11-91065.mp3",
+  "INTROCHINO.mp3",
+  "music-transition-ancient-back-etlx-247347.mp3",
+  "spike-one-31462.mp3",
+  "tibetan-buddhist-drum-314994.mp3"
 ];
-const DHARMA_EVENTS = [
-  "AVANCE RÁPIDO: +4 espacios","INMUNIDAD KÁRMICA por 1 turno",
-  "DOBLE MOVIMIENTO en la siguiente ronda","Gana 1 Dharma y limpia 2 Karma"
-];
-function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
-
-/* ===== Persistencia para Pitonisa (localStorage) ===== */
-function writeKarmicHistory(entry){
-  // Estructura compatible con la que ya hemos usado
-  const key = 'karmicCalculator';
-  let data = { history: [] };
-  try{
-    const raw = localStorage.getItem(key);
-    if (raw) data = JSON.parse(raw);
-    if (!Array.isArray(data.history)) data.history = [];
-  }catch(_){}
-  data.history.unshift(entry);
-  localStorage.setItem(key, JSON.stringify(data));
+function playSfx(name){
+  const a = new Audio(`audio/shaolin/${name}`);
+  a.volume = volMaster.value;
+  a.play().catch(()=>{});
+  return a;
 }
-
-/* ===== Envío a Pitonisa (postMessage) ===== */
-function sendToPitonisa(payload){
-  const frame = el.pitonisaFrame?.contentWindow;
-  if (frame){
-    frame.postMessage({type:'karmicPayload', data:payload}, '*');
-  }
-}
-
-/* ===== Botones principales ===== */
-el.btnKarma.addEventListener('click', ()=>{
-  window._audio?.ensure?.();
-  if (window._audio?.whoosh){ window._audio.whoosh.currentTime=0; window._audio.whoosh.play().catch(()=>{}); }
-
-  const result = pick(KARMA_EVENTS);
-  const entry = {
-    from:'roulette', to:'karma',
-    description:`KARMA: ${result}`,
-    fullData:{ result, realm: el.realm.value, sky: el.sky.value, era: el.era.value, veneno: el.veneno.value, scene: el.scene.value, session: el.sessionName.value||'Mesa sin nombre' }
-  };
-  writeKarmicHistory(entry);
-  logLine(`Ruleta KÁRMICA → ${result}`);
-  sendToPitonisa({type:'karma', result});
+btnSfxRandom.addEventListener('click', ()=>{
+  const n = SFX[(Math.random()*SFX.length)|0];
+  playSfx(n);
+});
+btnStopAll.addEventListener('click', ()=>{
+  try{ ambient.pause(); ambient.currentTime = 0; }catch(_){}
+  try{ speechSynthesis.cancel(); }catch(_){}
 });
 
-el.btnDharma.addEventListener('click', ()=>{
-  window._audio?.ensure?.();
-  if (window._audio?.whoosh){ window._audio.whoosh.currentTime=0; window._audio.whoosh.play().catch(()=>{}); }
-
-  const result = pick(DHARMA_EVENTS);
-  const entry = {
-    from:'roulette', to:'dharma',
-    description:`DHARMA: ${result}`,
-    fullData:{ result, realm: el.realm.value, sky: el.sky.value, era: el.era.value, veneno: el.veneno.value, scene: el.scene.value, session: el.sessionName.value||'Mesa sin nombre' }
-  };
-  writeKarmicHistory(entry);
-  logLine(`Ruleta DHÁRMICA → ${result}`);
-  sendToPitonisa({type:'dharma', result});
+/* Modal SFX Pro+ */
+const sfxModal = document.getElementById('sfxModal');
+const btnOpenModal = document.getElementById('btnOpenModal');
+const btnCloseModal = document.getElementById('btnCloseModal');
+const sfxList = document.getElementById('sfxList');
+btnOpenModal.addEventListener('click', ()=> sfxModal.showModal());
+btnCloseModal.addEventListener('click', ()=> sfxModal.close());
+SFX.forEach(n=>{
+  const div = document.createElement('div'); div.className='sfx-item';
+  const left = document.createElement('div'); left.textContent = n.replace(/\.mp3$/,'');
+  const right = document.createElement('div');
+  const b = document.createElement('button'); b.className='btn'; b.textContent='▶ reproducir';
+  b.addEventListener('click', ()=> playSfx(n));
+  right.appendChild(b); div.append(left,right); sfxList.appendChild(div);
 });
 
-el.btnSend.addEventListener('click', ()=>{
-  window._audio?.ensure?.();
-  const payload = {
-    type:'interaction',
-    result:`${prettyRealm(el.realm.value)} · ${el.sky.value} · ${el.era.value}`,
-    meta:{ realm:el.realm.value, sky:el.sky.value, era:el.era.value, veneno:el.veneno.value, scene:el.scene.value }
-  };
-  // también persistimos como “interacción”
-  writeKarmicHistory({
-    from:'dm-panel', to:'interaction',
-    description:`INTERACCIÓN: ${payload.result}`,
-    fullData:payload.meta
+/* ===== Maestro Shaolín (lectura) ===== */
+const readingEl = document.getElementById('readingText');
+const sourceFlag = document.getElementById('sourceFlag');
+const btnReadLast = document.getElementById('btnReadLast');
+const btnRandomRead = document.getElementById('btnRandomRead');
+const btnRepeat = document.getElementById('btnRepeat');
+const btnSpeakStop = document.getElementById('btnSpeakStop');
+const btnVoiceToggle = document.getElementById('btnVoiceToggle');
+const voiceSelect = document.getElementById('voiceSelect');
+const quickType = document.getElementById('quickType');
+const quickText = document.getElementById('quickText');
+const btnQuickUse = document.getElementById('btnQuickUse');
+
+let voices=[], currentVoice=null, voiceOn=true, speakingActive=false;
+
+function populateVoices(){
+  voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML='';
+  const es = voices.filter(v=>v.lang && v.lang.toLowerCase().startsWith('es'));
+  const list = es.length? es : voices;
+  list.forEach(v=>{
+    const o=document.createElement('option'); o.value=v.name; o.textContent=`${v.name} — ${v.lang}`; voiceSelect.appendChild(o);
   });
-  logLine(`Enviado a Pitonisa → ${payload.result}`);
-  sendToPitonisa(payload);
+  currentVoice = list[0] || voices[0] || null;
+}
+if('speechSynthesis' in window){
+  populateVoices();
+  window.speechSynthesis.onvoiceschanged = populateVoices;
+}
+voiceSelect.addEventListener('change', ()=>{
+  const v = voices.find(v=>v.name===voiceSelect.value);
+  if(v) currentVoice=v;
+});
+btnVoiceToggle.addEventListener('click', ()=>{
+  voiceOn=!voiceOn;
+  btnVoiceToggle.textContent = voiceOn? "🗣️ Voz del Maestro: ON" : "🤫 Voz del Maestro: OFF";
+  btnVoiceToggle.setAttribute('aria-pressed', voiceOn? 'true':'false');
 });
 
-el.btnSave.addEventListener('click', ()=>{
+const FALLBACK_KARMA = [
+  {type:"karma",  result:"AUTOGOL: Retrocede 3 espacios"},
+  {type:"karma",  result:"PÉRDIDA DE TURNO por arrogancia espiritual"},
+  {type:"dharma", result:"AVANCE RÁPIDO: +4 espacios"},
+  {type:"dharma", result:"INMUNIDAD KÁRMICA por 1 turno"},
+  {type:"dharma", result:"DOBLE MOVIMIENTO en tu siguiente ronda"}
+];
+function getLastKarmicFromLocalStorage(){
   try{
-    const key='karmicCalculator';
-    const raw = localStorage.getItem(key)||'{"history":[]}';
-    const blob = new Blob([raw], {type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    const name = (el.sessionName.value||'mesa') + '-snapshot.json';
-    a.download = name;
-    a.click();
-    URL.revokeObjectURL(a.href);
-    logLine(`Snapshot guardado: ${name}`);
-  }catch(e){ logLine('⚠️ No se pudo exportar snapshot'); }
-});
+    const raw = localStorage.getItem("karmicCalculator"); if(!raw) return null;
+    const data = JSON.parse(raw); const hist = Array.isArray(data.history)? data.history : [];
+    if(!hist.length) return null; const last = hist[0];
+    if(last.from==='roulette' && last.fullData?.result){ return {type:last.to, result:last.fullData.result}; }
+    if(last.description && (last.description.startsWith('KARMA')||last.description.startsWith('DHARMA'))){
+      const [k,...rest]=last.description.split(':'); return {type:k.toLowerCase(), result:rest.join(':').trim()};
+    }
+    if(last.fullData?.difficulty!==undefined){
+      const desc=last.description||""; const p=desc.split('→');
+      const from=(p[0]||'Humano').trim(); const to=(p[1]||'Humano').split(':')[0].trim();
+      return {type:'interaction', result:`Interacción ${from} → ${to} (dif. ${last.fullData.difficulty})`};
+    }
+  }catch(e){}
+  return null;
+}
+function forgeReading(payload){
+  const intros=[
+    "El bambú se inclina, pero no se quiebra.",
+    "Respira hondo. Observa sin juicio.",
+    "Cuando la mente se aquieta, el camino aparece.",
+    "Quien empuja el río, solo se cansa."
+  ];
+  const outro=[
+    "Camina suave. La salida está en tu siguiente decisión.",
+    "Suelta un poco hoy, para andar más lejos mañana.",
+    "El dado cae, pero tu intención lo guía.",
+    "Mira la luna y recuerda: no eres tus sombras."
+  ];
+  let cuerpo="";
+  if(payload?.type==="karma"){
+    cuerpo=`Veo carga activa: ${payload.result}. No luches contra el golpe; absorbe y redirige. Practica una renuncia pequeña ahora.`;
+  }else if(payload?.type==="dharma"){
+    cuerpo=`Llega viento propicio: ${payload.result}. Úsalo también para levantar a otro. Compartir te hará más ligero.`;
+  }else if(payload?.type==="interaction"){
+    cuerpo=`Cruce entre fuerzas: ${payload.result}. Observa el apego que empuja. Elige la opción con menos orgullo.`;
+  }else{
+    const rnd=FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0];
+    cuerpo=`Sin señales recientes, leo el pulso: ${rnd.type.toUpperCase()} — ${rnd.result}. Da el siguiente paso con humildad.`;
+  }
+  return `${intros[(Math.random()*intros.length)|0]}\n${cuerpo}\n${outro[(Math.random()*outro.length)|0]}`;
+}
+function speak(text){
+  if(!voiceOn || !('speechSynthesis' in window)) return;
+  const u=new SpeechSynthesisUtterance(text);
+  if(currentVoice) u.voice = voices.find(v=>v.name===currentVoice.name) || currentVoice;
+  u.lang=(u.voice && u.voice.lang) ? u.voice.lang : 'es-ES';
+  u.rate=0.95; u.pitch=1.0; u.volume=1.0;
+  speakingActive=true;
+  if(ducking.checked){ ambient.volume = parseFloat(volMaster.value) * 0.35; }
+  u.onend=()=>{ speakingActive=false; ambient.volume = parseFloat(volMaster.value);
+    try{ gong.currentTime=0; gong.volume=0.55; gong.play().catch(()=>{});}catch(_){}
+  };
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
 
-/* ===== Fullscreen tablero ===== */
-el.fullscreen.addEventListener('click', ()=>{
-  const img = document.querySelector('.board img');
-  if (img?.requestFullscreen) img.requestFullscreen();
+/* Botones Maestro */
+btnReadLast.addEventListener('click', ()=>{
+  let payload = getLastKarmicFromLocalStorage();
+  let src = payload? "Fuente: Calculadora (localStorage)." : "";
+  if(!payload){ payload = FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0]; src="Fuente: Respaldo aleatorio."; }
+  const t=forgeReading(payload); readingEl.textContent=t; sourceFlag.textContent=src; speak(t);
 });
+btnRandomRead.addEventListener('click', ()=>{
+  const payload = FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0];
+  const t=forgeReading(payload); readingEl.textContent=t; sourceFlag.textContent="Fuente: Aleatoria (fallback)."; speak(t);
+});
+btnRepeat.addEventListener('click', ()=>{ const t=readingEl.textContent.trim(); if(t) speak(t); });
+btnSpeakStop.addEventListener('click', ()=>{ try{speechSynthesis.cancel(); speakingActive=false; ambient.volume=parseFloat(volMaster.value);}catch(_){}});
 
-/* ===== Sincroniza overlay al cargar ===== */
-updateOverlay();
+/* Quick input */
+btnQuickUse.addEventListener('click', ()=>{
+  const type = quickType.value;
+  const text = (quickText.value||'').trim() || (type==='dharma'?'AVANCE RÁPIDO: +4 espacios':'Retrocede 1 espacio');
+  const payload = {type, result:text};
+  const t=forgeReading(payload); readingEl.textContent=t; sourceFlag.textContent="Fuente: Manual (rápido)."; speak(t);
+});
 </script>
 </body>
 </html>

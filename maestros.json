@@ -1,0 +1,92 @@
+{
+  "zhuangzi": {
+    "nombre": "Zhuang Zhou (Zhuangzi)",
+    "titulo": "El Monje de los Ecos",
+    "elemento": "Aire / Vacío",
+    "origen": "China, siglo IV a.C.",
+    "color": "#4cc9f0",
+    "simbolo": "🜂",
+    "frase": "El eco es el maestro del silencio. Escucha antes de mover.",
+    "descripcion": "Filósofo taoísta que enseñó que toda forma es ilusión. Zhuangzi revela la ligereza de actuar sin ego y la sabiduría de observar antes de intervenir.",
+    "juegos": ["Ajedrez", "Go", "Dungeons & Dragons"],
+    "audio": "audio/maestros/zhuangzi-theme.mp3"
+  },
+
+  "thoth": {
+    "nombre": "Thoth",
+    "titulo": "El Escriba del Sol",
+    "elemento": "Fuego / Conocimiento",
+    "origen": "Egipto Antiguo",
+    "color": "#ffd166",
+    "simbolo": "🪶",
+    "frase": "Toda palabra es una chispa: úsala para alumbrar, no para quemar.",
+    "descripcion": "Dios de la escritura y de la palabra creadora. Enseña que el lenguaje moldea la realidad, y que cada palabra pronunciada es un acto mágico.",
+    "juegos": ["Scrabble", "Codenames", "Trivial Pursuit"],
+    "audio": "audio/maestros/thoth-theme.mp3"
+  },
+
+  "quetzalcoatl": {
+    "nombre": "Quetzalcóatl",
+    "titulo": "La Serpiente de la Luz",
+    "elemento": "Tierra / Transformación",
+    "origen": "Mesoamérica (Tolteca)",
+    "color": "#70e000",
+    "simbolo": "🐍",
+    "frase": "Cada derrota te muda la piel. No temas renacer.",
+    "descripcion": "Dios del conocimiento y la renovación. Su vuelo une la tierra y el cielo, recordando que el cambio es la única verdad permanente.",
+    "juegos": ["Risk", "Catan", "Magic: The Gathering"],
+    "audio": "audio/maestros/quetzalcoatl-theme.mp3"
+  },
+
+  "enki": {
+    "nombre": "Enki",
+    "titulo": "El Señor de las Aguas",
+    "elemento": "Agua / Fluidez",
+    "origen": "Sumeria / Mesopotamia",
+    "color": "#5de2e7",
+    "simbolo": "🌊",
+    "frase": "Lo que fluye no se rompe. Sé agua, incluso en la victoria.",
+    "descripcion": "Arquitecto divino que trajo la risa y la sabiduría líquida a los hombres. Enseña la flexibilidad y el humor ante los dilemas del tablero.",
+    "juegos": ["Monopoly", "Uno", "Jenga"],
+    "audio": "audio/maestros/enki-theme.mp3"
+  },
+
+  "anuket": {
+    "nombre": "Anuket",
+    "titulo": "La Danza del Río",
+    "elemento": "Agua + Aire / Inspiración",
+    "origen": "Egipto / Nubia",
+    "color": "#ff80b5",
+    "simbolo": "💧",
+    "frase": "Juega con gracia: el arte también es estrategia.",
+    "descripcion": "Diosa del Nilo y del movimiento libre. Inspira la improvisación, la belleza y la armonía. Enseña que toda jugada puede ser un acto poético.",
+    "juegos": ["Dixit", "Pictionary", "Time’s Up"],
+    "audio": "audio/maestros/anuket-theme.mp3"
+  },
+
+  "yama": {
+    "nombre": "Yama",
+    "titulo": "El Guardián del Espejo",
+    "elemento": "Fuego / Karma",
+    "origen": "India / Indo-Tibetano",
+    "color": "#ef233c",
+    "simbolo": "☸️",
+    "frase": "Cada acción es un reflejo: mira bien antes de mover tu pieza.",
+    "descripcion": "Señor del equilibrio y guardián de las consecuencias. Muestra que toda elección es semilla, y todo resultado, espejo del corazón.",
+    "juegos": ["Dungeons & Dragons", "Ruleta Kármica"],
+    "audio": "audio/maestros/yama-theme.mp3"
+  },
+
+  "sidarta": {
+    "nombre": "Sidarta Gautama",
+    "titulo": "El Iluminado",
+    "elemento": "Luz / Unidad",
+    "origen": "India / Nepal, siglo V a.C.",
+    "color": "#fff5c3",
+    "simbolo": "🌸",
+    "frase": "Cuando el tablero deja de ser plano, el juego se convierte en vida.",
+    "descripcion": "El que comprendió que el yo es una curva sin principio ni fin. Representa la integración de todos los caminos: el punto donde termina el juego y comienza el despertar.",
+    "juegos": ["Todos los juegos", "Modo Maestro"],
+    "audio": "audio/maestros/sidarta-theme.mp3"
+  }
+}

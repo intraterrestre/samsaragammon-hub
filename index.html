@@ -1,220 +1,278 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Samsaragammon — Portal Curvista</title>
-  <meta name="description" content="Portal de entrada al universo Samsaragammon: Manual Curvista, Diccionario, Tabla de Reinos, Calculadora Kármica y acceso al juego." />
-  <meta name="theme-color" content="#00ff7b" />
-  <style>
-    :root{
-      --green:#00ff7b; --green-soft:#8affbf; --line:#113c2d;
-      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; --accent:#ffd166;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      background:#000;color:var(--text);
-      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      line-height:1.55; overflow-x:hidden;
-    }
-    .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.18; pointer-events:none}
-    .wrap{max-width:1024px; margin:0 auto; padding:20px 16px}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Portal Curvista — Booster de Juegos</title>
+<meta name="description" content="Hub Curvista con presets para D&D, Ajedrez, Monopoly y más. Maestro Shaolín, SFX (efectos de sonido) y Calculadora Kármica." />
+<meta name="theme-color" content="#00ff7b" />
+<style>
+  :root{
+    --green:#00ff7b; --green-soft:#a6ffd2; --line:#103527;
+    --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; --accent:#ffd166;
+    --danger:#ff6b6b; --muted:#cfe;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:#000; color:var(--text);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    line-height:1.55; overflow-x:hidden;
+  }
+  .wrap{max-width:1100px; margin:0 auto; padding:20px 16px}
 
-    /* Promo superior */
-    .promo{
-      background: radial-gradient(1100px 500px at 50% 0%, #042218 0%, #000 70%);
-      border-bottom:1px solid #0a3; padding:42px 18px; text-align:center;
-      box-shadow:inset 0 0 40px rgba(0,255,150,.12);
-      animation:promoFade .9s ease-out;
-    }
-    @keyframes promoFade{from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none}}
-    .promo-title{
-      color:var(--green); font-size:clamp(30px,4vw,50px); font-weight:900; letter-spacing:.05em;
-      text-shadow:0 0 16px rgba(0,255,150,.6);
-      margin-bottom:12px;
-    }
-    .promo-sub{color:#cfe; font-size:clamp(15px,2vw,18px); max-width:880px; margin:0 auto}
-    .promo-note{ color:#88ffbf; font-size:.92rem; opacity:.95; margin-top:14px }
+  /* Promo */
+  .promo{
+    background: radial-gradient(1100px 500px at 50% 0%, #042218 0%, #000 70%);
+    border-bottom:1px solid #0a3; padding:42px 18px; text-align:center;
+    box-shadow:inset 0 0 40px rgba(0,255,150,.12);
+    animation:promoFade .9s ease-out;
+  }
+  @keyframes promoFade{from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none}}
+  .promo h1{
+    color:var(--green); font-size:clamp(28px,4.5vw,48px); font-weight:900; letter-spacing:.03em;
+    text-shadow:0 0 16px rgba(0,255,150,.6); margin-bottom:10px;
+  }
+  .promo p{color:var(--muted); max-width:900px; margin:0 auto}
+  .promo .bar{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:16px}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 18px; border-radius:999px; border:1px solid var(--green);
+    background:linear-gradient(180deg,#02140f,#031b14);
+    color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
+    box-shadow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
+    transition:transform .12s, box-shadow .2s, background .2s;
+    cursor:pointer;
+  }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55)}
+  .btn.alt{ border-color:var(--accent); color:var(--accent);
+    box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
+  .btn.danger{ border-color:var(--danger); color:var(--danger);
+    box-shadow:0 0 10px var(--danger),0 0 18px rgba(255,107,107,.45) }
 
-    /* Botonera neón */
-    .neon-bar{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:16px 0 6px}
-    .btn-neon{
-      --glow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
-      display:inline-flex; align-items:center; gap:8px; justify-content:center;
-      padding:12px 18px; border-radius:999px; border:1px solid var(--green);
-      background:linear-gradient(180deg, #02140f, #031b14);
-      color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
-      box-shadow:var(--glow); transition:transform .12s, box-shadow .2s, background .2s;
-    }
-    .btn-neon:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55)}
-    .btn-neon.alt{ border-color:var(--accent); color:var(--accent);
-      box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
+  /* Secciones */
+  section.block{margin-top:22px; background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px}
+  h2.title{
+    color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:10px;
+    text-shadow:0 0 10px rgba(0,255,150,.25);
+  }
+  p.muted{color:var(--muted); opacity:.95}
 
-    /* Header/hero */
-    header.hero{
-      margin-top:28px; margin-bottom:20px; text-align:center;
-      padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel);
-      box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04);
-    }
-    .title{
-      font-size:clamp(28px,4vw,44px);
-      color:var(--green);
-      text-shadow:0 0 10px var(--green), 0 0 24px rgba(0,255,150,.35);
-      letter-spacing:.06em; font-weight:800; margin-bottom:6px;
-    }
-    .subtitle{color:var(--green-soft); opacity:.95; font-size:clamp(14px,1.8vw,16px)}
+  /* Grid juegos */
+  .games{display:grid; gap:12px; grid-template-columns:1fr}
+  @media(min-width:560px){ .games{grid-template-columns:1fr 1fr} }
+  @media(min-width:960px){ .games{grid-template-columns:1fr 1fr 1fr} }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px;
+    display:flex; flex-direction:column; gap:10px; min-height:160px;
+  }
+  .card .head{display:flex; align-items:center; gap:10px}
+  .card .ico{font-size:28px}
+  .card h3{font-size:18px; color:#eafff5}
+  .card p{color:#cfe; font-size:.95rem}
+  .card .actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:auto}
+  .badge{font-size:.78rem; color:#9edfc9}
+  .legend{font-size:.9rem; color:#bfeee0}
 
-    /* Secciones */
-    section.card{
-      margin-top:18px; background:var(--panel2); border:1px solid var(--line);
-      border-radius:14px; padding:16px;
-    }
-    h2.section{
-      color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:8px;
-      text-shadow:0 0 10px rgba(0,255,150,.25);
-    }
-    p.muted{color:#bfeee0; opacity:.92}
-    .media{display:flex; flex-direction:column; align-items:center; gap:12px; margin:14px 0}
-    .media img{
-      width:100%; height:auto; max-width:880px; border-radius:14px;
-      border:1px solid var(--line); background:#000;
-      box-shadow:0 0 24px rgba(0,255,150,.06);
-    }
-    .moon{width:min(360px,58vw); border-radius:16px; background:transparent; border:none; box-shadow:none}
-    @media (min-width:900px){ .grid-2{display:grid; grid-template-columns:1.1fr .9fr; gap:16px} }
-
-    /* Footer */
-    footer{
-      margin:28px 0 24px; text-align:center; color:#9edfc9; font-size:.95rem;
-      border-top:1px solid var(--line); padding-top:14px;
-    }
-    footer .mini{opacity:.75; font-size:.9rem; margin-top:6px}
-
-    /* Botón de sonido */
-    #soundToggle{
-      position:fixed; right:16px; top:16px; z-index:9999;
-      background:#001100; color:#00ff7b; border:2px solid #00ff7b;
-      border-radius:24px; padding:8px 12px; font-family:monospace; cursor:pointer;
-      box-shadow:0 0 10px rgba(0,255,140,.35);
-    }
-  </style>
+  /* Footer */
+  footer{
+    margin:28px 0 24px; text-align:center; color:#9edfc9; font-size:.95rem;
+    border-top:1px solid var(--line); padding-top:14px;
+  }
+  footer .mini{opacity:.75; font-size:.9rem; margin-top:6px}
+</style>
 </head>
 <body>
-  <!-- Fondo Matrix -->
-  <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
-
-  <!-- PROMO TURBO MASTER DRAGON -->
-  <section class="promo">
-    <h1 class="promo-title">🔥 Convierte tu rol en un Camino hacia el Nirvana</h1>
-    <p class="promo-sub">
-      Presentamos el <strong>Turbo Master Dragon™</strong> — el panel curvista que fusiona
-      <strong>Dungeons & Dragons</strong> con la sabiduría del <strong>Samsara</strong>.<br>
-      Mide tu Karma, invoca consejos del <strong>Maestro Shaolin</strong> y transforma cada partida en una experiencia espiritual real.
-    </p>
-    <div class="neon-bar" style="margin-top:18px">
-      <a class="btn-neon" href="maestro.html">🧘 Invocar al Maestro Shaolin</a>
-      <a class="btn-neon alt" href="https://karmalab-samsara.netlify.app/" target="_blank" rel="noopener">🧮 Probar Calculadora Kármica</a>
+  <div class="promo">
+    <div class="wrap">
+      <h1>🔥 Turbo Master Dragon™ — Resucita tus juegos de mesa favoritos.</h1>
+<p class="promo-sub">
+Redescubre clásicos como nunca antes: con música, sabiduría y energía.  
+Una experiencia viva que transforma cada turno en una nueva historia.
+</p>
+        Convierte tus partidas de mesa en una experiencia épica: <strong>Maestro Shaolín</strong> (voz/lecturas),
+        <strong>SFX</strong> <em>(Sound Effects = efectos de sonido)</em> para ambientar, y
+        <strong>Calculadora Kármica</strong> para decisiones dramáticas. Compatible con D&D, Ajedrez, Monopoly y más.
+      </p>
+      <div class="bar">
+        <a class="btn" href="maestro.html">🧘 Abrir Maestro Shaolín</a>
+        <a class="btn alt" href="dm-panel.html">🎛️ Abrir DM Panel PRO</a>
+        <a class="btn" href="https://karmalab-samsara.netlify.app/" target="_blank" rel="noopener">🌀 Revisa tu Karma</a>
+      </div>
+      <p class="legend" style="margin-top:6px">
+        Consejo: “Maestro” = lecturas y voz. “DM Panel PRO” = panel para Director de Juego (DM = <em>Dungeon Master</em> / Director).
+      </p>
     </div>
-    <p class="promo-note">⚙️ Compatible con cualquier módulo D&D 5e — mejora tu narrativa, mide tus reinos y alcanza la curva de la iluminación.</p>
-  </section>
-
-  <!-- Botón sonido -->
-  <button id="soundToggle" aria-pressed="false">🔇 Activar sonido</button>
-
-  <div class="wrap">
-    <!-- HERO -->
-    <header class="hero">
-      <div class="title">Samsaragammon — Portal Curvista</div>
-      <div class="subtitle">Entrada oficial al Manual, Diccionario, Tabla de Reinos, Calculadora Kármica y Juego.</div>
-      <nav class="neon-bar" aria-label="Accesos rápidos">
-        <a class="btn-neon" id="btnJugar" href="juego.html">🎮 Entrar al juego</a>
-        <a class="btn-neon" href="MANUAL-MATRIX/index.html">📘 Manual Curvista</a>
-        <a class="btn-neon" href="diccionario/">📚 Diccionario</a>
-        <a class="btn-neon" href="https://karmalab-samsara.netlify.app/" target="_blank" rel="noopener">🧮 Calculadora Kármica</a>
-      </nav>
-    </header>
-
-    <!-- BLOQUE: LUNA COMO PORTAL -->
-    <section class="card grid-2">
-      <div>
-        <h2 class="section">La Luna como portal</h2>
-        <p class="muted">
-          La luna que Buda señaló no era un símbolo, sino una salida. Desde <strong>Dungeons &amp; Dragons</strong>
-          atraviesa este portal y deja que el tablero se vuelva tu mandala: cada tirada, una elección; cada elección,
-          un paso hacia el Nirvana.
-        </p>
-        <div class="neon-bar" style="justify-content:flex-start">
-          <a class="btn-neon" href="juego.html">✨ Iniciar sesión</a>
-          <a class="btn-neon" href="MANUAL-MATRIX/index.html">🔎 Cómo se juega</a>
-        </div>
-      </div>
-      <div class="media">
-        <img class="moon" alt="Buda señalando la luna" src="https://federicogarcia.art/wp-content/uploads/2025/11/Buda-moon-Fake-World-1-1.png" />
-      </div>
-    </section>
-
-    <!-- BLOQUE: RUEDA / TABLERO -->
-    <section class="card">
-      <h2 class="section">La rueda del Samsara como tablero</h2>
-      <p class="muted">La rueda refleja tus elecciones. No es arte decorativo: es el espejo de tu camino.</p>
-      <div class="media">
-        <img alt="Obra del tablero Samsaragammon" src="https://federicogarcia.art/wp-content/uploads/2025/11/Samsara24-scaled.png" />
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
-      <div class="mini">The Singing Witchi (preview) · Maestro Shaolin (en preparación).</div>
-    </footer>
   </div>
 
-  <!-- Audio -->
-  <audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
-  <audio id="ritualAudio"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
+  <div class="wrap">
+    <!-- Qué es un DM -->
+    <section class="block">
+      <h2 class="title">🙋‍♂️ ¿Qué es un DM (Dungeon Master / Director de Juego)?</h2>
+      <p class="muted">
+        Es la persona que guía la historia, describe escenas y decide cómo reaccionan los mundos del juego.
+        En juegos narrativos (como Dungeons &amp; Dragons) el DM lleva el ritmo y usa herramientas como el Maestro Shaolín,
+        SFX (efectos de sonido) y la Calculadora Kármica para crear <em>tensión, humor y momentos memorables</em>.
+      </p>
+    </section>
 
-  <script>
-    /* Fondo matrix */
-    (function(){
-      const c=document.getElementById('matrixBg'),x=c.getContext('2d');
-      function R(){c.width=innerWidth;c.height=innerHeight} R(); addEventListener('resize',R);
-      const A='アカサタナハマヤラワ0123456789☯KARMADHARMA'.split(''), fs=14;
-      let cols=Math.floor(c.width/fs), drops=Array(cols).fill(1);
-      setInterval(()=>{ if(cols!==Math.floor(c.width/fs)){cols=Math.floor(c.width/fs);drops=Array(cols).fill(1)}
-        x.fillStyle='rgba(0,0,0,.06)'; x.fillRect(0,0,c.width,c.height);
-        x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
-        for(let i=0;i<drops.length;i++){
-          x.fillText(A[(Math.random()*A.length)|0],i*fs,drops[i]*fs);
-          if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0; drops[i]++; }
-      },33);
-    })();
+    <!-- Grid de juegos -->
+    <section class="block">
+      <h2 class="title">🎲 Juegos compatibles (presets Curvista)</h2>
+      <div class="games">
 
-    /* Audio + navegación suave a juego */
-    (function(){
-      const ambient = document.getElementById("ambientAudio");
-      const ritual  = document.getElementById("ritualAudio");
-      const toggle  = document.getElementById("soundToggle");
-      let ready=false;
-      function playAmbient(){
-        ambient.volume=.55;
-        ambient.play().then(()=>{ready=true;toggle.textContent="🔊 Silenciar";toggle.setAttribute("aria-pressed","true")}).catch(()=>{});
-      }
-      addEventListener("pointerdown",function onFirst(){playAmbient();removeEventListener("pointerdown",onFirst)},{once:true});
-      toggle.addEventListener("click",()=>{
-        if(!ready){playAmbient();return;}
-        if(ambient.paused){ambient.play();toggle.textContent="🔊 Silenciar";toggle.setAttribute("aria-pressed","true")}
-        else{ambient.pause();toggle.textContent="🔇 Activar sonido";toggle.setAttribute("aria-pressed","false")}
-      });
-      document.querySelectorAll('a[href$="juego.html"]').forEach(a=>{
-        a.addEventListener("click",ev=>{
-          ev.preventDefault(); const url=a.getAttribute("href");
-          if(!ambient.paused) ambient.pause();
-          if(ritual){ritual.currentTime=0;ritual.volume=.7;ritual.play().catch(()=>{});}
-          setTimeout(()=>{location.href=url},250);
-        });
-      });
-    })();
-  </script>
+        <!-- Dungeons & Dragons -->
+        <article class="card">
+          <div class="head"><div class="ico">🐉</div><h3>Dungeons & Dragons (5e)</h3></div>
+          <span class="badge">Rol narrativo</span>
+          <p>Usa lecturas kármicas para giros de escena y SFX para atmósfera. Perfecto para campañas o “one-shots”.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=dnd">🧘 Maestro (D&D)</a>
+            <a class="btn alt" href="dm-panel.html?game=dnd">🎛️ DM Panel (D&D)</a>
+          </div>
+        </article>
+
+        <!-- Ajedrez -->
+        <article class="card">
+          <div class="head"><div class="ico">♟️</div><h3>Ajedrez</h3></div>
+          <span class="badge">Estrategia</span>
+          <p>Interludios de maestría: composure, sacrificio consciente y lectura del “flujo” entre piezas.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=chess">🧘 Maestro (Ajedrez)</a>
+            <a class="btn alt" href="dm-panel.html?game=chess">🎛️ Panel (Ajedrez)</a>
+          </div>
+        </article>
+
+        <!-- Monopoly -->
+        <article class="card">
+          <div class="head"><div class="ico">💸</div><h3>Monopoly</h3></div>
+          <span class="badge">Familia / Negociación</span>
+          <p>Equilibra codicia y cooperación con pequeñas “reglas kármicas” para decisiones tensas.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=monopoly">🧘 Maestro (Monopoly)</a>
+            <a class="btn alt" href="dm-panel.html?game=monopoly">🎛️ Panel (Monopoly)</a>
+          </div>
+        </article>
+
+        <!-- Catan -->
+        <article class="card">
+          <div class="head"><div class="ico">🌾</div><h3>Catan</h3></div>
+          <span class="badge">Comercio / Gestión</span>
+          <p>Da voz al azar de los dados con lecturas sabias y anima trueques “virtuosos”.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=catan">🧘 Maestro (Catan)</a>
+            <a class="btn alt" href="dm-panel.html?game=catan">🎛️ Panel (Catan)</a>
+          </div>
+        </article>
+
+        <!-- Carcassonne -->
+        <article class="card">
+          <div class="head"><div class="ico">🏰</div><h3>Carcassonne</h3></div>
+          <span class="badge">Colocación de losetas</span>
+          <p>Lecturas suaves para momentos de cierre de ciudades y caminos. SFX ambientales medievales.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=carcassonne">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=carcassonne">🎛️ Panel</a>
+          </div>
+        </article>
+
+        <!-- Ticket to Ride -->
+        <article class="card">
+          <div class="head"><div class="ico">🚂</div><h3>Ticket to Ride</h3></div>
+          <span class="badge">Rutas / Set-collection</span>
+          <p>Música ligera + lecturas sobre timing y rutas de menor apego.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=ticket">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=ticket">🎛️ Panel</a>
+          </div>
+        </article>
+
+        <!-- Scrabble -->
+        <article class="card">
+          <div class="head"><div class="ico">🔡</div><h3>Scrabble</h3></div>
+          <span class="badge">Palabras</span>
+          <p>Explora energía/etimología de palabras y juega SFX discretos para “hallazgos”.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=scrabble">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=scrabble">🎛️ Panel</a>
+          </div>
+        </article>
+
+        <!-- Risk -->
+        <article class="card">
+          <div class="head"><div class="ico">🪖</div><h3>Risk</h3></div>
+          <span class="badge">Conquista</span>
+          <p>Reduce la agresión ciega con “pausas de consciencia” y SFX de tensión.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=risk">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=risk">🎛️ Panel</a>
+          </div>
+        </article>
+
+        <!-- Pandemic -->
+        <article class="card">
+          <div class="head"><div class="ico">🧪</div><h3>Pandemic</h3></div>
+          <span class="badge">Cooperativo</span>
+          <p>Consejos de coordinación y humildad táctica; ambiente sutil para decisiones en equipo.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=pandemic">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=pandemic">🎛️ Panel</a>
+          </div>
+        </article>
+
+        <!-- Uno -->
+        <article class="card">
+          <div class="head"><div class="ico">🃏</div><h3>Uno</h3></div>
+          <span class="badge">Fiesta</span>
+          <p>Golpes sonoros cortos y frases divertidas para bajar el tilt y subir el humor.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=uno">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=uno">🎛️ Panel</a>
+          </div>
+        </article>
+
+        <!-- 7 Wonders -->
+        <article class="card">
+          <div class="head"><div class="ico">🏛️</div><h3>7 Wonders</h3></div>
+          <span class="badge">Draft / Civilizaciones</span>
+          <p>Lecturas sobre equilibrio entre ciencia, comercio y guerra; SFX temáticos.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=7wonders">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=7wonders">🎛️ Panel</a>
+          </div>
+        </article>
+
+        <!-- Dixit -->
+        <article class="card">
+          <div class="head"><div class="ico">🖼️</div><h3>Dixit</h3></div>
+          <span class="badge">Imaginación</span>
+          <p>Frases poéticas y silencios, para dar “aire” a las interpretaciones.</p>
+          <div class="actions">
+            <a class="btn" href="maestro.html?game=dixit">🧘 Maestro</a>
+            <a class="btn alt" href="dm-panel.html?game=dixit">🎛️ Panel</a>
+          </div>
+        </article>
+
+      </div>
+      <p class="legend" style="margin-top:10px">
+        ¿Falta tu juego favorito? Usa cualquier tarjeta y cambia <code>?game=custom</code>. Más adelante añadiremos iconos oficiales.
+      </p>
+    </section>
+
+    <!-- Glosario rápido -->
+    <section class="block">
+      <h2 class="title">ℹ️ Glosario rápido</h2>
+      <p class="muted">
+        <strong>DM</strong>: <em>Dungeon Master</em> (Director de Juego).<br>
+        <strong>SFX</strong>: <em>Sound Effects</em> (Efectos de sonido).<br>
+        <strong>Preset</strong>: Ajustes predefinidos para adaptar el Maestro/SFX a un juego concreto.
+      </p>
+    </section>
+
+    <footer>
+      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
+      <div class="mini">Turbo Master Dragon™ — Portal Curvista v2.</div>
+    </footer>
+  </div>
 </body>
 </html>

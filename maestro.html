@@ -277,103 +277,140 @@ function forgeReading(payload){
   return `${intro}\n${cuerpo}\n${outro}`;
 }
 
-/* ===== Voz (SpeechSynthesis) con ducking ===== */
-function populateVoices(){
-  state.voices = speechSynthesis.getVoices();
-  const es = state.voices.filter(v => v.lang?.toLowerCase().startsWith("es"));
-  const list = es.length ? es : state.voices;
-  const sel = byId('voiceSelect');
-  sel.innerHTML = "";
-  list.forEach(v=>{
-    const o=document.createElement('option');
-    o.value = v.name; o.textContent = `${v.name} — ${v.lang}`;
-    sel.appendChild(o);
-  });
-  state.currentVoice = list[0] || null;
+<script>
+// ===== Preferencias y estado =====
+const state = window.state || (window.state = {});
+state.voices = state.voices || [];
+state.currentVoice = state.currentVoice || null;
+state.voiceOn = state.voiceOn ?? true;
+state.uiWired = state.uiWired || false;
+
+// Persistencia de idioma/voz
+const voiceLangSel = document.getElementById('voiceLang');
+const voiceSel     = document.getElementById('voiceSelect');
+
+const savedLang  = localStorage.getItem('voiceLang') || 'es';
+const savedVoice = localStorage.getItem('voiceName') || '';
+if (voiceLangSel) voiceLangSel.value = savedLang;
+
+// Mapa de preferencia por idioma (ordena voces)
+const PREF_ORDER = {
+  es: ["es-ES","es-MX","es-AR","es-419","es"],
+  en: ["en-GB","en-US","en-AU","en-CA","en"]
+};
+
+// ===== Carga y filtrado de voces por idioma =====
+function loadVoices() {
+  state.voices = window.speechSynthesis.getVoices();
+  populateVoices(voiceLangSel ? voiceLangSel.value : 'es');
 }
 
+function populateVoices(langCode) {
+  if (!state.voices.length || !voiceSel) return;
+
+  const wanted = PREF_ORDER[langCode] || [langCode];
+  const score = v => {
+    const l = (v.lang||"").toLowerCase();
+    for (let i=0;i<wanted.length;i++) if (l.startsWith(wanted[i].toLowerCase())) return i;
+    return 99;
+  };
+
+  // Lista por idioma preferido; si no hay, todas
+  const filtered = state.voices.filter(v=>{
+    const l = (v.lang||"").toLowerCase();
+    return wanted.some(w=>l.startsWith(w.toLowerCase()));
+  }).sort((a,b)=>score(a)-score(b));
+  const list = filtered.length ? filtered : state.voices.slice();
+
+  // Poblado del <select>
+  voiceSel.innerHTML = "";
+  list.forEach(v=>{
+    const o = document.createElement('option');
+    o.value = v.name; o.textContent = `${v.name} — ${v.lang}`;
+    voiceSel.appendChild(o);
+  });
+
+  // Seleccionar la última voz elegida si existe
+  const preferred = list.find(v=>v.name===savedVoice);
+  state.currentVoice = preferred || list[0] || null;
+  if (state.currentVoice) voiceSel.value = state.currentVoice.name;
+
+  // Guardar idioma/voz
+  localStorage.setItem('voiceLang', langCode);
+  if (state.currentVoice) localStorage.setItem('voiceName', state.currentVoice.name);
+}
+
+// ===== Hablar con ducking de ambient =====
 function speak(text){
   if (!state.voiceOn || !('speechSynthesis' in window)) return;
+
   const u = new SpeechSynthesisUtterance(text);
+
   if (state.currentVoice){
     const v = state.voices.find(x=>x.name===state.currentVoice.name) || state.currentVoice;
     u.voice = v;
-    u.lang  = v.lang || "es-ES";
+    u.lang  = v.lang || ((voiceLangSel?.value||'es')==='es' ? 'es-ES' : 'en-US');
   } else {
-    u.lang = "es-ES";
+    u.lang = ((voiceLangSel?.value||'es')==='es' ? 'es-ES' : 'en-US');
   }
+
   u.rate = 0.95; u.pitch = 1.0; u.volume = 1.0;
 
-  // Ducking
-  const a = state.ambient;
-  const duck = byId('duck').checked;
+  // Ducking del ambient
+  const a = state.ambient; // asegúrate de asignar state.ambient cuando inicies tu música base
+  const duckEl = document.getElementById('duck'); // checkbox “Bajar música al hablar”
+  const doDuck = !!(duckEl && duckEl.checked);
   let prevVol = a ? a.volume : 0;
+
   u.onstart = ()=>{
-    if (duck && a && !a.paused){
+    if (doDuck && a && !a.paused){
       prevVol = a.volume;
       a.volume = Math.max(0, prevVol * 0.25);
     }
   };
   u.onend = ()=>{
-    if (duck && a){ a.volume = prevVol; }
+    if (doDuck && a){ a.volume = prevVol; }
   };
 
   speechSynthesis.cancel();
   speechSynthesis.speak(u);
 }
 
-/* ===== Wire UI una sola vez ===== */
-document.addEventListener('DOMContentLoaded', ()=>{
-  // Botones ambiente/SFX
-  byId('btnAmbient').onclick = toggleAmbient;
-  byId('btnSfx').onclick = playSfx;
-  byId('btnStopAll').onclick = ()=>{
-    stopAllAudio();
-    if ('speechSynthesis' in window) speechSynthesis.cancel();
-  };
-  byId('vol').oninput = (e)=>{
-    const v = parseFloat(e.target.value);
-    if (state.ambient) state.ambient.volume = v;
-  };
+// ===== Wire de UI (una vez) =====
+if (!state.uiWired){
+  state.uiWired = true;
 
-  // Voz
+  // Inicializar voces
   if ('speechSynthesis' in window){
-    populateVoices();
-    window.speechSynthesis.onvoiceschanged = populateVoices;
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
   }
-  byId('voiceSelect').onchange = (e)=>{
-    const name = e.target.value;
-    const v = state.voices.find(x=>x.name===name);
-    if (v) state.currentVoice = v;
-  };
-  byId('btnToggleVoice').onclick = (e)=>{
-    state.voiceOn = !state.voiceOn;
-    e.currentTarget.textContent = state.voiceOn ? "🗣️ Voz del Maestro: ON" : "🤫 Voz del Maestro: OFF";
-    e.currentTarget.setAttribute("aria-pressed", state.voiceOn ? "true" : "false");
-  };
 
-  // Lecturas
-  const out = byId('readingText');
-  byId('btnReadLast').onclick = ()=>{
-    const p = getLastFromLocalStorage() || pick(FALLBACK_KARMA);
-    const t = forgeReading(p);
-    out.textContent = t;
-    speak(t);
-  };
-  byId('btnRandom').onclick = ()=>{
-    const p = pick(FALLBACK_KARMA);
-    const t = forgeReading(p);
-    out.textContent = t;
-    speak(t);
-  };
-  byId('btnRepeat').onclick = ()=>{
-    const t = out.textContent.trim();
-    if (t) speak(t);
-  };
-  byId('btnStopTTS').onclick = ()=>{
-    if ('speechSynthesis' in window) speechSynthesis.cancel();
-  };
-});
+  // Cambios de idioma/voz
+  voiceLangSel?.addEventListener('change', ()=>{
+    localStorage.setItem('voiceLang', voiceLangSel.value);
+    populateVoices(voiceLangSel.value);
+  });
+
+  voiceSel?.addEventListener('change', ()=>{
+    const v = state.voices.find(x=>x.name===voiceSel.value);
+    if (v){
+      state.currentVoice = v;
+      localStorage.setItem('voiceName', v.name);
+    }
+  });
+
+  // Botón ON/OFF voz (si lo tienes)
+  const btnToggle = document.getElementById('btnToggleVoice');
+  if (btnToggle){
+    btnToggle.addEventListener('click', ()=>{
+      state.voiceOn = !state.voiceOn;
+      btnToggle.textContent = state.voiceOn ? "🗣️ Voz del Maestro: ON" : "🤫 Voz del Maestro: OFF";
+      btnToggle.setAttribute("aria-pressed", state.voiceOn ? "true" : "false");
+    });
+  }
+}
+
+// Exponer speak para tu código existente
+window.speak = speak;
 </script>
-</body>
-</html>

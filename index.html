@@ -4,22 +4,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>🚨 Ambulancia de Juegos™ — Galenos del Nirvana Pro™</title>
- <meta name="description" content="Llamado de emergencia lúdica. Los Médicos que llegan para resucitar tus juegos de mesa medio muertos con voz, sabiduría y energía espiritual." />
+  <meta name="description" content="Llamado de emergencia lúdica. Los Médicos que llegan para resucitar tus juegos de mesa medio muertos con voz, sabiduría y energía espiritual." />
+
   <style>
-    :root{
+    :root {
       --green:#00ff7b; --accent:#ffd166; --line:#113c2d;
       --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html,body { height:100%; }
+    body {
       background:#000; color:var(--text);
       font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
       line-height:1.55; overflow-x:hidden;
     }
-
-    .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.14; pointer-events:none}
-    .wrap{max-width:1100px; margin:0 auto; padding:20px 16px}
+    .matrix-bg { position:fixed; inset:0; z-index:-1; opacity:.14; pointer-events:none; }
+    .wrap { max-width:1100px; margin:0 auto; padding:20px 16px; }
+  </style>
+</head>
 
     /* HERO */
     .hero{
@@ -90,10 +92,9 @@
   <canvas class="matrix-bg" id="matrixBg"></canvas>
   <div class="wrap">
     <header class="hero">
-      <h1 class="title">🚨 Ambulancia de Juegos™ — Doctores del Nirvana Pro™</h1>
+      <h1 class="title">🚨 Ambulancia de Juegos™ — Galenos del Nirvana Pro™</h1>
       <p class="subtitle">
-        Aplica un shock espiritual a tus juegos clásicos. Redescubre tus partidas con voz, sabiduría y energía.
-      </p>
+        Llamado de emergencia lúdica. Los Médicos que llegan para resucitar tus juegos de mesa medio muertos con voz, sabiduría y energía espiritual.
       <div class="cta-bar">
         <a class="btn" href="dm-panel.html">🧠 Abrir DM Panel PRO</a>
       </div>
@@ -115,8 +116,8 @@
     </section>
   </div>
 
-  <!-- === SIRENA AMBULANCIA (botón + luces + audio) === -->
-<button id="sirenaToggle" aria-pressed="false">🚨 SIRENA ON — ¡Apágala si puedes!</button>
+  <!-- === PRESTA ATENCIÓN (botón + luces + audio) === -->
+<button id="sirenaToggle" aria-pressed="false">🚨 SIRENA ON — ¡Listo para despegar!</button>
 <audio id="sirenaAudio" src="audio/alarms/call-to-attention.mp3" loop preload="auto" playsinline></audio>
 <div id="lucesEmergencia" class="active" aria-hidden="true"></div>
 

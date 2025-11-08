@@ -5,795 +5,249 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>DM Panel PRO — Turbo Master Dragon™</title>
 <meta name="theme-color" content="#00ff7b" />
-<meta name="description" content="Panel para Dungeon Masters: Maestro Shaolín con lectura kármica, ambiente musical, SFX y modal Shaolín Pro+." />
+<meta name="description" content="Panel para Masters: Ambient, SFX en paralelo por categorías, parar último y todo.">
 <style>
-  :root{
-    --green:#00ff7b; --accent:#ffd166; --line:#113c2d;
-    --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
-  }
+  :root{ --green:#00ff7b; --accent:#ffd166; --line:#113c2d; --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{
-    background:#000; color:var(--text);
-    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    line-height:1.55; overflow-x:hidden;
-  }
-  .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.12; pointer-events:none}
-  .wrap{max-width:1100px; margin:0 auto; padding:20px 14px}
-
-  /* Hero / Promo */
-  .promo{
-    background:radial-gradient(1100px 520px at 50% 0%, #042218 0%, #000 72%);
-    border-bottom:1px solid #0a3; padding:28px 14px 22px; text-align:center;
-    box-shadow:inset 0 0 40px rgba(0,255,150,.12);
-  }
-  .title{
-    font-size:clamp(24px,4.4vw,40px); font-weight:900; letter-spacing:.04em;
-    color:var(--green); text-shadow:0 0 16px rgba(0,255,150,.6);
-  }
+  body{ background:#000; color:var(--text); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; line-height:1.55; overflow-x:hidden; }
+  .wrap{max-width:1100px; margin:0 auto; padding:18px 14px}
+  header.hero{ margin-top:18px; margin-bottom:16px; text-align:center; padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04); }
+  .title{font-size:clamp(24px,4.2vw,40px); font-weight:900; letter-spacing:.04em; color:var(--green); text-shadow:0 0 16px rgba(0,255,150,.6);}
   .subtitle{color:#cfe; opacity:.95; margin-top:6px}
-  .cta{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:14px}
+  .cta{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:12px}
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    padding:12px 16px; border-radius:999px; border:1px solid var(--green);
+    padding:10px 14px; border-radius:999px; border:1px solid var(--green);
     background:linear-gradient(180deg,#02140f,#031b14); color:var(--green); text-decoration:none;
     font-weight:800; letter-spacing:.02em; cursor:pointer;
     box-shadow:0 0 10px var(--green),0 0 18px rgba(0,255,140,.45);
     transition:transform .12s ease, box-shadow .2s ease;
   }
-  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55) }
-  .btn.alt{ border-color:var(--accent); color:var(--accent);
-    box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
+  .btn.alt{ border-color:var(--accent); color:var(--accent); box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center}
+  .slider{accent-color:#00ff7b; width:min(280px,60vw)}
+  .small{font-size:.92rem; opacity:.92; color:#cfe}
+  footer{margin:22px 0 18px; text-align:center; color:#9edfc9; font-size:.95rem; border-top:1px solid var(--line); padding-top:12px}
+  .mini{opacity:.75; font-size:.9rem; margin-top:6px}
 
-  /* Grid principal */
-  .grid{display:grid; gap:14px; grid-template-columns:1fr}
-  @media(min-width:900px){ .grid{grid-template-columns:1.2fr .8fr} }
-  .card{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px}
-  h2.section{color:var(--green); font-size:clamp(18px,2.2vw,22px); margin-bottom:8px; text-shadow:0 0 10px rgba(0,255,150,.25)}
-  .muted{color:#cfe; opacity:.95}
-  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-  .stack{display:grid; gap:10px}
-  .reading{
-    background:rgba(0,0,0,.5); border:1px dashed var(--line); border-radius:12px;
-    padding:12px; min-height:120px; white-space:pre-line
-  }
-  select, input[type="text"], textarea{
-    background:#031b14; color:#eafff5; border:1px solid var(--line); border-radius:10px;
-    padding:10px; width:100%; font:inherit;
-  }
-  .controls{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
-  .small{font-size:.92rem; opacity:.92}
-
-  /* Modal Shaolin Pro+ */
+  /* Modal (nativo) */
   dialog#sfxModal{
-    width:min(720px,92vw); background:#041510; border:1px solid var(--line); border-radius:16px; color:var(--text);
+    width:min(860px,94vw); background:#041510; border:1px solid var(--line);
+    border-radius:16px; color:var(--text);
     box-shadow:0 10px 40px rgba(0,0,0,.6), 0 0 32px rgba(0,255,150,.15);
   }
   dialog::backdrop{ background:rgba(0,0,0,.6) }
   .modal-hdr{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line)}
-  .modal-grid{display:grid; gap:10px; grid-template-columns:1fr 1fr}
-  @media(max-width:640px){ .modal-grid{grid-template-columns:1fr} }
-  .sfx-item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border:1px solid var(--line); border-radius:10px; background:#071c16}
   .x{background:transparent; border:1px solid var(--line); color:#9edfc9; padding:8px 10px; border-radius:10px; cursor:pointer}
-
-  /* Footer */
-  footer{margin:24px 0 18px; text-align:center; color:#9edfc9; font-size:.95rem; border-top:1px solid var(--line); padding-top:12px}
-  .mini{opacity:.75; font-size:.9rem; margin-top:6px}
-
-  /* Flotante de sonido general */
-  #soundToggle{
-    position:fixed; right:14px; top:14px; z-index:9999;
-    background:#001100; color:#00ff7b; border:2px solid #00ff7b;
-    border-radius:24px; padding:8px 12px; font-family:monospace; cursor:pointer;
-    box-shadow:0 0 10px rgba(0,255,140,.35)
-  }
-  .slider{accent-color:#00ff7b; width:min(280px,60vw)}
+  .stack{display:grid; gap:10px}
+  /* Fallback modal (para navegadores sin <dialog>) */
+  .fallback{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:9999; }
+  .fallback .box{ width:min(860px,94vw); background:#041510; border:1px solid var(--line); border-radius:16px; color:var(--text); box-shadow:0 10px 40px rgba(0,0,0,.6), 0 0 32px rgba(0,255,150,.15); }
 </style>
 </head>
 <body>
-<canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
-
-<section class="promo">
-  <h1 class="title">DM Panel PRO — Turbo Master Dragon™</h1>
-  <p class="subtitle">Ambientación Shaolín + Consejos kármicos. <strong>Abre, pulsa, juega</strong>. Sin distracciones.</p>
-  <div class="cta">
-    <button class="btn" id="btnAmbient"><span id="icoAmbient">▶</span> Ambient: Iniciar</button>
-    <button class="btn alt" id="btnSfxRandom">🎲 SFX aleatorio</button>
-    <button class="btn" id="btnStopAll">⏹️ Parar todo</button>
-  </div>
-  <div class="cta">
-    <label class="small">Volumen
-      <input type="range" id="volMaster" class="slider" min="0" max="1" step="0.01" value="0.65" />
-    </label>
-    <label class="small">
-      <input type="checkbox" id="ducking" checked />
-      Bajar música mientras habla el Maestro
-    </label>
-  </div>
-  <div class="cta">
-    <button class="btn alt" id="btnOpenModal">🧘 Shaolín Pro+ — Selección de efectos</button>
-  </div>
-</section>
-
-<button id="soundToggle" aria-pressed="false">🔇 Activar sonido</button>
-
 <div class="wrap">
-  <section class="grid">
-    <!-- Maestro -->
-    <div class="card">
-      <h2 class="section">🧘 Lectura del Maestro</h2>
-      <p class="muted small">Pulsa para leer tu <strong>última tirada</strong> (misma web, clave <code>karmicCalculator</code>) o pide una lectura aleatoria.</p>
-      <div class="controls">
-        <button class="btn" id="btnReadLast">📖 Leer última tirada</button>
-        <button class="btn alt" id="btnRandomRead">🎲 Lectura aleatoria</button>
-        <button class="btn" id="btnVoiceToggle" aria-pressed="true">🗣️ Voz del Maestro: ON</button>
-      </div>
-      <div id="readingText" class="reading">El templo está en silencio. Pide una lectura…</div>
-      <div class="controls">
-        <button class="btn" id="btnRepeat">🔁 Repetir</button>
-        <button class="btn alt" id="btnSpeakStop">⏹️ Parar voz</button>
-      </div>
-      <p id="sourceFlag" class="muted small"></p>
+  <header class="hero">
+    <div class="title">DM Panel PRO — Turbo Master Dragon™</div>
+    <div class="subtitle">Ambientación + Efectos (SFX = efectos de sonido). Pulsa, mezcla, corta.</div>
+    <div class="cta">
+      <button class="btn" id="btnAmbient"><span id="icoAmbient">▶</span> Ambient: Iniciar</button>
+      <button class="btn alt" id="btnOpenModal">🧘 Shaolín Pro+ — Selección de efectos</button>
+      <button class="btn" id="btnStopLastHdr">⏹️ Parar último</button>
+      <button class="btn" id="btnStopAllHdr">⛔ Parar TODO</button>
     </div>
-<!-- ===== REVISAR KARMA (CTA) ===== -->
-<section class="card" style="margin-top:16px; text-align:center">
-  <h2 class="section">🧮 Revisa tu Karma</h2>
-  <p class="muted" style="max-width:720px;margin:0 auto 12px">
-    Mira tu tirada actual en la Calculadora Kármica. Cada resultado es un espejo:
-    no es castigo, es una lección para romper el Samsara.
-  </p>
-
-  <div class="neon-bar" style="justify-content:center">
-    <a class="btn-neon alt"
-       href="https://karmalab-samsara.netlify.app/"
-       target="_blank" rel="noopener">
-      🧮 Abrir Calculadora Kármica
-    </a>
-  </div>
-<p class="muted" style="text-align:center;margin:8px 0 0">
-  Haz tu tirada en la Calculadora y vuelve aquí para el consejo del Maestro.
-</p>
-  <p class="muted" style="max-width:680px;margin:10px auto 0; font-size:.92rem">
-    Consejo: haz tu tirada y vuelve al Maestro Shaolín para escuchar el consejo.
-  </p>
-</section>
-    <!-- Voz y entrada simple -->
-    <div class="card">
-      <h2 class="section">🎛️ Voz y entrada manual</h2>
-      <div class="stack">
-        <label class="muted">Voz</label>
-        <select id="voiceSelect" aria-label="Seleccionar voz"></select>
-      </div>
-
-      <div class="stack" style="margin-top:10px">
-        <label class="muted">Resultado manual (rápido)</label>
-        <div class="row">
-          <select id="quickType" style="max-width:170px">
-            <option value="dharma">DHARMA</option>
-            <option value="karma">KARMA</option>
-            <option value="interaction">INTERACCIÓN</option>
-          </select>
-          <input id="quickText" type="text" placeholder="Ej: AVANCE RÁPIDO: +4 espacios" />
-        </div>
-        <button class="btn" id="btnQuickUse">✅ Usar</button>
-      </div>
-
-      <p class="muted small" style="margin-top:12px">Tip: Usa <strong>Shaolín Pro+</strong> para dar ambiente musical y <em>toques</em> en momentos clave.</p>
+    <div class="row" style="margin-top:8px">
+      <label class="small">Volumen
+        <input type="range" id="volMaster" class="slider" min="0" max="1" step="0.01" value="0.7" />
+      </label>
+      <span id="playingCount" class="small">Reproduciendo: 0</span>
     </div>
+  </header>
+
+  <section class="small" style="text-align:center">
+    Consejo: puedes disparar varios sonidos a la vez (por ejemplo, <em>ambiente</em> + <em>flecha</em> + <em>tigre</em>). “Parar último” corta el más reciente; “Parar TODO” silencia todo.
   </section>
 
   <footer>
     © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>.
-    <div class="mini">Turbo Master Dragon™ · DM Panel PRO (v1).</div>
+    <div class="mini">DM Panel PRO · Mezcla SFX por categorías.</div>
   </footer>
 </div>
 
-<!-- Modal SFX -->
+<!-- Modal nativo -->
 <dialog id="sfxModal">
   <div class="modal-hdr">
-    <strong>🧘 Shaolín Pro+ — Efectos Especiales</strong>
-    <button class="x" id="btnCloseModal">Cerrar</button>
+    <strong>🧘 Shaolín Pro+ — Efectos por categoría</strong>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn alt" id="btnStopLastModal">⏹ Parar último</button>
+      <button class="btn" id="btnStopAllModal">🛑 Parar TODO</button>
+      <button class="x" id="btnCloseModal">Cerrar</button>
+    </div>
   </div>
   <div class="stack" style="padding:12px 14px">
-    <p class="muted small">Toca para disparar un efecto. Puedes encadenarlos; “⏹️ Parar todo” corta el ambiente y los SFX.</p>
-    <div class="modal-grid" id="sfxList"></div>
+    <p class="small">Puedes disparar varios sonidos a la vez (ej: <em>ambiente + flecha + tigre</em>). “Parar último” corta el más reciente; “Parar TODO” silencia todo.</p>
+    <div id="sfxCats" class="stack"></div>
+    <p class="small" style="margin-top:8px">Reproduciendo: <span id="sfxCount">0</span></p>
+    <div id="sfxError" class="small" style="display:none;color:#ffb3b3">No se encontró <code>efectos.json</code>.</div>
   </div>
 </dialog>
 
+<!-- Fallback para navegadores sin <dialog> -->
+<div id="fallbackModal" class="fallback" aria-hidden="true">
+  <div class="box">
+    <div class="modal-hdr">
+      <strong>🧘 Shaolín Pro+ — Efectos por categoría</strong>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn alt" id="btnStopLastFb">⏹ Parar último</button>
+        <button class="btn" id="btnStopAllFb">🛑 Parar TODO</button>
+        <button class="x" id="btnCloseFb">Cerrar</button>
+      </div>
+    </div>
+    <div class="stack" style="padding:12px 14px">
+      <p class="small">Puedes disparar varios sonidos a la vez (ej: <em>ambiente + flecha + tigre</em>).</p>
+      <div id="sfxCatsFb" class="stack"></div>
+      <p class="small" style="margin-top:8px">Reproduciendo: <span id="sfxCountFb">0</span></p>
+      <div id="sfxErrorFb" class="small" style="display:none;color:#ffb3b3">No se encontró <code>efectos.json</code>.</div>
+    </div>
+  </div>
+</div>
+
 <!-- Audios base -->
-<audio id="ambientAudio" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
-<audio id="gongAudio"    src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_3b6a6c9e61.mp3?filename=gong-hit-105527.mp3" preload="auto" playsinline></audio>
+<audio id="ambientAudio" src="https://cdn.pixabay.com/download/audio/2021/10/27/audio_0d2ddf4a1a.mp3?filename=windy-ambient-111677.mp3" loop preload="auto" playsinline></audio>
 
 <script>
-/* ===== Fondo Matrix ===== */
-(()=>{const c=document.getElementById('matrixBg'),x=c.getContext('2d');function R(){c.width=innerWidth;c.height=innerHeight}R();addEventListener('resize',R);
-const A='アカサタナハマヤラワ0123456789☯KARMADHARMA'.split(''), fs=14;let cols=Math.floor(c.width/fs), drops=Array(cols).fill(1);
-setInterval(()=>{ if(cols!==Math.floor(c.width/fs)){cols=Math.floor(c.width/fs);drops=Array(cols).fill(1)}
-x.fillStyle='rgba(0,0,0,.06)'; x.fillRect(0,0,c.width,c.height);
-x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
-for(let i=0;i<drops.length;i++){ x.fillText(A[(Math.random()*A.length)|0],i*fs,drops[i]*fs);
-if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0; drops[i]++; }
-},33);})();
-
-/* ===== Audio Manager (ambient + SFX + ducking) ===== */
+/* ===== Ambient y contador ===== */
 const ambient = document.getElementById('ambientAudio');
-const gong = document.getElementById('gongAudio');
 const btnAmbient = document.getElementById('btnAmbient');
 const icoAmbient = document.getElementById('icoAmbient');
-const btnSfxRandom = document.getElementById('btnSfxRandom');
-const btnStopAll = document.getElementById('btnStopAll');
 const volMaster = document.getElementById('volMaster');
-const ducking = document.getElementById('ducking');
-const soundToggle = document.getElementById('soundToggle');
+const playingCount = document.getElementById('playingCount');
 
 let audioReady=false;
-function ensureAmbientUnlock(){
+function ensureUnlock(){
   if(audioReady) return;
-  ambient.volume = volMaster.value;
-  ambient.play().then(()=>{audioReady=true; soundToggle.textContent="🔊 Silenciar"; soundToggle.setAttribute("aria-pressed","true");})
-  .catch(()=>{});
+  ambient.volume = parseFloat(volMaster.value||'0.7');
+  ambient.play().then(()=>{ audioReady=true; btnAmbient.dataset.on="1"; icoAmbient.textContent='⏸'; btnAmbient.lastChild.textContent=' Ambient: Pausar'; }).catch(()=>{});
 }
-addEventListener('pointerdown', function onFirst(){ensureAmbientUnlock(); removeEventListener('pointerdown', onFirst)}, {once:true});
-
-soundToggle.addEventListener('click', ()=>{
-  if(!audioReady){ensureAmbientUnlock(); return;}
-  if(ambient.paused){ambient.play(); soundToggle.textContent="🔊 Silenciar"; soundToggle.setAttribute("aria-pressed","true")}
-  else{ambient.pause(); soundToggle.textContent="🔇 Activar sonido"; soundToggle.setAttribute("aria-pressed","false")}
-});
+addEventListener('pointerdown', function onFirst(){ ensureUnlock(); removeEventListener('pointerdown', onFirst) }, {once:true});
 
 btnAmbient.addEventListener('click', ()=>{
-  ensureAmbientUnlock();
-  if(ambient.paused){ ambient.volume = volMaster.value; ambient.play(); icoAmbient.textContent='⏸'; btnAmbient.innerHTML = `${icoAmbient.outerText} Ambient: Pausar`; }
-  else { ambient.pause(); icoAmbient.textContent='▶'; btnAmbient.innerHTML = `${icoAmbient.outerText} Ambient: Iniciar`; }
+  ensureUnlock();
+  if(ambient.paused){ ambient.volume=parseFloat(volMaster.value||'0.7'); ambient.play(); icoAmbient.textContent='⏸'; btnAmbient.lastChild.textContent=' Ambient: Pausar'; }
+  else{ ambient.pause(); icoAmbient.textContent='▶'; btnAmbient.lastChild.textContent=' Ambient: Iniciar'; }
 });
-
-volMaster.addEventListener('input', ()=>{
-  const v = parseFloat(volMaster.value||'0.6');
-  ambient.volume = v * (speakingActive && ducking.checked ? 0.35 : 1.0);
-});
+volMaster.addEventListener('input', ()=> ambient.volume = parseFloat(volMaster.value||'0.7'));
+</script>
 
 <script>
-// ===== SFX moderno: usa efectos.json y tus 8 carpetas =====
-let EFECTOS = null, SFX_FLAT = [];
-
-async function cargarEfectosSFX(){
-  try{
-    const res = await fetch('efectos.json?v=' + Date.now());
-    EFECTOS = await res.json();
-    // Aplana todas las categorías en una sola lista con la ruta completa
-    SFX_FLAT = [];
-    Object.keys(EFECTOS).forEach(cat=>{
-      const limpio = cat.trim(); // por si quedó un espacio en el JSON
-      (EFECTOS[cat]||[]).forEach(file=>{
-        SFX_FLAT.push(`audio/${limpio}/${file}`);
-      });
-    });
-  }catch(e){
-    console.error('No pude cargar efectos.json', e);
-    EFECTOS = {}; SFX_FLAT = [];
-  }
-}
-
-function playSfxPath(path){
-  const a = new Audio(path);
-  a.volume = parseFloat(document.getElementById('volMaster').value || '1');
-  a.play().catch(()=>{});
-  // guarda por si quieres cortar todos luego
-  window.__sfxPlaying = window.__sfxPlaying || [];
-  window.__sfxPlaying.push(a);
-  return a;
-}
-
-function playSfxAleatorio(){
-  if (!SFX_FLAT.length) return;
-  const pick = SFX_FLAT[(Math.random()*SFX_FLAT.length)|0];
-  playSfxPath(pick);
-}
-
-// Conecta botones existentes
-document.getElementById('btnSfxRandom').addEventListener('click', playSfxAleatorio);
-document.getElementById('btnStopAll').addEventListener('click', ()=>{
-  try{ if (window.__sfxPlaying) window.__sfxPlaying.forEach(a=>{a.pause();a.currentTime=0}); window.__sfxPlaying=[]; }catch(_){}
-});
-
-// Carga catálogo al abrir página
-document.addEventListener('DOMContentLoaded', cargarEfectosSFX);
-</script>
-btnStopAll.addEventListener('click', ()=>{
-  try{ ambient.pause(); ambient.currentTime = 0; }catch(_){}
-  try{ speechSynthesis.cancel(); }catch(_){}
-});
-
-/* Modal SFX Pro+ */
-const sfxModal = document.getElementById('sfxModal');
-const btnOpenModal = document.getElementById('btnOpenModal');
-const btnCloseModal = document.getElementById('btnCloseModal');
-const sfxList = document.getElementById('sfxList');
-btnOpenModal.addEventListener('click', ()=> sfxModal.showModal());
-btnCloseModal.addEventListener('click', ()=> sfxModal.close());
-SFX.forEach(n=>{
-  const div = document.createElement('div'); div.className='sfx-item';
-  const left = document.createElement('div'); left.textContent = n.replace(/\.mp3$/,'');
-  const right = document.createElement('div');
-  const b = document.createElement('button'); b.className='btn'; b.textContent='▶ reproducir';
-  b.addEventListener('click', ()=> playSfx(n));
-  right.appendChild(b); div.append(left,right); sfxList.appendChild(div);
-});
-
-/* ===== Maestro Shaolín (lectura) ===== */
-const readingEl = document.getElementById('readingText');
-const sourceFlag = document.getElementById('sourceFlag');
-const btnReadLast = document.getElementById('btnReadLast');
-const btnRandomRead = document.getElementById('btnRandomRead');
-const btnRepeat = document.getElementById('btnRepeat');
-const btnSpeakStop = document.getElementById('btnSpeakStop');
-const btnVoiceToggle = document.getElementById('btnVoiceToggle');
-const voiceSelect = document.getElementById('voiceSelect');
-const quickType = document.getElementById('quickType');
-const quickText = document.getElementById('quickText');
-const btnQuickUse = document.getElementById('btnQuickUse');
-
-let voices=[], currentVoice=null, voiceOn=true, speakingActive=false;
-
-function populateVoices(){
-  voices = speechSynthesis.getVoices();
-  voiceSelect.innerHTML='';
-  const es = voices.filter(v=>v.lang && v.lang.toLowerCase().startsWith('es'));
-  const list = es.length? es : voices;
-  list.forEach(v=>{
-    const o=document.createElement('option'); o.value=v.name; o.textContent=`${v.name} — ${v.lang}`; voiceSelect.appendChild(o);
-  });
-  currentVoice = list[0] || voices[0] || null;
-}
-if('speechSynthesis' in window){
-  populateVoices();
-  window.speechSynthesis.onvoiceschanged = populateVoices;
-}
-voiceSelect.addEventListener('change', ()=>{
-  const v = voices.find(v=>v.name===voiceSelect.value);
-  if(v) currentVoice=v;
-});
-btnVoiceToggle.addEventListener('click', ()=>{
-  voiceOn=!voiceOn;
-  btnVoiceToggle.textContent = voiceOn? "🗣️ Voz del Maestro: ON" : "🤫 Voz del Maestro: OFF";
-  btnVoiceToggle.setAttribute('aria-pressed', voiceOn? 'true':'false');
-});
-
-const FALLBACK_KARMA = [
-  {type:"karma",  result:"AUTOGOL: Retrocede 3 espacios"},
-  {type:"karma",  result:"PÉRDIDA DE TURNO por arrogancia espiritual"},
-  {type:"dharma", result:"AVANCE RÁPIDO: +4 espacios"},
-  {type:"dharma", result:"INMUNIDAD KÁRMICA por 1 turno"},
-  {type:"dharma", result:"DOBLE MOVIMIENTO en tu siguiente ronda"}
-];
-function getLastKarmicFromLocalStorage(){
-  try{
-    const raw = localStorage.getItem("karmicCalculator"); if(!raw) return null;
-    const data = JSON.parse(raw); const hist = Array.isArray(data.history)? data.history : [];
-    if(!hist.length) return null; const last = hist[0];
-    if(last.from==='roulette' && last.fullData?.result){ return {type:last.to, result:last.fullData.result}; }
-    if(last.description && (last.description.startsWith('KARMA')||last.description.startsWith('DHARMA'))){
-      const [k,...rest]=last.description.split(':'); return {type:k.toLowerCase(), result:rest.join(':').trim()};
-    }
-    if(last.fullData?.difficulty!==undefined){
-      const desc=last.description||""; const p=desc.split('→');
-      const from=(p[0]||'Humano').trim(); const to=(p[1]||'Humano').split(':')[0].trim();
-      return {type:'interaction', result:`Interacción ${from} → ${to} (dif. ${last.fullData.difficulty})`};
-    }
-  }catch(e){}
-  return null;
-}
-function forgeReading(payload){
-  const intros=[
-    "El bambú se inclina, pero no se quiebra.",
-    "Respira hondo. Observa sin juicio.",
-    "Cuando la mente se aquieta, el camino aparece.",
-    "Quien empuja el río, solo se cansa."
-  ];
-  const outro=[
-    "Camina suave. La salida está en tu siguiente decisión.",
-    "Suelta un poco hoy, para andar más lejos mañana.",
-    "El dado cae, pero tu intención lo guía.",
-    "Mira la luna y recuerda: no eres tus sombras."
-  ];
-  let cuerpo="";
-  if(payload?.type==="karma"){
-    cuerpo=`Veo carga activa: ${payload.result}. No luches contra el golpe; absorbe y redirige. Practica una renuncia pequeña ahora.`;
-  }else if(payload?.type==="dharma"){
-    cuerpo=`Llega viento propicio: ${payload.result}. Úsalo también para levantar a otro. Compartir te hará más ligero.`;
-  }else if(payload?.type==="interaction"){
-    cuerpo=`Cruce entre fuerzas: ${payload.result}. Observa el apego que empuja. Elige la opción con menos orgullo.`;
-  }else{
-    const rnd=FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0];
-    cuerpo=`Sin señales recientes, leo el pulso: ${rnd.type.toUpperCase()} — ${rnd.result}. Da el siguiente paso con humildad.`;
-  }
-  return `${intros[(Math.random()*intros.length)|0]}\n${cuerpo}\n${outro[(Math.random()*outro.length)|0]}`;
-}
-function speak(text){
-  if(!voiceOn || !('speechSynthesis' in window)) return;
-  const u=new SpeechSynthesisUtterance(text);
-  if(currentVoice) u.voice = voices.find(v=>v.name===currentVoice.name) || currentVoice;
-  u.lang=(u.voice && u.voice.lang) ? u.voice.lang : 'es-ES';
-  u.rate=0.95; u.pitch=1.0; u.volume=1.0;
-  speakingActive=true;
-  if(ducking.checked){ ambient.volume = parseFloat(volMaster.value) * 0.35; }
-  u.onend=()=>{ speakingActive=false; ambient.volume = parseFloat(volMaster.value);
-    try{ gong.currentTime=0; gong.volume=0.55; gong.play().catch(()=>{});}catch(_){}
-  };
-  speechSynthesis.cancel(); speechSynthesis.speak(u);
-}
-
-/* Botones Maestro */
-btnReadLast.addEventListener('click', ()=>{
-  let payload = getLastKarmicFromLocalStorage();
-  let src = payload? "Fuente: Calculadora (localStorage)." : "";
-  if(!payload){ payload = FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0]; src="Fuente: Respaldo aleatorio."; }
-  const t=forgeReading(payload); readingEl.textContent=t; sourceFlag.textContent=src; speak(t);
-});
-btnRandomRead.addEventListener('click', ()=>{
-  const payload = FALLBACK_KARMA[(Math.random()*FALLBACK_KARMA.length)|0];
-  const t=forgeReading(payload); readingEl.textContent=t; sourceFlag.textContent="Fuente: Aleatoria (fallback)."; speak(t);
-});
-btnRepeat.addEventListener('click', ()=>{ const t=readingEl.textContent.trim(); if(t) speak(t); });
-btnSpeakStop.addEventListener('click', ()=>{ try{speechSynthesis.cancel(); speakingActive=false; ambient.volume=parseFloat(volMaster.value);}catch(_){}});
-
-/* Quick input */
-btnQuickUse.addEventListener('click', ()=>{
-  const type = quickType.value;
-  const text = (quickText.value||'').trim() || (type==='dharma'?'AVANCE RÁPIDO: +4 espacios':'Retrocede 1 espacio');
-  const payload = {type, result:text};
-  const t=forgeReading(payload); readingEl.textContent=t; sourceFlag.textContent="Fuente: Manual (rápido)."; speak(t);
-});
-</script>
-<script>
-/* ===== Curvista Game Presets (DM Panel PRO) =====
-   Lee ?game= de la URL y aplica ajustes visuales/sonoros */
+/* ===== Mezcla SFX por categorías ===== */
 (function(){
-  // 1) Param helper
-  function qs(k){ return new URLSearchParams(location.search).get(k) || ""; }
+  const hasDialog = !!window.HTMLDialogElement;
+  const modal      = document.getElementById('sfxModal');
+  const fb         = document.getElementById('fallbackModal');
+  const openBtn    = document.getElementById('btnOpenModal');
+  const closeBtn   = document.getElementById('btnCloseModal');
+  const sfxCats    = document.getElementById('sfxCats');
+  const err        = document.getElementById('sfxError');
+  const countEl    = document.getElementById('sfxCount');
 
-  // 2) Presets por juego (puedes ampliar cuando quieras)
-  const GAME_PRESETS = {
-    chess: {
-      name: "Ajedrez",
-      title: "Ajedrez · Mente como agua",
-      subtitle: "Sacrificio, tempo y silencio entre movimientos.",
-      maestroTone: "Observa el tablero como si fuera tu respiración: constante y sin ruido.",
-      tip: "Sugerencia: usa lecturas sobre sacrificio y ritmo.",
-      ambient: null, // pon aquí un mp3 si quieres: "audio/ambient/chinese-flute.mp3"
-      sfx: []        // o lista de SFX específicos
-    },
-    scrabble: {
-      name: "Scrabble",
-      title: "Scrabble · El poder de la palabra",
-      subtitle: "La etimología como brújula del destino.",
-      maestroTone: "Cada palabra es una huella en la arena: elige bien dónde pisas.",
-      tip: "Sugerencia: activa el Maestro tras formar palabras clave.",
-      ambient: null,
-      sfx: []
-    },
-    monopoly: {
-      name: "Monopoly",
-      title: "Monopoly · Karma financiero",
-      subtitle: "Apego, deuda y liberación del tener.",
-      maestroTone: "La riqueza que no compartes te posee a ti.",
-      tip: "Sugerencia: usa lecturas tras compras/hipotecas.",
-      ambient: null,
-      sfx: []
-    },
-    catan: {
-      name: "Catan",
-      title: "Catan · Fluir de recursos",
-      subtitle: "Trueque, alianzas y buen viento.",
-      maestroTone: "Ofrece antes de pedir: el río fluye donde menos se atasca.",
-      tip: "Sugerencia: Maestro al cerrar tratos.",
-      ambient: null, sfx: []
-    },
-    carcassonne: {
-      name: "Carcassonne",
-      title: "Carcassonne · Cosecha de acciones",
-      subtitle: "Colocar, esperar, recoger.",
-      maestroTone: "Siembra silencios para cosechar claridad.",
-      tip: "Sugerencia: lecturas al reclamar mayorías.",
-      ambient: null, sfx: []
-    },
-    risk: {
-      name: "Risk",
-      title: "Risk · Poder y control",
-      subtitle: "Conquista externa, examen interno.",
-      maestroTone: "Ganar territorio no es vencerte a ti mismo.",
-      tip: "Sugerencia: Maestro tras invasiones clave.",
-      ambient: null, sfx: []
-    },
-    ticket: {
-      name: "Ticket to Ride",
-      title: "Ticket to Ride · Rutas y timing",
-      subtitle: "El arte de estar a tiempo.",
-      maestroTone: "No corras: llega.",
-      tip: "Sugerencia: Maestro al completar rutas largas.",
-      ambient: null, sfx: []
-    },
-    uno: {
-      name: "UNO",
-      title: "UNO · Karma inmediato",
-      subtitle: "Reacciones rápidas, sonrisa ligera.",
-      maestroTone: "Juega con alegría: la ligereza también enseña.",
-      tip: "Sugerencia: Maestro con +2/+4 o reversa.",
-      ambient: null, sfx: []
-    },
-    pandemic: {
-      name: "Pandemic",
-      title: "Pandemic · Dharma colectivo",
-      subtitle: "Cooperar para aliviar el mundo.",
-      maestroTone: "Curar a otro es sanar en ti lo mismo.",
-      tip: "Sugerencia: Maestro al curar/enlazar brotes.",
-      ambient: null, sfx: []
-    },
-    codenames: {
-      name: "Codenames",
-      title: "Codenames · Intuición verbal",
-      subtitle: "Pista clara, mente clara.",
-      maestroTone: "Di menos, sugiere más.",
-      tip: "Sugerencia: Maestro tras cada pista clave.",
-      ambient: null, sfx: []
-    },
-    dnd5e: {
-      name: "Dungeons & Dragons (5e)",
-      title: "D&D 5e · Camino del Aventurero",
-      subtitle: "Karma/Dharma por escena y descanso.",
-      maestroTone: "Tu intención guía el dado, no al revés.",
-      tip: "Sugerencia: Maestro tras tiradas críticas.",
-      ambient: null, sfx: []
-    },
-    tencandles: {
-      name: "Ten Candles",
-      title: "Ten Candles · Tragedia luminosa",
-      subtitle: "La última vela no apaga tu voz.",
-      maestroTone: "Acepta la oscuridad; sé la lámpara.",
-      tip: "Sugerencia: Maestro al apagar cada vela.",
-      ambient: null, sfx: []
-    },
-    cthulhu: {
-      name: "Call of Cthulhu",
-      title: "Call of Cthulhu · Cordura en la niebla",
-      subtitle: "No todo lo que ves debe habitarte.",
-      maestroTone: "Mira el abismo sin caer en él.",
-      tip: "Sugerencia: Maestro en chequeos de cordura.",
-      ambient: null, sfx: []
-    },
-    vampire: {
-      name: "Vampire: The Masquerade",
-      title: "Vampiro · Poder y redención",
-      subtitle: "Hambre, máscara y elección.",
-      maestroTone: "La sed se calma compartiendo.",
-      tip: "Sugerencia: Maestro en escenas de hambre.",
-      ambient: null, sfx: []
+  // Fallback refs
+  const closeFb    = document.getElementById('btnCloseFb');
+  const sfxCatsFb  = document.getElementById('sfxCatsFb');
+  const errFb      = document.getElementById('sfxErrorFb');
+  const countFb    = document.getElementById('sfxCountFb');
+
+  // Botones de parada (header + modal + fallback)
+  const btnStopLastHdr = document.getElementById('btnStopLastHdr');
+  const btnStopAllHdr  = document.getElementById('btnStopAllHdr');
+  const btnStopLastModal = document.getElementById('btnStopLastModal');
+  const btnStopAllModal  = document.getElementById('btnStopAllModal');
+  const btnStopLastFb    = document.getElementById('btnStopLastFb');
+  const btnStopAllFb     = document.getElementById('btnStopAllFb');
+
+  // Estado global de mezclas
+  const active = new Set(); // <Audio>
+  const stack  = [];        // LIFO para “Parar último”
+  function refreshCount(){
+    const n = String(active.size);
+    countEl.textContent = n;
+    countFb.textContent = n;
+    playingCount.textContent = "Reproduciendo: " + n;
+  }
+  function playSfx(url){
+    const a = new Audio(url);
+    a.volume = parseFloat(volMaster.value || '0.7');
+    a.addEventListener('ended', ()=>{ active.delete(a); refreshCount(); });
+    a.play().then(()=>{ active.add(a); stack.push(a); refreshCount(); }).catch(()=>{});
+    return a;
+  }
+  function stopLast(){
+    while (stack.length){
+      const a = stack.pop();
+      if (active.has(a)){
+        try{ a.pause(); a.currentTime = 0; }catch(_){}
+        active.delete(a); break;
+      }
     }
-  };
-
-  // 3) Detecta el juego
-  const key = (qs('game') || "").toLowerCase();
-  const P = GAME_PRESETS[key] || {
-    name:"Genérico",
-    title:"DM Panel PRO · Samsara Booster",
-    subtitle:"Selecciona juego desde el hub para tono y ayudas específicas.",
-    maestroTone:"Respira. Observa. Actúa sin apego.",
-    tip:"Sugerencia: usa SFX (efectos de sonido) para ambientar.",
-    ambient:null, sfx:[]
-  };
-
-  // 4) Pinta badge y cabeceras (no explota si no existen)
-  function setText(sel, txt){
-    const el = document.querySelector(sel);
-    if (el && txt) el.textContent = txt;
+    refreshCount();
   }
-  setText('.title, #dmTitle', P.title);
-  setText('.subtitle, #dmSubtitle', P.subtitle);
-  document.title = P.title + " — Turbo Master Dragon";
-
-  // Inserta badge “Juego: …” bajo el header si no existe ya
-  (function ensureBadge(){
-    if (document.querySelector('#gameBadge')) return;
-    const header = document.querySelector('header.hero') || document.querySelector('.hero') || document.body;
-    const badge = document.createElement('div');
-    badge.id = 'gameBadge';
-    badge.textContent = `🎯 Juego: ${P.name}`;
-    Object.assign(badge.style, {
-      marginTop:'8px', color:'#8affbf', opacity:.95, fontSize:'0.95rem'
-    });
-    header.appendChild(badge);
-  })();
-
-  // 5) Ambient por juego (si tienes un mp3 específico)
-  (function trySetAmbient(){
-    if (!P.ambient) return; // usa el que ya tienes
-    const a = document.getElementById('ambientAudio');
-    if (a){ a.src = P.ambient; a.load(); }
-  })();
-
-  // 6) Ajuste de SFX (si tu página expone un getter o array global)
-  // Si tienes window.SFX_LIST en maestro/dm, lo reemplazamos:
-  if (Array.isArray(window.SFX_LIST) && P.sfx && P.sfx.length){
-    window.SFX_LIST = P.sfx.slice();
+  function stopAll(){
+    active.forEach(a=>{ try{ a.pause(); a.currentTime = 0; }catch(_){} });
+    active.clear(); refreshCount();
   }
-  // Si usas un botón que llama playSfx(), intenta sobreescribir proveedor:
-  window.getCurvistaSfxList = function(defaultList){
-    return (P.sfx && P.sfx.length) ? P.sfx : (defaultList || []);
-  };
+  [btnStopLastHdr,btnStopLastModal,btnStopLastFb].forEach(b=>b?.addEventListener('click',stopLast));
+  [btnStopAllHdr,btnStopAllModal,btnStopAllFb].forEach(b=>b?.addEventListener('click',stopAll));
 
-  // 7) Tono del Maestro: engancha al generador si existe
-  // Si tu código tiene forgeShaolinReading(payload) o similar, lo decoramos:
-  const wrapTone = (text)=> (P.maestroTone ? (P.maestroTone + "\n" + text) : text);
+  // Abrir/Cerrar modal
+  openBtn.addEventListener('click', ()=>{ hasDialog ? modal.showModal() : (fb.style.display='flex'); });
+  closeBtn?.addEventListener('click', ()=> modal.close());
+  closeFb?.addEventListener('click', ()=> fb.style.display='none');
 
-  if (typeof window.forgeShaolinReading === 'function'){
-    const orig = window.forgeShaolinReading;
-    window.forgeShaolinReading = function(payload){
-      const t = orig(payload);
-      return wrapTone(t);
-    };
-  } else if (typeof window.forgeReading === 'function'){
-    const orig = window.forgeReading;
-    window.forgeReading = function(payload){
-      const t = orig(payload);
-      return wrapTone(t);
-    };
-  } else {
-    // fallback: si luego escribes a #readingText, lo parcheamos al vuelo
-    const out = document.getElementById('readingText');
-    if (out){
-      const _set = Object.getOwnPropertyDescriptor(CharacterData.prototype, 'data')?.set;
-      // Demasiado heavy para ahora; en su lugar, interceptamos botones comunes:
-      const btns = ['#btnReadLast','#btnRandom','#btnSpeak'];
-      btns.forEach(sel=>{
-        const b = document.querySelector(sel);
-        if (!b) return;
-        b.addEventListener('click', ()=>{
-          setTimeout(()=>{
-            const txt = out.textContent.trim();
-            if (txt && !txt.startsWith(P.maestroTone)) out.textContent = wrapTone(txt);
-          }, 0);
+  // Cargar lista
+  fetch('./efectos.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(raw => {
+      const norm = {};
+      for (const [k,v] of Object.entries(raw)){ norm[k.trim().toLowerCase()] = Array.isArray(v)? v.slice().sort():[]; }
+      const ORDER = ["alarms","animal","battle","bless","nature","ritual","scene","transitions"];
+      const LABEL = { alarms:"ALARMS", animal:"ANIMAL", battle:"BATTLE", bless:"BLESS", nature:"NATURE", ritual:"RITUAL", scene:"SCENE", transitions:"TRANSITIONS" };
+      function build(into){
+        ORDER.forEach(key=>{
+          const list = norm[key] || [];
+          const det = document.createElement('details');
+          det.style.cssText="border:1px solid #113c2d;border-radius:10px;background:#071c16";
+          const sum = document.createElement('summary');
+          sum.style.cssText="list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer";
+          sum.innerHTML = `<span style="color:#eafff5;font-weight:800;letter-spacing:.02em">${LABEL[key]||key.toUpperCase()}</span>
+                           <span style="opacity:.8;color:#9edfc9">${list.length} pista(s)</span>`;
+          const body = document.createElement('div');
+          body.style.cssText="padding:10px 14px;display:grid;gap:8px";
+          if(!list.length){
+            const p=document.createElement('p'); p.className='small'; p.textContent='Sin pistas en esta categoría.'; body.appendChild(p);
+          }else{
+            list.forEach(file=>{
+              const row=document.createElement('div');
+              row.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border:1px solid #113c2d;border-radius:10px;background:#041a14";
+              const name=document.createElement('div');
+              name.style.cssText="color:#cfe;overflow:hidden;text-overflow:ellipsis;white-space:nowrap";
+              name.textContent=file.replace(/\.mp3$/,'');
+              const btns=document.createElement('div'); btns.style.cssText="display:flex;gap:8px";
+              const bPlay=document.createElement('button'); bPlay.className='btn'; bPlay.textContent='▶ Reproducir';
+              bPlay.addEventListener('click', ()=> playSfx(`audio/${key}/${encodeURIComponent(file)}`));
+              const bStop=document.createElement('button'); bStop.className='btn alt'; bStop.textContent='⏹ Parar';
+              bStop.addEventListener('click', stopLast);
+              btns.append(bPlay,bStop); row.append(name,btns); body.appendChild(row);
+            });
+          }
+          det.append(sum,body); into.appendChild(det);
         });
-      });
-    }
-  }
-})();
-</script>
-<script>
-(function(){
-  // --- DEBUG: para saber si cargó y qué key leyó ---
-  function debug(msg){
-    let d = document.getElementById('gameDebug');
-    if(!d){
-      d = document.createElement('div');
-      d.id = 'gameDebug';
-      d.style.cssText = "position:fixed;left:10px;top:10px;background:#041;"+
-                        "color:#8affbf;padding:6px 8px;border:1px solid #0a3;"+
-                        "border-radius:8px;font:12px/1.3 ui-sans-serif,system-ui;z-index:99999;opacity:.9";
-      document.body.appendChild(d);
-    }
-    d.textContent = msg;
-  }
-
-  function qs(k){ return new URLSearchParams(location.search).get(k) || ""; }
-  const KEY = (qs('game')||"").toLowerCase();
-  debug("DM Presets activo · game="+(KEY||"(vacío)"));
-
-  const PRESETS = {
-    chess:{ n:"Ajedrez", t:"Ajedrez · Mente como agua", s:"Sacrificio, tempo y silencio entre movimientos.", m:"Observa el tablero como si fuera tu respiración: constante y sin ruido." },
-    scrabble:{ n:"Scrabble", t:"Scrabble · El poder de la palabra", s:"La etimología como brújula del destino.", m:"Cada palabra es una huella en la arena: elige bien dónde pisas." },
-    monopoly:{ n:"Monopoly", t:"Monopoly · Karma financiero", s:"Apego, deuda y liberación del tener.", m:"La riqueza que no compartes te posee a ti." },
-    catan:{ n:"Catan", t:"Catan · Fluir de recursos", s:"Trueque, alianzas y buen viento.", m:"Ofrece antes de pedir: el río fluye donde menos se atasca." },
-    carcassonne:{ n:"Carcassonne", t:"Carcassonne · Cosecha de acciones", s:"Colocar, esperar, recoger.", m:"Siembra silencios para cosechar claridad." },
-    risk:{ n:"Risk", t:"Risk · Poder y control", s:"Conquista externa, examen interno.", m:"Ganar territorio no es vencerte a ti mismo." },
-    ticket:{ n:"Ticket to Ride", t:"Ticket to Ride · Rutas y timing", s:"El arte de estar a tiempo.", m:"No corras: llega." },
-    uno:{ n:"UNO", t:"UNO · Karma inmediato", s:"Reacciones rápidas, sonrisa ligera.", m:"Juega con alegría: la ligereza también enseña." },
-    pandemic:{ n:"Pandemic", t:"Pandemic · Dharma colectivo", s:"Cooperar para aliviar el mundo.", m:"Curar a otro es sanar en ti lo mismo." },
-    codenames:{ n:"Codenames", t:"Codenames · Intuición verbal", s:"Pista clara, mente clara.", m:"Di menos, sugiere más." },
-    dnd5e:{ n:"D&D 5e", t:"D&D 5e · Camino del Aventurero", s:"Karma/Dharma por escena y descanso.", m:"Tu intención guía el dado, no al revés." },
-    tencandles:{ n:"Ten Candles", t:"Ten Candles · Tragedia luminosa", s:"La última vela no apaga tu voz.", m:"Acepta la oscuridad; sé la lámpara." },
-    cthulhu:{ n:"Call of Cthulhu", t:"Call of Cthulhu · Cordura en la niebla", s:"No todo lo que ves debe habitarte.", m:"Mira el abismo sin caer en él." },
-    vampire:{ n:"Vampiro", t:"Vampiro · Poder y redención", s:"Hambre, máscara y elección.", m:"La sed se calma compartiendo." }
-  };
-
-  const P = PRESETS[KEY] || { n:"Genérico", t:"DM Panel PRO · Samsara Booster", s:"Selecciona un juego desde el hub para tono y ayudas específicas.", m:"Respira. Observa. Actúa sin apego." };
-
-  // --- Garantizar un header con título/subtítulo si no existen ---
-  let header = document.querySelector('header.hero');
-  if(!header){
-    header = document.createElement('header');
-    header.className = 'hero';
-    header.style.cssText = "margin-top:20px;margin-bottom:16px;text-align:center;padding:12px;border:1px solid #113c2d;border-radius:14px;background:#06130f;";
-    const wrap = document.querySelector('.wrap') || document.body;
-    wrap.insertBefore(header, wrap.firstChild);
-  }
-
-  let titleEl = document.querySelector('.title, #dmTitle');
-  if(!titleEl){
-    titleEl = document.createElement('div');
-    titleEl.className = 'title';
-    titleEl.style.cssText = "font-weight:800;color:#00ff7b;margin-bottom:6px;font-size:clamp(22px,4vw,38px)";
-    header.appendChild(titleEl);
-  }
-  titleEl.textContent = P.t;
-  document.title = P.t + " — Turbo Master Dragon";
-
-  let subEl = document.querySelector('.subtitle, #dmSubtitle');
-  if(!subEl){
-    subEl = document.createElement('div');
-    subEl.className = 'subtitle';
-    subEl.style.cssText = "color:#8affbf;opacity:.95;font-size:clamp(13px,1.8vw,16px)";
-    header.appendChild(subEl);
-  }
-  subEl.textContent = P.s;
-
-  // --- Badge de juego ---
-  if(!document.getElementById('gameBadge')){
-    const badge = document.createElement('div');
-    badge.id = 'gameBadge';
-    badge.textContent = "🎯 Juego: " + P.n;
-    badge.style.cssText = "margin-top:8px;color:#8affbf;opacity:.95;font-size:.95rem";
-    header.appendChild(badge);
-  }
-
-  // --- Prefijo del Maestro: si existen generadores, se decora ---
-  function wrapTone(text){ return P.m ? (P.m + "\n" + text) : text; }
-  if (typeof window.forgeShaolinReading === 'function'){
-    const orig = window.forgeShaolinReading;
-    window.forgeShaolinReading = function(payload){ return wrapTone(orig(payload)); };
-    debug("Decoré forgeShaolinReading()");
-  } else if (typeof window.forgeReading === 'function'){
-    const orig = window.forgeReading;
-    window.forgeReading = function(payload){ return wrapTone(orig(payload)); };
-    debug("Decoré forgeReading()");
-  } else {
-    // Intercepta clics comunes y prefiere el prefijo
-    const out = document.getElementById('readingText');
-    ['#btnReadLast','#btnRandom','#btnSpeak'].forEach(sel=>{
-      const b = document.querySelector(sel);
-      if(!b) return;
-      b.addEventListener('click', ()=>setTimeout(()=>{
-        if(out && out.textContent && !out.textContent.startsWith(P.m)){
-          out.textContent = wrapTone(out.textContent.trim());
-        }
-      },0));
-    });
-    debug("Sin generador; usaré intercept sobre botones.");
-  }
-})();
-</script>
-<script>
-(function(){
-  const GAMES = [
-    ["","(elige un juego)"],
-    ["dnd5e","D&D 5e"],["tencandles","Ten Candles"],["cthulhu","Call of Cthulhu"],["vampire","Vampiro"],
-    ["chess","Ajedrez"],["scrabble","Scrabble"],["monopoly","Monopoly"],
-    ["catan","Catan"],["carcassonne","Carcassonne"],["risk","Risk"],
-    ["ticket","Ticket to Ride"],["uno","UNO"],["pandemic","Pandemic"],["codenames","Codenames"]
-  ];
-  // barra compacta
-  const bar = document.createElement('div');
-  bar.style.cssText = "margin:10px auto 0;max-width:1024px;padding:8px 12px;display:flex;gap:8px;align-items:center;justify-content:center";
-  const label = document.createElement('span');
-  label.textContent = "Preset de juego:";
-  label.style.cssText = "color:#8affbf;opacity:.95;font:14px ui-sans-serif";
-  const sel = document.createElement('select');
-  sel.style.cssText = "background:#031b14;color:#eafff5;border:1px solid #113c2d;border-radius:10px;padding:8px 10px;font:14px ui-sans-serif";
-  GAMES.forEach(([v,t])=>{ const o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); });
-  // marca el actual si viene en la URL
-  const current = new URLSearchParams(location.search).get('game')||"";
-  if (current) sel.value = current;
-  sel.onchange = ()=>{
-    const game = sel.value;
-    const url = new URL(location.href);
-    if (game) url.searchParams.set('game', game); else url.searchParams.delete('game');
-    url.searchParams.set('v', String(Date.now())); // salta caché
-    location.href = url.toString();
-  };
-  bar.appendChild(label); bar.appendChild(sel);
-  // inserta bajo el header si existe, si no al inicio del .wrap o body
-  const header = document.querySelector('header.hero');
-  const wrap = document.querySelector('.wrap');
-  (header?.parentNode || wrap || document.body).insertBefore(bar, (header?.nextSibling)|| (wrap?.firstChild) || null);
+      }
+      build(sfxCats);
+      build(sfxCatsFb);
+    })
+    .catch(()=>{ err.style.display='block'; errFb.style.display='block'; });
 })();
 </script>
 </body>

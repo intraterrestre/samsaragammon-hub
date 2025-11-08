@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>DM Panel PRO — Turbo Master Dragon™</title>
 <meta name="theme-color" content="#00ff7b" />
-<meta name="description" content="Panel para Masters: intros épicas, ambiente musical y efectos Shaolín.">
+<meta name="description" content="Ambient épico + SFX por categorías con mezcla en paralelo, LEDs de pista activa y controles rápidos.">
 <style>
   :root{
     --green:#00ff7b; --accent:#ffd166; --line:#113c2d;
@@ -44,16 +44,62 @@
   .small{font-size:.92rem; opacity:.92; color:#cfe}
   footer{margin:22px 0 18px; text-align:center; color:#9edfc9; font-size:.95rem; border-top:1px solid var(--line); padding-top:12px}
   .mini{opacity:.75; font-size:.9rem; margin-top:6px}
+
+  /* ===== Shaolín Pro+ (modal SFX) ===== */
+  dialog#sfxModal{
+    width:min(860px,94vw); background:#041510; border:1px solid var(--line);
+    border-radius:16px; color:var(--text);
+    box-shadow:0 10px 40px rgba(0,0,0,.6), 0 0 32px rgba(0,255,150,.15);
+  }
+  dialog#sfxModal::backdrop{ background:rgba(0,0,0,.6) }
+  .sfx-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .sfx-body{padding:12px 14px}
+  .sfx-acc{border:1px solid var(--line);border-radius:10px;background:#071c16}
+  .sfx-acc summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;cursor:pointer}
+  .sfx-list{display:grid;gap:8px;padding:10px 14px}
+  .sfx-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#041a14}
+  .sfx-name{color:#cfe;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .led{width:10px;height:10px;border-radius:999px;background:#2b4038;box-shadow:0 0 0 0 transparent;display:inline-block;margin-right:6px;vertical-align:middle}
+  .led.on{background:#00ff7b; box-shadow:0 0 12px #00ff7b}
+  .small-muted{font-size:.9rem;opacity:.9;color:#9edfc9}
 </style>
 </head>
+<style>
+  /* Sirena + luces */
+  #sirenaToggle{
+    position:fixed; right:16px; bottom:16px; z-index:10000;
+    background:#220000; color:#ffaaaa; border:2px solid #ff6666;
+    border-radius:999px; padding:10px 16px; font-weight:900; font-family:ui-sans-serif;
+    box-shadow:0 0 18px rgba(255,80,80,.5); cursor:pointer; transition:transform .15s ease, box-shadow .2s;
+  }
+  #sirenaToggle:hover{ transform:scale(1.05); box-shadow:0 0 28px rgba(255,80,80,.7); }
+
+  #lucesEmergencia{ position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0; }
+  #lucesEmergencia.active{ opacity:.65; animation:luces 1.1s infinite; }
+  @keyframes luces{
+    0%,100%{ box-shadow: inset 0 0 200vmax rgba(255,40,40,.35); }
+    50%    { box-shadow: inset 0 0 200vmax rgba(40,120,255,.35); }
+  }
+</style>
+<!-- Sirena + luces (poner justo antes de </body>) -->
+<div id="lucesEmergencia" hidden></div>
+
+<button id="sirenaToggle" aria-pressed="true">
+  🚨 SIRENA ON — ¡Apágala si puedes!
+</button>
+
+<audio id="sirenaAudio"
+       src="audio/alarms/ambulance-uk.mp3"
+       preload="auto" loop playsinline></audio>
 <body>
 <div class="wrap">
   <header class="hero">
-    <div class="title">DM Panel PLAYER-PARAMEDIC PRO — Turbo Master Dragon™</div>
-    <div class="subtitle">Intros épicas, ambientación y efectos Shaolín.</div>
+    <div class="title">DM Panel PRO — Turbo Master Dragon™</div>
+    <div class="subtitle">Intros épicos, ambientación de película y cura inmediata para juegos aburridos.</div>
     <div class="cta">
       <button class="btn" id="btnAmbient"><span id="icoAmbient">▶</span> Ambient: Iniciar</button>
       <button class="btn" id="btnStopAll">⛔ Parar TODO</button>
+      <button class="btn alt" id="btnOpenModal">🧘 Shaolín Pro+ — Efectos</button>
     </div>
 
     <div class="row" style="margin-top:8px">
@@ -67,175 +113,354 @@
           <option value="curvista">Curvista ligera</option>
         </select>
       </label>
+      <span class="small">Reproduciendo: <strong id="playingCount">0</strong></span>
     </div>
   </header>
 
   <section class="small" style="text-align:center">
     Consejo: toca “Ambient: Iniciar” y comienza el espectáculo.  
-    La intro elegida sonará (fanfarria o gong) y luego quedará un ambiente en loop.
+    La intro elegida suena (2–3 clips encadenados) y luego entra el Ambient en loop.  
+    En el modal puedes mezclar **varios SFX** a la vez. LED verde = pista activa.
   </section>
 
   <footer>
     © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>.
-    <div class="mini">DM Panel PRO · Intros multiperfil.</div>
+    <div class="mini">DM Panel PRO · Intros + Mezcla SFX.</div>
   </footer>
 </div>
 
-<!-- Ambient de fondo -->
+<!-- Ambient de fondo (loop) -->
 <audio id="ambientAudio" src="audio/transitions/dron-dos-minutos.mp3" loop preload="auto" playsinline></audio>
 
+<!-- === Shaolín Pro+ — Modal de Efectos === -->
+<dialog id="sfxModal">
+  <div class="sfx-hdr">
+    <strong>🧘 Shaolín Pro+ — Efectos por categoría</strong>
+    <div style="display:flex;gap:8px">
+      <button class="btn" id="btnStopLastSfx">⏹ Parar último</button>
+      <button class="btn" id="btnStopAllSfx">🛑 Parar TODO</button>
+      <button class="btn alt" id="btnCloseSfx">Cerrar</button>
+    </div>
+  </div>
+  <div class="sfx-body">
+    <p class="small-muted">Puedes disparar varios sonidos a la vez (ej: <em>ambiente + flecha + tigre</em>). Un LED verde indica qué pistas están sonando.</p>
+    <div id="sfxCats" class="sfx-cats"></div>
+    <p class="small-muted" style="margin-top:8px">Reproduciendo: <span id="sfxCount">0</span></p>
+    <div id="sfxError" class="small-muted" style="display:none;color:#ffb3b3">No se pudo leer <code>efectos.json</code>. Abre desde Netlify o con un servidor local (no <code>file://</code>).</div>
+  </div>
+</dialog>
+
 <script>
-/* ================== INTROS MULTIPERFIL (Épica / Shaolín / Curvista) ================== */
+/* ================== INTROS + AMBIENT ================== */
 (function(){
   const ambient     = document.getElementById('ambientAudio');
   const btnAmbient  = document.getElementById('btnAmbient');
   const btnStopAll  = document.getElementById('btnStopAll');
   const volMaster   = document.getElementById('volMaster');
   const introSelect = document.getElementById('introStyle');
+  const playingCount= document.getElementById('playingCount');
 
-  // Crear icono del botón
-  const icoSpan = (function(){
+  // icono (asegura presencia)
+  const ico = (function(){
     let i = document.getElementById('icoAmbient');
-    if (!i) {
-      i = document.createElement('span');
-      i.id = 'icoAmbient';
-      i.textContent = '▶';
-      btnAmbient?.insertBefore(i, btnAmbient.firstChild);
-    }
+    if(!i){ i = document.createElement('span'); i.id='icoAmbient'; i.textContent='▶'; btnAmbient?.insertBefore(i,btnAmbient.firstChild); }
     return i;
   })();
 
-  // Archivos de intros (asegúrate que existen en audio/)
+  // helper de URL para archivos con espacios
+  function urlFor(cat, name){
+    return `audio/${cat}/${encodeURIComponent(name)}`;
+  }
+
+  // set de audios en curso (ambient + intros)
+  const active = new Set();
+  function updateCount(){ playingCount.textContent = String(active.size); }
+
   const INTROS = {
+    // 1) fanfarria + tambores + aplauso
     epic: [
-      "audio/transitions/fanfarra-epic.mp3",
-      "audio/battle/horde-war-drums-loop.mp3",
-      "audio/scene/ten-seconds-applause.mp3"
+      {cat:'transitions', name:'fanfarra-epic.mp3'},
+      {cat:'battle',      name:'horde-war-drums-loop.mp3'},
+      {cat:'scene',       name:'ten-seconds-applause.mp3'}
     ],
+    // 2) gong + flauta india + campanillas
     shaolin: [
-      "audio/ritual/gong-dong-gong.mp3",
-      "audio/bless/indian-flute-music-soothing.mp3",
-      "audio/bless/wind-chime-ambience.mp3"
+      {cat:'bless',   name:'gong-dong-gong.mp3'},
+      {cat:'bless',   name:'indian-flute-music-soothing.mp3'},
+      {cat:'bless',   name:'wind-chime-ambience.mp3'}
     ],
+    // 3) aplausos suaves + arpa mágica + barrida descendente
     curvista: [
-      "audio/transitions/intro-30-secs-claping.mp3",
-      "audio/bless/magic harp-arpeggio.mp3",
-      "audio/transitions/downsweep-sound-effect.mp3"
+      {cat:'transitions', name:'intro-30-secs-claping.mp3'},
+      {cat:'bless',       name:'magic harp-arpeggio.mp3'},
+      {cat:'transitions', name:'downsweep-sound-effect.mp3'}
     ]
   };
 
-  let audioUnlocked = false;
-  let introPlaying  = false;
-  let introIndex    = 0;
-  let introAudio    = null;
+  let audioUnlock = false;
+  let introAudio  = null;
+  let introIdx    = 0;
+  let introPlaying= false;
 
-  // Restaurar estilo guardado
+  // guarda/recupera estilo
   try{
-    const v = localStorage.getItem("dm_intro_style");
-    if (v && INTROS[v]) introSelect.value = v;
+    const saved = localStorage.getItem('dm_intro_style');
+    if (saved && INTROS[saved]) introSelect.value = saved;
   }catch(_){}
-  introSelect?.addEventListener('change', ()=>{
-    try{ localStorage.setItem("dm_intro_style", introSelect.value); }catch(_){}
+  introSelect.addEventListener('change', ()=>{
+    try{ localStorage.setItem('dm_intro_style', introSelect.value); }catch(_){}
   });
 
   function currentVol(){
-    const v = parseFloat(volMaster?.value || '0.7');
+    const v = parseFloat(volMaster.value || '0.7');
     return isNaN(v) ? 0.7 : v;
   }
-  function unlock(){
-    if (audioUnlocked) return;
+
+  function unlockOnce(){
+    if (audioUnlock) return;
     const a = new Audio();
     a.play().catch(()=>{});
-    audioUnlocked = true;
+    audioUnlock = true;
   }
-  window.addEventListener('pointerdown', unlock, {once:true});
+  window.addEventListener('pointerdown', unlockOnce, {once:true});
 
-  function setBtnState(text, icon){
+  function setBtnPlaying(on){
     if (!btnAmbient) return;
-    icoSpan.textContent = icon || '▶';
+    ico.textContent = on ? '⏸' : '▶';
     btnAmbient.innerHTML = '';
-    btnAmbient.appendChild(icoSpan);
-    btnAmbient.appendChild(document.createTextNode(' Ambient: ' + (text || 'Iniciar')));
-  }
-  function setBtnStatePlaying(isPlaying){
-    if (isPlaying){ setBtnState('Pausar','⏸'); }
-    else           { setBtnState('Iniciar','▶'); }
+    btnAmbient.appendChild(ico);
+    btnAmbient.appendChild(document.createTextNode(' Ambient: ' + (on ? 'Pausar' : 'Iniciar')));
   }
 
-  function startAmbientLoop(){
-    try{ ambient.volume = currentVol(); ambient.play().catch(()=>{}); }catch(_){}
-    setBtnStatePlaying(true);
+  function startAmbient(){
+    try{ ambient.volume = currentVol(); ambient.play().then(()=>{active.add(ambient); updateCount();}).catch(()=>{}); }catch(_){}
+    setBtnPlaying(true);
   }
-  function stopAmbientLoop(){
-    try{ ambient.pause(); ambient.currentTime = 0; }catch(_){}
-    setBtnStatePlaying(false);
-  }
-
-  function getIntroSeq(){
-    const key = (introSelect?.value || 'epic').toLowerCase();
-    return INTROS[key] || INTROS.epic;
+  function stopAmbient(){
+    try{ ambient.pause(); ambient.currentTime = 0; active.delete(ambient); updateCount(); }catch(_){}
+    setBtnPlaying(false);
   }
 
-  function playIntroSequence(){
+  function playIntroSeq(){
     if (introPlaying) return;
-    introPlaying = true;
-    introIndex   = 0;
-    setBtnState("⏳ Iniciando espectáculo…","⏹");
-
-    const seq = getIntroSeq();
+    introPlaying = true; introIdx = 0;
+    const seq = INTROS[introSelect.value] || INTROS.epic;
 
     const next = ()=>{
-      if (introIndex >= seq.length){
+      if (introIdx >= seq.length){
         introPlaying = false;
-        setBtnStatePlaying(true);
-        startAmbientLoop(); // entra el loop al final
+        startAmbient();
         return;
       }
+      const {cat,name} = seq[introIdx++];
+      const url = urlFor(cat, name);
       try{
-        if (introAudio){ introAudio.onended = null; introAudio = null; }
-        const url = seq[introIndex++];
+        if (introAudio){ introAudio.onended=null; try{active.delete(introAudio);}catch(_){} }
         introAudio = new Audio(url);
         introAudio.volume = currentVol();
-        introAudio.onended = next;
-        introAudio.play().catch(()=>{ next(); });
-      }catch(e){ next(); }
+        introAudio.onended = ()=>{ active.delete(introAudio); updateCount(); next(); };
+        introAudio.play().then(()=>{ active.add(introAudio); updateCount(); }).catch(()=>{ next(); });
+      }catch(_){ next(); }
     };
 
     next();
   }
 
-  function stopIntro(){
-    if (introAudio){
-      try{ introAudio.pause(); introAudio.currentTime = 0; }catch(_){}
-      introAudio.onended = null;
-      introAudio = null;
-    }
-    introPlaying = false;
-  }
-
-  volMaster?.addEventListener('input', ()=>{
+  volMaster.addEventListener('input', ()=>{
     const v = currentVol();
     try{ ambient.volume = v; }catch(_){}
     try{ if (introAudio) introAudio.volume = v; }catch(_){}
   });
 
-  btnAmbient?.addEventListener('click', ()=>{
-    unlock();
+  btnAmbient.addEventListener('click', ()=>{
+    unlockOnce();
     if (introPlaying){
-      stopIntro(); setBtnStatePlaying(false);
+      // cancelar intro
+      try{ introAudio?.pause(); introAudio.currentTime=0; active.delete(introAudio); }catch(_){}
+      introPlaying = false; introAudio=null; updateCount();
+      setBtnPlaying(false);
       return;
     }
-    if (ambient.paused){
-      playIntroSequence();
-    } else {
-      stopAmbientLoop();
-    }
+    if (ambient.paused){ playIntroSeq(); }
+    else { stopAmbient(); }
   });
 
-  btnStopAll?.addEventListener('click', ()=>{
-    stopIntro();
-    stopAmbientLoop();
+  btnStopAll.addEventListener('click', ()=>{
+    // parar intro
+    try{ introAudio?.pause(); introAudio.currentTime=0; active.delete(introAudio); }catch(_){}
+    introPlaying=false; introAudio=null;
+    // parar ambient
+    stopAmbient();
+    updateCount();
   });
+})();
+</script>
+
+<script>
+/* ================== SHAOLÍN PRO+ — SFX POR CATEGORÍAS ================== */
+(function(){
+  const openBtn   = document.getElementById('btnOpenModal');
+  const modal     = document.getElementById('sfxModal');
+  const closeBtn  = document.getElementById('btnCloseSfx');
+  const listWrap  = document.getElementById('sfxCats');
+  const errBox    = document.getElementById('sfxError');
+  const cntEl     = document.getElementById('sfxCount');
+  const stopLastB = document.getElementById('btnStopLastSfx');
+  const stopAllB  = document.getElementById('btnStopAllSfx');
+
+  // estado SFX (independiente del ambient/intro)
+  const active = new Set(); // Audio
+  const stack  = [];        // {a, led}
+
+  function updateCount(){ cntEl.textContent = String(active.size); }
+
+  function play(url, led){
+    const a = new Audio(url);
+    a.volume = 0.9;
+    a.addEventListener('ended', ()=>{
+      active.delete(a);
+      led?.classList.remove('on');
+      updateCount();
+    });
+    a.play().then(()=>{
+      active.add(a); stack.push({a,led});
+      led?.classList.add('on');
+      updateCount();
+    }).catch(()=>{ /* nada */ });
+    return a;
+  }
+
+  function stopLast(){
+    while (stack.length){
+      const top = stack.pop();
+      if (active.has(top.a)){
+        try{ top.a.pause(); top.a.currentTime=0; }catch(_){}
+        active.delete(top.a);
+        top.led?.classList.remove('on');
+        break;
+      }
+    }
+    updateCount();
+  }
+
+  function stopAll(){
+    active.forEach(a=>{ try{ a.pause(); a.currentTime=0; }catch(_){} });
+    active.clear();
+    listWrap.querySelectorAll('.led.on').forEach(x=>x.classList.remove('on'));
+    updateCount();
+  }
+
+  stopLastB.addEventListener('click', stopLast);
+  stopAllB .addEventListener('click', stopAll);
+  openBtn  .addEventListener('click', ()=> modal.showModal());
+  closeBtn .addEventListener('click', ()=> modal.close());
+
+  // helpers
+  function urlFor(cat, name){
+    return `audio/${cat}/${encodeURIComponent(name)}`;
+  }
+
+  // construir acordeones desde efectos.json
+  fetch('efectos.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(raw=>{
+      const ORDER = ["alarms","animal","battle","bless","nature","ritual","scene","transitions"];
+      const LABEL = { alarms:"ALARMS", animal:"ANIMAL", battle:"BATTLE", bless:"BLESS", nature:"NATURE", ritual:"RITUAL", scene:"SCENE", transitions:"TRANSITIONS" };
+
+      // normalizar claves (por si vinieron con espacios)
+      const data = {};
+      for (const [k,v] of Object.entries(raw)){
+        data[k.trim().toLowerCase()] = Array.isArray(v) ? v.slice().sort() : [];
+      }
+
+      ORDER.forEach(cat=>{
+        const files = data[cat] || [];
+        const det = document.createElement('details');
+        det.className = 'sfx-acc';
+
+        const sum = document.createElement('summary');
+        sum.innerHTML = `<span style="color:#eafff5;font-weight:800;letter-spacing:.02em">${LABEL[cat]||cat.toUpperCase()}</span>
+                         <span style="opacity:.8;color:#9edfc9">${files.length} pista(s)</span>`;
+
+        const body = document.createElement('div');
+        body.className = 'sfx-list';
+
+        if (!files.length){
+          const p = document.createElement('p');
+          p.className = 'small-muted';
+          p.textContent = 'Sin pistas en esta categoría.';
+          body.appendChild(p);
+        } else {
+          files.forEach(name=>{
+            const row = document.createElement('div');
+            row.className = 'sfx-row';
+
+            const left = document.createElement('div');
+            const led  = document.createElement('span'); led.className='led';
+            const nm   = document.createElement('span'); nm.className='sfx-name'; nm.textContent = name.replace(/\.mp3$/,'');
+            left.append(led, nm);
+
+            const right = document.createElement('div'); right.style.display='flex'; right.style.gap='8px';
+            const bPlay = document.createElement('button'); bPlay.className='btn';     bPlay.textContent='▶ Reproducir';
+            const bStop = document.createElement('button'); bStop.className='btn alt'; bStop.textContent='⏹ Parar último';
+
+            bPlay.addEventListener('click', ()=> play(urlFor(cat, name), led));
+            bStop.addEventListener('click', stopLast);
+
+            right.append(bPlay,bStop);
+            row.append(left,right);
+            body.appendChild(row);
+          });
+        }
+
+        det.append(sum, body);
+        listWrap.appendChild(det);
+      });
+    })
+    .catch(()=>{ errBox.style.display='block'; });
+})();
+</script>
+  .catch(()=>{ errBox.style.display='block'; });
+})();
+</script>
+
+<!-- 🚨 Sirena + luces de emergencia -->
+<div id="lucesEmergencia" hidden></div>
+
+<button id="sirenaToggle" aria-pressed="true">
+  🚨 SIRENA ON — ¡Apágala si puedes!
+</button>
+
+<audio id="sirenaAudio"
+       src="audio/alarms/ambulance-uk.mp3"
+       preload="auto" loop playsinline></audio>
+
+<script>
+(function(){
+  const btn   = document.getElementById('sirenaToggle');
+  const audio = document.getElementById('sirenaAudio');
+  const luces = document.getElementById('lucesEmergencia');
+  let encendida = false;
+
+  function on(){
+    encendida = true;
+    try { audio.volume = 1; audio.play().catch(()=>{}); } catch(_){}
+    luces.hidden = false;
+    luces.classList.add('active');
+    btn.textContent = '🚑 SIRENA OFF';
+    btn.setAttribute('aria-pressed','false');
+  }
+  function off(){
+    encendida = false;
+    try { audio.pause(); audio.currentTime = 0; } catch(_){}
+    luces.classList.remove('active');
+    luces.hidden = true;
+    btn.textContent = '🚨 SIRENA ON — ¡Apágala si puedes!';
+    btn.setAttribute('aria-pressed','true');
+  }
+
+  window.addEventListener('DOMContentLoaded', on);
+  btn.addEventListener('click', ()=>{ encendida ? off() : on(); });
 })();
 </script>
 </body>

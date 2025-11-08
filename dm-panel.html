@@ -420,48 +420,5 @@
     .catch(()=>{ errBox.style.display='block'; });
 })();
 </script>
-  .catch(()=>{ errBox.style.display='block'; });
-})();
-</script>
-
-<!-- 🚨 Sirena + luces de emergencia -->
-<div id="lucesEmergencia" hidden></div>
-
-<button id="sirenaToggle" aria-pressed="true">
-  🚨 SIRENA ON — ¡Apágala si puedes!
-</button>
-
-<audio id="sirenaAudio"
-       src="audio/alarms/ambulance-uk.mp3"
-       preload="auto" loop playsinline></audio>
-
-<script>
-(function(){
-  const btn   = document.getElementById('sirenaToggle');
-  const audio = document.getElementById('sirenaAudio');
-  const luces = document.getElementById('lucesEmergencia');
-  let encendida = false;
-
-  function on(){
-    encendida = true;
-    try { audio.volume = 1; audio.play().catch(()=>{}); } catch(_){}
-    luces.hidden = false;
-    luces.classList.add('active');
-    btn.textContent = '🚑 SIRENA OFF';
-    btn.setAttribute('aria-pressed','false');
-  }
-  function off(){
-    encendida = false;
-    try { audio.pause(); audio.currentTime = 0; } catch(_){}
-    luces.classList.remove('active');
-    luces.hidden = true;
-    btn.textContent = '🚨 SIRENA ON — ¡Apágala si puedes!';
-    btn.setAttribute('aria-pressed','true');
-  }
-
-  window.addEventListener('DOMContentLoaded', on);
-  btn.addEventListener('click', ()=>{ encendida ? off() : on(); });
-})();
-</script>
 </body>
 </html>

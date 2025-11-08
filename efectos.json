@@ -1,5 +1,5 @@
 {
-  "alarms ": [
+  "alarms": [
     "ambulance-siren.mp3",
     "ambulance-uk.mp3",
     "ambulancia-sixteen-secs.mp3",
@@ -46,7 +46,7 @@
     "veintitres-segundos-pajaritos.mp3",
     "zombie-sound.mp3"
   ],
-  "battle ": [
+  "battle": [
     "arrows-fly-by.mp3",
     "bomb-dropping.mp3",
     "bomb-explosion.mp3",
@@ -126,7 +126,7 @@
     "tres-intro-chino.mp3",
     "tribal-chant-drone.mp3"
   ],
-  "scene ": [
+  "scene": [
     "Gong-nine.mp3",
     "Monster-around.mp3",
     "are-yorusure.mp3",

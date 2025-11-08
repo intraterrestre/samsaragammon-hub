@@ -252,34 +252,53 @@ volMaster.addEventListener('input', ()=>{
   ambient.volume = v * (speakingActive && ducking.checked ? 0.35 : 1.0);
 });
 
-/* SFX library (pon tus archivos en /audio/shaolin/) */
-const SFX = [
-  "alone-samurai-in-mountain-430719.mp3",
-  "asiatic-intro_3-283719.mp3",
-  "birds-chirping-67827.mp3",
-  "China-cymbal-transition-sound-effect.mp3",
-  "chinese-beat-190047.mp3",
-  "chinese-flute-hulusi-76116.mp3",
-  "chinese-ident-transition-1-283708.mp3",
-  "dizi-flute-02-72563.mp3",
-  "fireworks-07-419025.mp3",
-  "Gong-sound.mp3",
-  "gongfeb11-91065.mp3",
-  "INTROCHINO.mp3",
-  "music-transition-ancient-back-etlx-247347.mp3",
-  "spike-one-31462.mp3",
-  "tibetan-buddhist-drum-314994.mp3"
-];
-function playSfx(name){
-  const a = new Audio(`audio/shaolin/${name}`);
-  a.volume = volMaster.value;
+<script>
+// ===== SFX moderno: usa efectos.json y tus 8 carpetas =====
+let EFECTOS = null, SFX_FLAT = [];
+
+async function cargarEfectosSFX(){
+  try{
+    const res = await fetch('efectos.json?v=' + Date.now());
+    EFECTOS = await res.json();
+    // Aplana todas las categorías en una sola lista con la ruta completa
+    SFX_FLAT = [];
+    Object.keys(EFECTOS).forEach(cat=>{
+      const limpio = cat.trim(); // por si quedó un espacio en el JSON
+      (EFECTOS[cat]||[]).forEach(file=>{
+        SFX_FLAT.push(`audio/${limpio}/${file}`);
+      });
+    });
+  }catch(e){
+    console.error('No pude cargar efectos.json', e);
+    EFECTOS = {}; SFX_FLAT = [];
+  }
+}
+
+function playSfxPath(path){
+  const a = new Audio(path);
+  a.volume = parseFloat(document.getElementById('volMaster').value || '1');
   a.play().catch(()=>{});
+  // guarda por si quieres cortar todos luego
+  window.__sfxPlaying = window.__sfxPlaying || [];
+  window.__sfxPlaying.push(a);
   return a;
 }
-btnSfxRandom.addEventListener('click', ()=>{
-  const n = SFX[(Math.random()*SFX.length)|0];
-  playSfx(n);
+
+function playSfxAleatorio(){
+  if (!SFX_FLAT.length) return;
+  const pick = SFX_FLAT[(Math.random()*SFX_FLAT.length)|0];
+  playSfxPath(pick);
+}
+
+// Conecta botones existentes
+document.getElementById('btnSfxRandom').addEventListener('click', playSfxAleatorio);
+document.getElementById('btnStopAll').addEventListener('click', ()=>{
+  try{ if (window.__sfxPlaying) window.__sfxPlaying.forEach(a=>{a.pause();a.currentTime=0}); window.__sfxPlaying=[]; }catch(_){}
 });
+
+// Carga catálogo al abrir página
+document.addEventListener('DOMContentLoaded', cargarEfectosSFX);
+</script>
 btnStopAll.addEventListener('click', ()=>{
   try{ ambient.pause(); ambient.currentTime = 0; }catch(_){}
   try{ speechSynthesis.cancel(); }catch(_){}
@@ -425,6 +444,357 @@ btnQuickUse.addEventListener('click', ()=>{
   const payload = {type, result:text};
   const t=forgeReading(payload); readingEl.textContent=t; sourceFlag.textContent="Fuente: Manual (rápido)."; speak(t);
 });
+</script>
+<script>
+/* ===== Curvista Game Presets (DM Panel PRO) =====
+   Lee ?game= de la URL y aplica ajustes visuales/sonoros */
+(function(){
+  // 1) Param helper
+  function qs(k){ return new URLSearchParams(location.search).get(k) || ""; }
+
+  // 2) Presets por juego (puedes ampliar cuando quieras)
+  const GAME_PRESETS = {
+    chess: {
+      name: "Ajedrez",
+      title: "Ajedrez · Mente como agua",
+      subtitle: "Sacrificio, tempo y silencio entre movimientos.",
+      maestroTone: "Observa el tablero como si fuera tu respiración: constante y sin ruido.",
+      tip: "Sugerencia: usa lecturas sobre sacrificio y ritmo.",
+      ambient: null, // pon aquí un mp3 si quieres: "audio/ambient/chinese-flute.mp3"
+      sfx: []        // o lista de SFX específicos
+    },
+    scrabble: {
+      name: "Scrabble",
+      title: "Scrabble · El poder de la palabra",
+      subtitle: "La etimología como brújula del destino.",
+      maestroTone: "Cada palabra es una huella en la arena: elige bien dónde pisas.",
+      tip: "Sugerencia: activa el Maestro tras formar palabras clave.",
+      ambient: null,
+      sfx: []
+    },
+    monopoly: {
+      name: "Monopoly",
+      title: "Monopoly · Karma financiero",
+      subtitle: "Apego, deuda y liberación del tener.",
+      maestroTone: "La riqueza que no compartes te posee a ti.",
+      tip: "Sugerencia: usa lecturas tras compras/hipotecas.",
+      ambient: null,
+      sfx: []
+    },
+    catan: {
+      name: "Catan",
+      title: "Catan · Fluir de recursos",
+      subtitle: "Trueque, alianzas y buen viento.",
+      maestroTone: "Ofrece antes de pedir: el río fluye donde menos se atasca.",
+      tip: "Sugerencia: Maestro al cerrar tratos.",
+      ambient: null, sfx: []
+    },
+    carcassonne: {
+      name: "Carcassonne",
+      title: "Carcassonne · Cosecha de acciones",
+      subtitle: "Colocar, esperar, recoger.",
+      maestroTone: "Siembra silencios para cosechar claridad.",
+      tip: "Sugerencia: lecturas al reclamar mayorías.",
+      ambient: null, sfx: []
+    },
+    risk: {
+      name: "Risk",
+      title: "Risk · Poder y control",
+      subtitle: "Conquista externa, examen interno.",
+      maestroTone: "Ganar territorio no es vencerte a ti mismo.",
+      tip: "Sugerencia: Maestro tras invasiones clave.",
+      ambient: null, sfx: []
+    },
+    ticket: {
+      name: "Ticket to Ride",
+      title: "Ticket to Ride · Rutas y timing",
+      subtitle: "El arte de estar a tiempo.",
+      maestroTone: "No corras: llega.",
+      tip: "Sugerencia: Maestro al completar rutas largas.",
+      ambient: null, sfx: []
+    },
+    uno: {
+      name: "UNO",
+      title: "UNO · Karma inmediato",
+      subtitle: "Reacciones rápidas, sonrisa ligera.",
+      maestroTone: "Juega con alegría: la ligereza también enseña.",
+      tip: "Sugerencia: Maestro con +2/+4 o reversa.",
+      ambient: null, sfx: []
+    },
+    pandemic: {
+      name: "Pandemic",
+      title: "Pandemic · Dharma colectivo",
+      subtitle: "Cooperar para aliviar el mundo.",
+      maestroTone: "Curar a otro es sanar en ti lo mismo.",
+      tip: "Sugerencia: Maestro al curar/enlazar brotes.",
+      ambient: null, sfx: []
+    },
+    codenames: {
+      name: "Codenames",
+      title: "Codenames · Intuición verbal",
+      subtitle: "Pista clara, mente clara.",
+      maestroTone: "Di menos, sugiere más.",
+      tip: "Sugerencia: Maestro tras cada pista clave.",
+      ambient: null, sfx: []
+    },
+    dnd5e: {
+      name: "Dungeons & Dragons (5e)",
+      title: "D&D 5e · Camino del Aventurero",
+      subtitle: "Karma/Dharma por escena y descanso.",
+      maestroTone: "Tu intención guía el dado, no al revés.",
+      tip: "Sugerencia: Maestro tras tiradas críticas.",
+      ambient: null, sfx: []
+    },
+    tencandles: {
+      name: "Ten Candles",
+      title: "Ten Candles · Tragedia luminosa",
+      subtitle: "La última vela no apaga tu voz.",
+      maestroTone: "Acepta la oscuridad; sé la lámpara.",
+      tip: "Sugerencia: Maestro al apagar cada vela.",
+      ambient: null, sfx: []
+    },
+    cthulhu: {
+      name: "Call of Cthulhu",
+      title: "Call of Cthulhu · Cordura en la niebla",
+      subtitle: "No todo lo que ves debe habitarte.",
+      maestroTone: "Mira el abismo sin caer en él.",
+      tip: "Sugerencia: Maestro en chequeos de cordura.",
+      ambient: null, sfx: []
+    },
+    vampire: {
+      name: "Vampire: The Masquerade",
+      title: "Vampiro · Poder y redención",
+      subtitle: "Hambre, máscara y elección.",
+      maestroTone: "La sed se calma compartiendo.",
+      tip: "Sugerencia: Maestro en escenas de hambre.",
+      ambient: null, sfx: []
+    }
+  };
+
+  // 3) Detecta el juego
+  const key = (qs('game') || "").toLowerCase();
+  const P = GAME_PRESETS[key] || {
+    name:"Genérico",
+    title:"DM Panel PRO · Samsara Booster",
+    subtitle:"Selecciona juego desde el hub para tono y ayudas específicas.",
+    maestroTone:"Respira. Observa. Actúa sin apego.",
+    tip:"Sugerencia: usa SFX (efectos de sonido) para ambientar.",
+    ambient:null, sfx:[]
+  };
+
+  // 4) Pinta badge y cabeceras (no explota si no existen)
+  function setText(sel, txt){
+    const el = document.querySelector(sel);
+    if (el && txt) el.textContent = txt;
+  }
+  setText('.title, #dmTitle', P.title);
+  setText('.subtitle, #dmSubtitle', P.subtitle);
+  document.title = P.title + " — Turbo Master Dragon";
+
+  // Inserta badge “Juego: …” bajo el header si no existe ya
+  (function ensureBadge(){
+    if (document.querySelector('#gameBadge')) return;
+    const header = document.querySelector('header.hero') || document.querySelector('.hero') || document.body;
+    const badge = document.createElement('div');
+    badge.id = 'gameBadge';
+    badge.textContent = `🎯 Juego: ${P.name}`;
+    Object.assign(badge.style, {
+      marginTop:'8px', color:'#8affbf', opacity:.95, fontSize:'0.95rem'
+    });
+    header.appendChild(badge);
+  })();
+
+  // 5) Ambient por juego (si tienes un mp3 específico)
+  (function trySetAmbient(){
+    if (!P.ambient) return; // usa el que ya tienes
+    const a = document.getElementById('ambientAudio');
+    if (a){ a.src = P.ambient; a.load(); }
+  })();
+
+  // 6) Ajuste de SFX (si tu página expone un getter o array global)
+  // Si tienes window.SFX_LIST en maestro/dm, lo reemplazamos:
+  if (Array.isArray(window.SFX_LIST) && P.sfx && P.sfx.length){
+    window.SFX_LIST = P.sfx.slice();
+  }
+  // Si usas un botón que llama playSfx(), intenta sobreescribir proveedor:
+  window.getCurvistaSfxList = function(defaultList){
+    return (P.sfx && P.sfx.length) ? P.sfx : (defaultList || []);
+  };
+
+  // 7) Tono del Maestro: engancha al generador si existe
+  // Si tu código tiene forgeShaolinReading(payload) o similar, lo decoramos:
+  const wrapTone = (text)=> (P.maestroTone ? (P.maestroTone + "\n" + text) : text);
+
+  if (typeof window.forgeShaolinReading === 'function'){
+    const orig = window.forgeShaolinReading;
+    window.forgeShaolinReading = function(payload){
+      const t = orig(payload);
+      return wrapTone(t);
+    };
+  } else if (typeof window.forgeReading === 'function'){
+    const orig = window.forgeReading;
+    window.forgeReading = function(payload){
+      const t = orig(payload);
+      return wrapTone(t);
+    };
+  } else {
+    // fallback: si luego escribes a #readingText, lo parcheamos al vuelo
+    const out = document.getElementById('readingText');
+    if (out){
+      const _set = Object.getOwnPropertyDescriptor(CharacterData.prototype, 'data')?.set;
+      // Demasiado heavy para ahora; en su lugar, interceptamos botones comunes:
+      const btns = ['#btnReadLast','#btnRandom','#btnSpeak'];
+      btns.forEach(sel=>{
+        const b = document.querySelector(sel);
+        if (!b) return;
+        b.addEventListener('click', ()=>{
+          setTimeout(()=>{
+            const txt = out.textContent.trim();
+            if (txt && !txt.startsWith(P.maestroTone)) out.textContent = wrapTone(txt);
+          }, 0);
+        });
+      });
+    }
+  }
+})();
+</script>
+<script>
+(function(){
+  // --- DEBUG: para saber si cargó y qué key leyó ---
+  function debug(msg){
+    let d = document.getElementById('gameDebug');
+    if(!d){
+      d = document.createElement('div');
+      d.id = 'gameDebug';
+      d.style.cssText = "position:fixed;left:10px;top:10px;background:#041;"+
+                        "color:#8affbf;padding:6px 8px;border:1px solid #0a3;"+
+                        "border-radius:8px;font:12px/1.3 ui-sans-serif,system-ui;z-index:99999;opacity:.9";
+      document.body.appendChild(d);
+    }
+    d.textContent = msg;
+  }
+
+  function qs(k){ return new URLSearchParams(location.search).get(k) || ""; }
+  const KEY = (qs('game')||"").toLowerCase();
+  debug("DM Presets activo · game="+(KEY||"(vacío)"));
+
+  const PRESETS = {
+    chess:{ n:"Ajedrez", t:"Ajedrez · Mente como agua", s:"Sacrificio, tempo y silencio entre movimientos.", m:"Observa el tablero como si fuera tu respiración: constante y sin ruido." },
+    scrabble:{ n:"Scrabble", t:"Scrabble · El poder de la palabra", s:"La etimología como brújula del destino.", m:"Cada palabra es una huella en la arena: elige bien dónde pisas." },
+    monopoly:{ n:"Monopoly", t:"Monopoly · Karma financiero", s:"Apego, deuda y liberación del tener.", m:"La riqueza que no compartes te posee a ti." },
+    catan:{ n:"Catan", t:"Catan · Fluir de recursos", s:"Trueque, alianzas y buen viento.", m:"Ofrece antes de pedir: el río fluye donde menos se atasca." },
+    carcassonne:{ n:"Carcassonne", t:"Carcassonne · Cosecha de acciones", s:"Colocar, esperar, recoger.", m:"Siembra silencios para cosechar claridad." },
+    risk:{ n:"Risk", t:"Risk · Poder y control", s:"Conquista externa, examen interno.", m:"Ganar territorio no es vencerte a ti mismo." },
+    ticket:{ n:"Ticket to Ride", t:"Ticket to Ride · Rutas y timing", s:"El arte de estar a tiempo.", m:"No corras: llega." },
+    uno:{ n:"UNO", t:"UNO · Karma inmediato", s:"Reacciones rápidas, sonrisa ligera.", m:"Juega con alegría: la ligereza también enseña." },
+    pandemic:{ n:"Pandemic", t:"Pandemic · Dharma colectivo", s:"Cooperar para aliviar el mundo.", m:"Curar a otro es sanar en ti lo mismo." },
+    codenames:{ n:"Codenames", t:"Codenames · Intuición verbal", s:"Pista clara, mente clara.", m:"Di menos, sugiere más." },
+    dnd5e:{ n:"D&D 5e", t:"D&D 5e · Camino del Aventurero", s:"Karma/Dharma por escena y descanso.", m:"Tu intención guía el dado, no al revés." },
+    tencandles:{ n:"Ten Candles", t:"Ten Candles · Tragedia luminosa", s:"La última vela no apaga tu voz.", m:"Acepta la oscuridad; sé la lámpara." },
+    cthulhu:{ n:"Call of Cthulhu", t:"Call of Cthulhu · Cordura en la niebla", s:"No todo lo que ves debe habitarte.", m:"Mira el abismo sin caer en él." },
+    vampire:{ n:"Vampiro", t:"Vampiro · Poder y redención", s:"Hambre, máscara y elección.", m:"La sed se calma compartiendo." }
+  };
+
+  const P = PRESETS[KEY] || { n:"Genérico", t:"DM Panel PRO · Samsara Booster", s:"Selecciona un juego desde el hub para tono y ayudas específicas.", m:"Respira. Observa. Actúa sin apego." };
+
+  // --- Garantizar un header con título/subtítulo si no existen ---
+  let header = document.querySelector('header.hero');
+  if(!header){
+    header = document.createElement('header');
+    header.className = 'hero';
+    header.style.cssText = "margin-top:20px;margin-bottom:16px;text-align:center;padding:12px;border:1px solid #113c2d;border-radius:14px;background:#06130f;";
+    const wrap = document.querySelector('.wrap') || document.body;
+    wrap.insertBefore(header, wrap.firstChild);
+  }
+
+  let titleEl = document.querySelector('.title, #dmTitle');
+  if(!titleEl){
+    titleEl = document.createElement('div');
+    titleEl.className = 'title';
+    titleEl.style.cssText = "font-weight:800;color:#00ff7b;margin-bottom:6px;font-size:clamp(22px,4vw,38px)";
+    header.appendChild(titleEl);
+  }
+  titleEl.textContent = P.t;
+  document.title = P.t + " — Turbo Master Dragon";
+
+  let subEl = document.querySelector('.subtitle, #dmSubtitle');
+  if(!subEl){
+    subEl = document.createElement('div');
+    subEl.className = 'subtitle';
+    subEl.style.cssText = "color:#8affbf;opacity:.95;font-size:clamp(13px,1.8vw,16px)";
+    header.appendChild(subEl);
+  }
+  subEl.textContent = P.s;
+
+  // --- Badge de juego ---
+  if(!document.getElementById('gameBadge')){
+    const badge = document.createElement('div');
+    badge.id = 'gameBadge';
+    badge.textContent = "🎯 Juego: " + P.n;
+    badge.style.cssText = "margin-top:8px;color:#8affbf;opacity:.95;font-size:.95rem";
+    header.appendChild(badge);
+  }
+
+  // --- Prefijo del Maestro: si existen generadores, se decora ---
+  function wrapTone(text){ return P.m ? (P.m + "\n" + text) : text; }
+  if (typeof window.forgeShaolinReading === 'function'){
+    const orig = window.forgeShaolinReading;
+    window.forgeShaolinReading = function(payload){ return wrapTone(orig(payload)); };
+    debug("Decoré forgeShaolinReading()");
+  } else if (typeof window.forgeReading === 'function'){
+    const orig = window.forgeReading;
+    window.forgeReading = function(payload){ return wrapTone(orig(payload)); };
+    debug("Decoré forgeReading()");
+  } else {
+    // Intercepta clics comunes y prefiere el prefijo
+    const out = document.getElementById('readingText');
+    ['#btnReadLast','#btnRandom','#btnSpeak'].forEach(sel=>{
+      const b = document.querySelector(sel);
+      if(!b) return;
+      b.addEventListener('click', ()=>setTimeout(()=>{
+        if(out && out.textContent && !out.textContent.startsWith(P.m)){
+          out.textContent = wrapTone(out.textContent.trim());
+        }
+      },0));
+    });
+    debug("Sin generador; usaré intercept sobre botones.");
+  }
+})();
+</script>
+<script>
+(function(){
+  const GAMES = [
+    ["","(elige un juego)"],
+    ["dnd5e","D&D 5e"],["tencandles","Ten Candles"],["cthulhu","Call of Cthulhu"],["vampire","Vampiro"],
+    ["chess","Ajedrez"],["scrabble","Scrabble"],["monopoly","Monopoly"],
+    ["catan","Catan"],["carcassonne","Carcassonne"],["risk","Risk"],
+    ["ticket","Ticket to Ride"],["uno","UNO"],["pandemic","Pandemic"],["codenames","Codenames"]
+  ];
+  // barra compacta
+  const bar = document.createElement('div');
+  bar.style.cssText = "margin:10px auto 0;max-width:1024px;padding:8px 12px;display:flex;gap:8px;align-items:center;justify-content:center";
+  const label = document.createElement('span');
+  label.textContent = "Preset de juego:";
+  label.style.cssText = "color:#8affbf;opacity:.95;font:14px ui-sans-serif";
+  const sel = document.createElement('select');
+  sel.style.cssText = "background:#031b14;color:#eafff5;border:1px solid #113c2d;border-radius:10px;padding:8px 10px;font:14px ui-sans-serif";
+  GAMES.forEach(([v,t])=>{ const o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); });
+  // marca el actual si viene en la URL
+  const current = new URLSearchParams(location.search).get('game')||"";
+  if (current) sel.value = current;
+  sel.onchange = ()=>{
+    const game = sel.value;
+    const url = new URL(location.href);
+    if (game) url.searchParams.set('game', game); else url.searchParams.delete('game');
+    url.searchParams.set('v', String(Date.now())); // salta caché
+    location.href = url.toString();
+  };
+  bar.appendChild(label); bar.appendChild(sel);
+  // inserta bajo el header si existe, si no al inicio del .wrap o body
+  const header = document.querySelector('header.hero');
+  const wrap = document.querySelector('.wrap');
+  (header?.parentNode || wrap || document.body).insertBefore(bar, (header?.nextSibling)|| (wrap?.firstChild) || null);
+})();
 </script>
 </body>
 </html>

@@ -1,482 +1,200 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Portal Curvista — Booster de Juegos</title>
-<meta name="description" content="Hub Curvista con presets para D&D, Ajedrez, Monopoly y más. Maestro Shaolín, SFX (efectos de sonido) y Calculadora Kármica." />
-<meta name="theme-color" content="#00ff7b" />
-<style>
-  :root{
-    --green:#00ff7b; --green-soft:#a6ffd2; --line:#103527;
-    --panel:#06130f; --panel2:#0a1d17; --text:#eafff5; --accent:#ffd166;
-    --danger:#ff6b6b; --muted:#cfe;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    background:#000; color:var(--text);
-    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    line-height:1.55; overflow-x:hidden;
-  }
-  .wrap{max-width:1100px; margin:0 auto; padding:20px 16px}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🚨 Ambulancia de Juegos™ — Doctores del Nirvana Pro™</title>
+  <meta name="description" content="Aplica un shock espiritual a tus juegos de mesa. Elige un Doctor del Nirvana Pro y resucita tus juegos medio muertos creando partidas con voz, efectos de sonido y guía curvista." />
+  <meta name="theme-color" content="#00ff7b" />
+  <style>
+    :root{
+      --green:#00ff7b; --accent:#ffd166; --line:#113c2d;
+      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      background:#000; color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      line-height:1.55; overflow-x:hidden;
+    }
 
-  /* Promo */
-  .promo{
-    background: radial-gradient(1100px 500px at 50% 0%, #042218 0%, #000 70%);
-    border-bottom:1px solid #0a3; padding:42px 18px; text-align:center;
-    box-shadow:inset 0 0 40px rgba(0,255,150,.12);
-    animation:promoFade .9s ease-out;
-  }
-  @keyframes promoFade{from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none}}
-  .promo h1{
-    color:var(--green); font-size:clamp(28px,4.5vw,48px); font-weight:900; letter-spacing:.03em;
-    text-shadow:0 0 16px rgba(0,255,150,.6); margin-bottom:10px;
-  }
-  .promo p{color:var(--muted); max-width:900px; margin:0 auto}
-  .promo .bar{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:16px}
-  .btn{
-    display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    padding:12px 18px; border-radius:999px; border:1px solid var(--green);
-    background:linear-gradient(180deg,#02140f,#031b14);
-    color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
-    box-shadow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
-    transition:transform .12s, box-shadow .2s, background .2s;
-    cursor:pointer;
-  }
-  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55)}
-  .btn.alt{ border-color:var(--accent); color:var(--accent);
-    box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
-  .btn.danger{ border-color:var(--danger); color:var(--danger);
-    box-shadow:0 0 10px var(--danger),0 0 18px rgba(255,107,107,.45) }
+    .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.14; pointer-events:none}
+    .wrap{max-width:1100px; margin:0 auto; padding:20px 16px}
 
-  /* Secciones */
-  section.block{margin-top:22px; background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px}
-  h2.title{
-    color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:10px;
-    text-shadow:0 0 10px rgba(0,255,150,.25);
-  }
-  p.muted{color:var(--muted); opacity:.95}
+    /* HERO */
+    .hero{
+      margin-top:5vh; text-align:center; padding:22px 16px;
+      border:1px solid var(--line); border-radius:16px; background:var(--panel);
+      box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04);
+    }
+    .title{
+      font-size:clamp(28px,4vw,44px); font-weight:900; letter-spacing:.04em;
+      color:var(--green); text-shadow:0 0 10px var(--green),0 0 24px rgba(0,255,150,.35);
+    }
+    .subtitle{margin-top:8px; color:#cfe; opacity:.95; font-size:clamp(14px,1.9vw,18px)}
+    .cta-bar{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:16px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 18px; border-radius:999px; border:1px solid var(--green);
+      background:linear-gradient(180deg,#02140f,#031b14); color:var(--green);
+      text-decoration:none; font-weight:800; letter-spacing:.02em;
+      box-shadow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
+      transition:transform .12s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
+    .btn.alt{ border-color:var(--accent); color:var(--accent);
+      box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
 
-  /* Grid juegos */
-  .games{display:grid; gap:12px; grid-template-columns:1fr}
-  @media(min-width:560px){ .games{grid-template-columns:1fr 1fr} }
-  @media(min-width:960px){ .games{grid-template-columns:1fr 1fr 1fr} }
-  .card{
-    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px;
-    display:flex; flex-direction:column; gap:10px; min-height:160px;
-  }
-  .card .head{display:flex; align-items:center; gap:10px}
-  .card .ico{font-size:28px}
-  .card h3{font-size:18px; color:#eafff5}
-  .card p{color:#cfe; font-size:.95rem}
-  .card .actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:auto}
-  .badge{font-size:.78rem; color:#9edfc9}
-  .legend{font-size:.9rem; color:#bfeee0}
+    /* === DOCTORES DEL NIRVANA PRO™ === */
+    .grid.doctores {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 28px;
+    }
+    @media (min-width: 680px) {
+      .grid.doctores { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1080px) {
+      .grid.doctores { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .card.doctor{
+      background:var(--panel2); border:1px solid var(--line);
+      border-radius:14px; padding:18px; text-align:center;
+      box-shadow:0 0 20px rgba(0,255,150,.05), inset 0 0 10px rgba(0,255,140,.03);
+      transition:transform .2s ease, box-shadow .25s ease;
+    }
+    .card.doctor:hover{ transform:translateY(-4px); box-shadow:0 0 30px rgba(0,255,150,.15);}
+    .card.doctor h3{color:var(--green); margin-bottom:6px;}
+    .card.doctor .muted{color:#bfeee0; opacity:.9; margin-bottom:10px;}
+    .card.doctor .tags{color:#ffeb7b; font-weight:700;}
 
-  /* Footer */
-  footer{
-    margin:28px 0 24px; text-align:center; color:#9edfc9; font-size:.95rem;
-    border-top:1px solid var(--line); padding-top:14px;
-  }
-  footer .mini{opacity:.75; font-size:.9rem; margin-top:6px}
-</style>
+    /* === SIRENA === */
+    #sirenaToggle{
+      position:fixed; right:16px; bottom:16px; z-index:10000;
+      background:#550000; color:#ffaaaa; border:2px solid #ff6666;
+      border-radius:999px; padding:10px 20px; font-weight:900;
+      font-family:ui-sans-serif; cursor:pointer;
+      box-shadow:0 0 20px rgba(255,60,60,.6); transition:all .25s ease;
+    }
+    #sirenaToggle:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(255,80,80,.8);}
+    #lucesEmergencia{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:0;}
+    #lucesEmergencia.active{animation:emg 1.1s infinite;opacity:.65;}
+    @keyframes emg{
+      0%,100%{box-shadow:inset 0 0 200vmax rgba(255,40,40,.35);}
+      50%{box-shadow:inset 0 0 200vmax rgba(40,120,255,.35);}
+    }
+  </style>
 </head>
 <body>
-  <div class="promo">
-    <div class="wrap">
-      <h1>🔥 Turbo Master Dragon™ — Resucita tus juegos de mesa favoritos.</h1>
-<p class="promo-sub">
-Redescubre clásicos como nunca antes: con música, sabiduría y energía.  
-Una experiencia viva que transforma cada turno en una nueva historia.
-</p>
-        Convierte tus partidas de mesa en una experiencia épica: <strong>Maestro Shaolín</strong> (voz/lecturas),
-        <strong>SFX</strong> <em>(Sound Effects = efectos de sonido)</em> para ambientar, y
-        <strong>Calculadora Kármica</strong> para decisiones dramáticas. Compatible con D&D, Ajedrez, Monopoly y más.
-      </p>
-      <div class="bar">
-        <a class="btn" href="maestro.html">🧘 Abrir Maestro Shaolín</a>
-        <a class="btn alt" href="dm-panel.html">🎛️ Abrir DM Panel PRO</a>
-        <a class="btn" href="https://karmalab-samsara.netlify.app/" target="_blank" rel="noopener">🌀 Revisa tu Karma</a>
-      </div>
-      <p class="legend" style="margin-top:6px">
-        Consejo: “Maestro” = lecturas y voz. “DM Panel PRO” = panel para Director de Juego (DM = <em>Dungeon Master</em> / Director).
-      </p>
-    </div>
-  </div>
-
+  <canvas class="matrix-bg" id="matrixBg"></canvas>
   <div class="wrap">
-    <!-- Qué es un DM -->
-    <section class="block">
-      <h2 class="title">🙋‍♂️ ¿Qué es un DM (Dungeon Master / Director de Juego)?</h2>
-      <p class="muted">
-        Es la persona que guía la historia, describe escenas y decide cómo reaccionan los mundos del juego.
-        En juegos narrativos (como Dungeons &amp; Dragons) el DM lleva el ritmo y usa herramientas como el Maestro Shaolín,
-        SFX (efectos de sonido) y la Calculadora Kármica para crear <em>tensión, humor y momentos memorables</em>.
+    <header class="hero">
+      <h1 class="title">🚨 Ambulancia de Juegos™ — Doctores del Nirvana Pro™</h1>
+      <p class="subtitle">
+        Aplica un shock espiritual a tus juegos clásicos. Redescubre tus partidas con voz, sabiduría y energía.
       </p>
+      <div class="cta-bar">
+        <a class="btn" href="dm-panel.html">🧠 Abrir DM Panel PRO</a>
+      </div>
+    </header>
+
+    <section class="grid doctores">
+      <div class="card doctor"><h3>🧘 Dr. Sidarta — El Iluminado</h3><p class="muted">Calma el caos, enfoca la intención y convierte cada tirada en aprendizaje.</p><p class="tags">Resucitador de: D&D, Ten Candles, The Mind</p><a class="btn" href="dm-panel.html?doctor=sidarta">💫 Consultar al Dr. Sidarta</a></div>
+      <div class="card doctor"><h3>🔮 Dr. Hermes Trismegisto</h3><p class="muted">Maestro del equilibrio entre el cielo y la tierra, entre el verbo y el juego.</p><p class="tags">Resucitador de: Monopoly, 7 Wonders, Risk</p><a class="btn" href="dm-panel.html?doctor=hermes">💫 Consultar al Dr. Hermes</a></div>
+      <div class="card doctor"><h3>💗 Dra. Ananda — La Paciente</h3><p class="muted">Escucha, perdona y enseña que perder es otro modo de ganar sabiduría.</p><p class="tags">Resucitador de: Catan, Pandemic</p><a class="btn" href="dm-panel.html?doctor=ananda">💫 Consultar a la Dra. Ananda</a></div>
+      <div class="card doctor"><h3>📜 Dr. Thoth — El Escriba</h3><p class="muted">Observa y registra cada movimiento. Cada palabra crea realidad.</p><p class="tags">Resucitador de: Scrabble, Dixit</p><a class="btn" href="dm-panel.html?doctor=thoth">💫 Consultar al Dr. Thoth</a></div>
+      <div class="card doctor"><h3>🔔 Sibila de Delfos</h3><p class="muted">Su intuición trasciende la estrategia: predice el flujo de la partida.</p><p class="tags">Resucitadora de: Tarot, Dixit</p><a class="btn" href="dm-panel.html?doctor=sibila">💫 Consultar a la Sibila</a></div>
+      <div class="card doctor"><h3>🪶 Dr. Quetzalcóatl</h3><p class="muted">Renueva lo viejo con aire fresco. Enseña a morir y volver a jugar.</p><p class="tags">Resucitador de: Carcassonne, Risk</p><a class="btn" href="dm-panel.html?doctor=quetzal">💫 Consultar al Dr. Quetzalcóatl</a></div>
+      <div class="card doctor"><h3>⚛️ Dr. Pitágoras de Samos</h3><p class="muted">Ve en cada dado una ecuación divina. Todo caos tiene geometría.</p><p class="tags">Resucitador de: Ajedrez, 7 Wonders</p><a class="btn" href="dm-panel.html?doctor=pitagoras">💫 Consultar al Dr. Pitágoras</a></div>
+      <div class="card doctor"><h3>🐉 Tao Long</h3><p class="muted">Fluye con la partida, no la controles. Cada derrota es parte del río.</p><p class="tags">Resucitador de: Go, Mahjong</p><a class="btn" href="dm-panel.html?doctor=tao">💫 Consultar al Maestro Tao</a></div>
+      <div class="card doctor"><h3>👑 Nefertari la Clara</h3><p class="muted">Reina de la elegancia. Enseña que el orden también puede ser sensual.</p><p class="tags">Resucitadora de: Monopoly, Uno</p><a class="btn" href="dm-panel.html?doctor=nefertari">💫 Consultar a Nefertari</a></div>
+      <div class="card doctor"><h3>🕸️ Ixchel la Tejedora</h3><p class="muted">Une lo roto, teje alianzas y redes invisibles que sostienen la victoria.</p><p class="tags">Resucitadora de: Catan, Dixit</p><a class="btn" href="dm-panel.html?doctor=ixchel">💫 Consultar a Ixchel</a></div>
+      <div class="card doctor"><h3>💫 Dra. Hermana Sophia</h3><p class="muted">Filósofa del alma alegre. Su sabiduría es música para el ego cansado.</p><p class="tags">Resucitadora de: Pandemic, Scrabble</p><a class="btn" href="dm-panel.html?doctor=sophia">💫 Consultar a la Dra. Sophia</a></div>
+      <div class="card doctor"><h3>☯️ Dr. Li Tzu</h3><p class="muted">Silente pero poderoso: el equilibrio es su receta. Donde hay caos, pone ritmo.</p><p class="tags">Resucitador de: Mahjong, D&D</p><a class="btn" href="dm-panel.html?doctor=litz">💫 Consultar al Dr. Li Tzu</a></div>
     </section>
-<!-- ===== GALERÍA DE JUEGOS (Curvista Booster) ===== -->
-<section class="wrap" id="curvista-booster" style="margin-top:24px">
-  <div style="text-align:center; margin-bottom:12px">
-    <h2 class="section" style="font-size:clamp(20px,2.6vw,26px)">🎲 Biblioteca de Juegos — Potenciados por Samsara</h2>
-    <p class="muted" style="max-width:800px;margin:6px auto 0">
-      Resucita tus juegos clásicos y tus campañas de rol con lecturas curvistas, sonidos y guía del Maestro.
-    </p>
   </div>
 
-  <!-- Filtros -->
-  <div class="neon-bar" role="tablist" aria-label="Filtros de juegos" style="margin-top:10px">
-    <button class="btn-neon" data-filter="board" role="tab" aria-selected="true">🧩 Juegos de mesa</button>
-    <button class="btn-neon alt" data-filter="rpg" role="tab" aria-selected="false">🐉 Juegos de rol (RPG)</button>
-    <button class="btn-neon" data-filter="all" role="tab" aria-selected="false">✨ Ver todo</button>
-  </div>
+  <!-- === SIRENA AMBULANCIA (botón + luces + audio) === -->
+<button id="sirenaToggle" aria-pressed="true">🚨 SIRENA ON — ¡Apágala si puedes!</button>
+<audio id="sirenaAudio" src="audio/shaolin/sirena.mp3" loop preload="auto" playsinline></audio>
+<div id="lucesEmergencia" class="active" aria-hidden="true"></div>
 
-  <!-- Grid -->
-  <div class="games-grid" style="margin-top:12px">
-    <!-- ====== BOARD GAMES ====== -->
-    <article class="game-card" data-type="board">
-      <div class="game-ico">♟️</div>
-      <h3 class="game-title">Ajedrez</h3>
-      <p class="game-tag muted">Estrategia pura · Lecturas de sacrificio/tempo</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=chess">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=chess">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🅰️</div>
-      <h3 class="game-title">Scrabble</h3>
-      <p class="game-tag muted">Energía de palabras · Etimología</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=scrabble">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=scrabble">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🏙️</div>
-      <h3 class="game-title">Monopoly</h3>
-      <p class="game-tag muted">Apego/abundancia · Karma financiero</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=monopoly">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=monopoly">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🌾</div>
-      <h3 class="game-title">Catan</h3>
-      <p class="game-tag muted">Trueque/alianzas · Karma social</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=catan">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=catan">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🧱</div>
-      <h3 class="game-title">Carcassonne</h3>
-      <p class="game-tag muted">Territorio · Cosecha de acciones</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=carcassonne">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=carcassonne">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🗺️</div>
-      <h3 class="game-title">Risk</h3>
-      <p class="game-tag muted">Poder/control · Karma de conquista</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=risk">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=risk">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🚂</div>
-      <h3 class="game-title">Ticket to Ride</h3>
-      <p class="game-tag muted">Rutas · Flujo y timing</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=ticket">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=ticket">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🃏</div>
-      <h3 class="game-title">UNO</h3>
-      <p class="game-tag muted">Tensión ligera · Karma inmediato</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=uno">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=uno">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🦠</div>
-      <h3 class="game-title">Pandemic</h3>
-      <p class="game-tag muted">Cooperación · Dharma colectivo</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=pandemic">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=pandemic">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="board">
-      <div class="game-ico">🗣️</div>
-      <h3 class="game-title">Codenames</h3>
-      <p class="game-tag muted">Pistas · Intuición verbal</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=codenames">🚀 Abrir en DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=codenames">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <!-- ====== RPGs ====== -->
-    <article class="game-card" data-type="rpg">
-      <div class="game-ico">🐉</div>
-      <h3 class="game-title">Dungeons & Dragons</h3>
-      <p class="game-tag muted">Compat. 5e · Karma/Dharma por escena</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=dnd5e">🚀 DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=dnd5e">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="rpg">
-      <div class="game-ico">🕯️</div>
-      <h3 class="game-title">Ten Candles</h3>
-      <p class="game-tag muted">Tragedia · Lecturas por vela</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=tencandles">🚀 DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=tencandles">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="rpg">
-      <div class="game-ico">🐙</div>
-      <h3 class="game-title">Call of Cthulhu</h3>
-      <p class="game-tag muted">Cordura · Sombras del ego</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=cthulhu">🚀 DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=cthulhu">🧘 Maestro</a>
-      </div>
-    </article>
-
-    <article class="game-card" data-type="rpg">
-      <div class="game-ico">🦇</div>
-      <h3 class="game-title">Vampire: The Masquerade</h3>
-      <p class="game-tag muted">Poder/deseo · Redención</p>
-      <div class="game-cta">
-        <a class="btn-neon" href="dm-panel.html?game=vampire">🚀 DM Panel</a>
-        <a class="btn-neon alt" href="maestro.html?game=vampire">🧘 Maestro</a>
-      </div>
-    </article>
-  </div>
-</section>
-
-<!-- ===== estilos mínimos para las cards (usa tu paleta) ===== -->
-<style>
-  .games-grid{
-    display:grid; gap:12px;
-    grid-template-columns: repeat(1, minmax(0,1fr));
-  }
-  @media(min-width:640px){ .games-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-  @media(min-width:980px){ .games-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-  .game-card{
-    background: var(--panel2);
-    border:1px solid var(--line);
-    border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:8px;
-    box-shadow:0 0 18px rgba(0,255,150,.05);
-    transition:transform .12s ease, box-shadow .2s ease;
-  }
-  .game-card:hover{ transform: translateY(-1px); box-shadow:0 0 22px rgba(0,255,150,.12); }
-  .game-ico{ font-size:28px }
-  .game-title{ font-size:18px; font-weight:800; color:var(--green) }
-  .game-tag{ font-size:.95rem }
-  .game-cta{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px }
-</style>
-
-<!-- ===== JS filtro mínimo ===== -->
 <script>
-  (function(){
-    const btns = document.querySelectorAll('[data-filter]');
-    const cards = document.querySelectorAll('.game-card');
-    btns.forEach(b=>{
-      b.addEventListener('click', ()=>{
-        const f = b.getAttribute('data-filter');
-        btns.forEach(x=>{
-          const alt = x.classList.contains('alt');
-          x.classList.toggle('alt', x!==b); // el activo queda en verde
-        });
-        cards.forEach(c=>{
-          if(f==='all'){ c.style.display='flex'; return; }
-          c.style.display = (c.getAttribute('data-type')===f)? 'flex':'none';
-        });
-      });
-    });
-  })();
+(function(){
+  const btn = document.getElementById('sirenaToggle');
+  const audio = document.getElementById('sirenaAudio');
+  const fx   = document.getElementById('lucesEmergencia');
+  let on = true;
+  let userUnlocked = false;
+
+  // Efecto de pulso visual si el navegador bloquea el autoplay
+  const css = document.createElement('style');
+  css.textContent = `
+    #sirenaToggle.need-touch {
+      animation: pulseBtn 1.2s ease-in-out infinite;
+    }
+    @keyframes pulseBtn {
+      0% { box-shadow:0 0 10px rgba(255,60,60,.5); transform:scale(1); }
+      50%{ box-shadow:0 0 26px rgba(255,60,60,.9); transform:scale(1.05); }
+      100%{ box-shadow:0 0 10px rgba(255,60,60,.5); transform:scale(1); }
+    }
+  `;
+  document.head.appendChild(css);
+
+  function uiOn(){
+    btn.textContent = '🚨 SIRENA ON — ¡Apágala si puedes!';
+    btn.style.background='#550000'; btn.style.color='#ffaaaa';
+    fx.classList.add('active');
+    on = true;
+  }
+  function uiOff(){
+    btn.textContent = '🚑 SIRENA OFF — Silencio en el Templo';
+    btn.style.background='#220000'; btn.style.color='#ff6666';
+    fx.classList.remove('active');
+    on = false;
+  }
+
+  async function startAudio(){
+    try{
+      audio.volume = 1.0;
+      await audio.play();
+      btn.classList.remove('need-touch');
+      userUnlocked = true;
+    }catch(e){
+      btn.classList.add('need-touch'); // si el navegador bloquea el autoplay
+    }
+  }
+
+  // Al cargar: intenta sonar
+  window.addEventListener('DOMContentLoaded', ()=>{
+    uiOn();
+    setTimeout(startAudio, 500);
+  });
+
+  // Primer clic/tecla = desbloquea audio
+  function unlockOnce(){
+    if(!userUnlocked && on){ startAudio(); }
+    window.removeEventListener('pointerdown', unlockOnce);
+    window.removeEventListener('keydown', unlockOnce);
+    window.removeEventListener('touchstart', unlockOnce);
+  }
+  window.addEventListener('pointerdown', unlockOnce, {once:true});
+  window.addEventListener('keydown', unlockOnce, {once:true});
+  window.addEventListener('touchstart', unlockOnce, {once:true});
+
+  // Botón manual
+  btn.addEventListener('click', async ()=>{
+    if(on){
+      audio.pause(); audio.currentTime = 0;
+      uiOff();
+    }else{
+      uiOn();
+      await startAudio();
+    }
+  });
+})();
 </script>
-    <!-- Grid de juegos -->
-    <section class="block">
-      <h2 class="title">🎲 Juegos compatibles (presets Curvista)</h2>
-      <div class="games">
-
-        <!-- Dungeons & Dragons -->
-        <article class="card">
-          <div class="head"><div class="ico">🐉</div><h3>Dungeons & Dragons (5e)</h3></div>
-          <span class="badge">Rol narrativo</span>
-          <p>Usa lecturas kármicas para giros de escena y SFX para atmósfera. Perfecto para campañas o “one-shots”.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=dnd">🧘 Maestro (D&D)</a>
-            <a class="btn alt" href="dm-panel.html?game=dnd">🎛️ DM Panel (D&D)</a>
-          </div>
-        </article>
-
-        <!-- Ajedrez -->
-        <article class="card">
-          <div class="head"><div class="ico">♟️</div><h3>Ajedrez</h3></div>
-          <span class="badge">Estrategia</span>
-          <p>Interludios de maestría: composure, sacrificio consciente y lectura del “flujo” entre piezas.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=chess">🧘 Maestro (Ajedrez)</a>
-            <a class="btn alt" href="dm-panel.html?game=chess">🎛️ Panel (Ajedrez)</a>
-          </div>
-        </article>
-
-        <!-- Monopoly -->
-        <article class="card">
-          <div class="head"><div class="ico">💸</div><h3>Monopoly</h3></div>
-          <span class="badge">Familia / Negociación</span>
-          <p>Equilibra codicia y cooperación con pequeñas “reglas kármicas” para decisiones tensas.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=monopoly">🧘 Maestro (Monopoly)</a>
-            <a class="btn alt" href="dm-panel.html?game=monopoly">🎛️ Panel (Monopoly)</a>
-          </div>
-        </article>
-
-        <!-- Catan -->
-        <article class="card">
-          <div class="head"><div class="ico">🌾</div><h3>Catan</h3></div>
-          <span class="badge">Comercio / Gestión</span>
-          <p>Da voz al azar de los dados con lecturas sabias y anima trueques “virtuosos”.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=catan">🧘 Maestro (Catan)</a>
-            <a class="btn alt" href="dm-panel.html?game=catan">🎛️ Panel (Catan)</a>
-          </div>
-        </article>
-
-        <!-- Carcassonne -->
-        <article class="card">
-          <div class="head"><div class="ico">🏰</div><h3>Carcassonne</h3></div>
-          <span class="badge">Colocación de losetas</span>
-          <p>Lecturas suaves para momentos de cierre de ciudades y caminos. SFX ambientales medievales.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=carcassonne">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=carcassonne">🎛️ Panel</a>
-          </div>
-        </article>
-
-        <!-- Ticket to Ride -->
-        <article class="card">
-          <div class="head"><div class="ico">🚂</div><h3>Ticket to Ride</h3></div>
-          <span class="badge">Rutas / Set-collection</span>
-          <p>Música ligera + lecturas sobre timing y rutas de menor apego.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=ticket">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=ticket">🎛️ Panel</a>
-          </div>
-        </article>
-
-        <!-- Scrabble -->
-        <article class="card">
-          <div class="head"><div class="ico">🔡</div><h3>Scrabble</h3></div>
-          <span class="badge">Palabras</span>
-          <p>Explora energía/etimología de palabras y juega SFX discretos para “hallazgos”.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=scrabble">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=scrabble">🎛️ Panel</a>
-          </div>
-        </article>
-
-        <!-- Risk -->
-        <article class="card">
-          <div class="head"><div class="ico">🪖</div><h3>Risk</h3></div>
-          <span class="badge">Conquista</span>
-          <p>Reduce la agresión ciega con “pausas de consciencia” y SFX de tensión.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=risk">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=risk">🎛️ Panel</a>
-          </div>
-        </article>
-
-        <!-- Pandemic -->
-        <article class="card">
-          <div class="head"><div class="ico">🧪</div><h3>Pandemic</h3></div>
-          <span class="badge">Cooperativo</span>
-          <p>Consejos de coordinación y humildad táctica; ambiente sutil para decisiones en equipo.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=pandemic">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=pandemic">🎛️ Panel</a>
-          </div>
-        </article>
-
-        <!-- Uno -->
-        <article class="card">
-          <div class="head"><div class="ico">🃏</div><h3>Uno</h3></div>
-          <span class="badge">Fiesta</span>
-          <p>Golpes sonoros cortos y frases divertidas para bajar el tilt y subir el humor.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=uno">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=uno">🎛️ Panel</a>
-          </div>
-        </article>
-
-        <!-- 7 Wonders -->
-        <article class="card">
-          <div class="head"><div class="ico">🏛️</div><h3>7 Wonders</h3></div>
-          <span class="badge">Draft / Civilizaciones</span>
-          <p>Lecturas sobre equilibrio entre ciencia, comercio y guerra; SFX temáticos.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=7wonders">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=7wonders">🎛️ Panel</a>
-          </div>
-        </article>
-
-        <!-- Dixit -->
-        <article class="card">
-          <div class="head"><div class="ico">🖼️</div><h3>Dixit</h3></div>
-          <span class="badge">Imaginación</span>
-          <p>Frases poéticas y silencios, para dar “aire” a las interpretaciones.</p>
-          <div class="actions">
-            <a class="btn" href="maestro.html?game=dixit">🧘 Maestro</a>
-            <a class="btn alt" href="dm-panel.html?game=dixit">🎛️ Panel</a>
-          </div>
-        </article>
-
-      </div>
-      <p class="legend" style="margin-top:10px">
-        ¿Falta tu juego favorito? Usa cualquier tarjeta y cambia <code>?game=custom</code>. Más adelante añadiremos iconos oficiales.
-      </p>
-    </section>
-
-    <!-- Glosario rápido -->
-    <section class="block">
-      <h2 class="title">ℹ️ Glosario rápido</h2>
-      <p class="muted">
-        <strong>DM</strong>: <em>Dungeon Master</em> (Director de Juego).<br>
-        <strong>SFX</strong>: <em>Sound Effects</em> (Efectos de sonido).<br>
-        <strong>Preset</strong>: Ajustes predefinidos para adaptar el Maestro/SFX a un juego concreto.
-      </p>
-    </section>
-
-    <footer>
-      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
-      <div class="mini">Turbo Master Dragon™ — Portal Curvista v2.</div>
-    </footer>
-  </div>
 </body>
 </html>

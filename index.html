@@ -37,7 +37,7 @@
     .btn:hover{transform:translateY(-1px);box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
     .btn.alt{border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
 
-    /* GRID doctores (texto placeholder; ajusta a tu gusto) */
+    /* GRID doctores (placeholder) */
     .grid{display:grid;gap:20px;margin-top:28px}
     @media (min-width: 680px){ .grid{grid-template-columns: 1fr 1fr} }
     @media (min-width:1080px){ .grid{grid-template-columns: 1fr 1fr 1fr} }
@@ -65,105 +65,107 @@
       0%,100%{ box-shadow:inset 0 0 180vmax rgba(255,40,40,.30); }
       50%    { box-shadow:inset 0 0 180vmax rgba(40,120,255,.30); }
     }
-
-    footer{margin:28px 0 18px;text-align:center;color:#9edfc9;font-size:.95rem;border-top:1px solid var(--line);padding-top:12px}
   </style>
 </head>
+
 <body>
   <div class="wrap">
+
+    <!-- HERO -->
     <header class="hero">
       <h1 class="title">🚨 Ambulancia de Juegos™ — Galenos del Nirvana Pro™</h1>
-      <p class="subtitle">Llamado de emergencia lúdica. Resucita tus partidas con voz, sabiduría y energía.</p>
+      <p class="subtitle">
+        Llamado de emergencia lúdica. Resucita tus juegos con voz, sabiduría y energía espiritual.
+      </p>
       <div class="cta-bar">
         <a class="btn" href="dm-panel.html">🧠 Abrir DM Panel PRO</a>
       </div>
     </header>
 
-    <section class="grid">
-      <article class="card">
-        <h3>🧘 Dr. Sidarta — El Iluminado</h3>
-        <p class="muted">Calma el caos, enfoca la intención y convierte cada tirada en aprendizaje.</p>
-        <div class="tags">Resucitador de: D&D, Ten Candles, The Mind</div>
-        <a class="btn alt" href="#">🔑 Consultar al Dr. Sidarta</a>
-      </article>
-
-      <article class="card">
-        <h3>📜 Dr. Hermes Trismegisto</h3>
-        <p class="muted">Equilibrio entre cielo y tierra, entre el verbo y el juego.</p>
-        <div class="tags">Resucitador de: Monopoly, 7 Wonders, Risk</div>
-        <a class="btn alt" href="#">🔑 Consultar al Dr. Hermes</a>
-      </article>
-
-      <article class="card">
-        <h3>💜 Dra. Ananda — La Paciente</h3>
-        <p class="muted">Perdonar y enseñar que perder es otro modo de ganar sabiduría.</p>
-        <div class="tags">Resucitadora de: Catan, Pandemic</div>
-        <a class="btn alt" href="#">🔑 Consultar a la Dra. Ananda</a>
-      </article>
-
-      <!-- … añade más tarjetas como prefieras … -->
+    <!-- ===== Busca tu juego (navega a dm-panel con ?game=) ===== -->
+    <section class="card" style="max-width:720px;margin:16px auto;padding:14px;border:1px solid #113c2d;border-radius:12px;background:#06130f">
+      <h2 style="color:#00ff7b;margin-bottom:8px">🧭 Busca tu juego</h2>
+      <p class="muted" style="margin-bottom:8px">Elige tu juego y te llevamos a su sala de emergencia con audio y guía.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <select id="gamePicker" style="flex:1;min-width:220px;background:#031b14;color:#eafff5;border:1px solid #113c2d;border-radius:10px;padding:10px">
+          <option value="">(elige uno)</option>
+          <option value="risk">Risk</option>
+          <option value="monopoly">Monopoly</option>
+          <option value="catan">Catan</option>
+          <option value="dnd5e">D&D 5e</option>
+          <option value="uno">UNO</option>
+          <option value="chess">Ajedrez</option>
+          <option value="magic">Magic: The Gathering</option>
+          <option value="tencandles">Ten Candles</option>
+          <option value="carcassonne">Carcassonne</option>
+          <option value="trivial">Trivial Pursuit</option>
+          <option value="clue">Clue / Cluedo</option>
+          <option value="pictionary">Pictionary / Dixit</option>
+        </select>
+        <button id="goGame" class="btn">🚑 Ir al DM Panel</button>
+      </div>
     </section>
 
-    <footer>
-      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>.
-    </footer>
+    <!-- (Aquí tu grid de doctores si quieres mostrar cards) -->
+    <!-- <section class="grid"> ... </section> -->
+
   </div>
 
-  <!-- === PRESTA ATENCIÓN (botón + luces + audio) === -->
-  <button id="sirenaToggle" aria-pressed="false">🚨 SIRENA OFF — Silencio en el Templo</button>
+  <!-- === SIRENA (botón + audio + luces) === -->
+  <button id="sirenaToggle" aria-pressed="false">🚨 SIRENA ON — ¡Listo para despegar!</button>
   <audio id="sirenaAudio" src="audio/alarms/call-to-attention.mp3" loop preload="auto" playsinline></audio>
   <div id="lucesEmergencia" aria-hidden="true"></div>
 
+  <!-- ===== Scripts ===== -->
   <script>
-  (function(){
-    const btn = document.getElementById('sirenaToggle');
-    const audio = document.getElementById('sirenaAudio');
-    const fx = document.getElementById('lucesEmergencia');
+    // Navegación a dm-panel con ?game=
+    (function(){
+      const pick = document.getElementById('gamePicker');
+      const go   = document.getElementById('goGame');
+      if (go) go.addEventListener('click', ()=>{
+        const g = (pick?.value||"").trim().toLowerCase();
+        const url = new URL(location.origin + "/dm-panel.html");
+        if (g) url.searchParams.set('game', g);
+        url.searchParams.set('v', Date.now()); // cache-buster
+        location.href = url.toString();
+      });
+    })();
 
-    let isOn = false;
-    let audioUnlocked = false;
+    // Sirena depurada (no auto-reproduce; requiere primer tap)
+    (function(){
+      const btn   = document.getElementById('sirenaToggle');
+      const audio = document.getElementById('sirenaAudio');
+      const fx    = document.getElementById('lucesEmergencia');
+      if (!btn || !audio) return;
 
-    function uiOn(){
-      btn.textContent = '🚨 SIRENA ON — ¡Listo para despegar!';
-      btn.classList.add('is-on');
-      btn.setAttribute('aria-pressed','true');
-      fx.classList.add('active');
-    }
-    function uiOff(){
-      btn.textContent = '🚨 SIRENA OFF — Silencio en el Templo';
-      btn.classList.remove('is-on');
-      btn.setAttribute('aria-pressed','false');
-      fx.classList.remove('active');
-    }
-    async function startPlayback(){
-      try{ audio.volume = .95; await audio.play(); audioUnlocked = true; return true; }
-      catch{ return false; }
-    }
-    async function unlockOnce(){
-      if (audioUnlocked) return;
-      try{ await new Audio().play(); }catch{}
-      audioUnlocked = true;
-      window.removeEventListener('pointerdown', unlockOnce);
-      window.removeEventListener('keydown', unlockOnce);
-      window.removeEventListener('touchstart', unlockOnce);
-    }
-    window.addEventListener('pointerdown', unlockOnce, {once:true});
-    window.addEventListener('keydown', unlockOnce, {once:true});
-    window.addEventListener('touchstart', unlockOnce, {once:true});
-
-    uiOff(); try{ audio.pause(); audio.currentTime=0; }catch{}
-
-    btn.addEventListener('click', async ()=>{
-      if (!isOn){
-        const ok = await startPlayback();
-        if (!ok){ await unlockOnce(); if (await startPlayback()) { isOn = true; uiOn(); return; } }
-        if (ok){ isOn = true; uiOn(); }
-      }else{
-        try{ audio.pause(); audio.currentTime=0; }catch{}
-        isOn = false; uiOff();
+      let unlocked = false;
+      function unlock(){
+        if (unlocked) return;
+        const probe = new Audio();
+        probe.play().catch(()=>{});
+        unlocked = true;
       }
-    });
-  })();
+      window.addEventListener('pointerdown', unlock, {once:true});
+
+      function setOn(on){
+        btn.classList.toggle('is-on', on);
+        btn.setAttribute('aria-pressed', on?'true':'false');
+        fx.classList.toggle('active', on);
+        btn.textContent = on ? '⛔ APAGAR SIRENA' : '🚨 SIRENA ON — ¡Listo para despegar!';
+      }
+
+      btn.addEventListener('click', ()=>{
+        unlock();
+        if (audio.paused){
+          audio.currentTime = 0;
+          audio.volume = 0.85;
+          audio.play().then(()=> setOn(true)).catch(()=>{ /* bloqueado por navegador */ });
+        } else {
+          try{ audio.pause(); audio.currentTime = 0; }catch(_){}
+          setOn(false);
+        }
+      });
+    })();
   </script>
 </body>
 </html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Word Resonance Lab™ — Karma Calculator</title>
+<meta name="theme-color" content="#00ff7b" />
+<style>
+  :root{--green:#00ff7b;--line:#113c2d;--panel:#06130f;--text:#eafff5;--accent:#ffd166}
+  *{box-sizing:border-box} body{margin:0;background:#000;color:var(--text);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial}
+  .wrap{max-width:980px;margin:0 auto;padding:18px 14px}
+  header{border:1px solid var(--line);border-radius:14px;background:#06130f;
+    padding:16px;text-align:center;box-shadow:0 0 30px rgba(0,255,150,.08)}
+  h1{margin:0;color:var(--green)} .sub{opacity:.9;margin-top:6px}
+  .grid{display:grid;gap:12px;margin-top:14px}
+  @media(min-width:880px){.grid{grid-template-columns: 1.1fr .9fr}}
+  .card{border:1px solid var(--line);border-radius:12px;background:#071511;padding:14px}
+  label{display:block;font-weight:700;margin:6px 0 4px}
+  input,select,textarea{width:100%;background:#031b14;border:1px solid var(--line);
+    color:var(--text);border-radius:10px;padding:10px}
+  .row{display:flex;gap:8px;flex-wrap:wrap} .row>*{flex:1}
+  button{background:linear-gradient(180deg,#02140f,#032017);border:1px solid var(--green);
+    color:var(--green);padding:10px 14px;border-radius:999px;font-weight:900;cursor:pointer}
+  button.alt{border-color:var(--accent);color:var(--accent)}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.95rem}
+  th,td{border-bottom:1px solid #0e2b22;padding:8px 6px;vertical-align:top}
+  th{color:#bfffe5;text-align:left}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin-right:6px}
+  .muted{opacity:.9;color:#cfe}
+  footer{margin:22px 0 18px;text-align:center;color:#9edfc9;font-size:.95rem;border-top:1px solid var(--line);padding-top:12px}
+  .ok{color:#91ffcf} .bad{color:#ffb3b3}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Word Resonance Lab™</h1>
+    <div class="sub">Análisis energético de palabras para <strong>Karma Calculator™</strong>. Integra hoy mismo: agrega, analiza y exporta tu diccionario curvista.</div>
+    <div class="row" style="justify-content:center;margin-top:10px">
+      <a href="index.html" class="pill">⬅️ Volver al Hub</a>
+      <a href="dm-panel.html" class="pill">🧠 Abrir DM Panel</a>
+      <a href="risk-panel.html" class="pill">🎖️ Risk — Operación Nirvana Pro</a>
+    </div>
+  </header>
+
+  <section class="grid">
+    <!-- ANALIZAR FRASE -->
+    <div class="card">
+      <h3>🔬 Analizador rápido</h3>
+      <label for="phrase">Escribe una frase o lista de palabras</label>
+      <input id="phrase" placeholder="Ej.: guerra viento compasión tigre">
+      <div class="row" style="margin-top:8px">
+        <button id="btnAnalyze">Analizar</button>
+        <button id="btnClear" class="alt">Limpiar</button>
+      </div>
+      <div id="analysis" style="margin-top:12px"></div>
+    </div>
+
+    <!-- AGREGAR PALABRA -->
+    <div class="card">
+      <h3>➕ Agregar palabra</h3>
+      <label for="wterm">Palabra</label>
+      <input id="wterm" placeholder="Ej.: tambores">
+      <div class="row">
+        <div>
+          <label for="wcat">Arquetipo</label>
+          <select id="wcat">
+            <option value="guerra">guerra</option>
+            <option value="animales">animales</option>
+            <option value="viento">viento</option>
+            <option value="campanas">campanas</option>
+            <option value="calma">calma</option>
+            <option value="alegria">alegria</option>
+            <option value="paz">paz</option>
+            <option value="sabiduria">sabiduria</option>
+            <option value="neutro">neutro</option>
+          </select>
+        </div>
+        <div>
+          <label for="wmood">Polaridad</label>
+          <select id="wmood">
+            <option value="luminoso">luminoso</option>
+            <option value="sombrio">sombrio</option>
+            <option value="neutral">neutral</option>
+          </select>
+        </div>
+      </div>
+      <label for="wdesc">Breve nota / etimología (opcional)</label>
+      <textarea id="wdesc" rows="3" placeholder="Origen, uso, por qué vibra así…"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="btnAdd">Guardar palabra</button>
+        <button id="btnExport" class="alt">Exportar JSON</button>
+      </div>
+      <p class="muted" style="margin-top:6px">Las palabras se guardan en tu navegador (local). Con “Exportar JSON” descargas el diccionario completo para usarlo en el Karma Calculator™.</p>
+    </div>
+  </section>
+
+  <!-- TABLA -->
+  <section class="card" style="margin-top:12px">
+    <h3>📚 Diccionario en uso</h3>
+    <table id="tbl">
+      <thead><tr>
+        <th>Palabra</th><th>Arquetipo</th><th>Polaridad</th><th>Puntaje</th><th>Nota</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <footer>
+    Integrado hoy con Karma Calculator™ — © 2025 Constantino & Federico García · Curvism instead cubism™
+  </footer>
+</div>
+
+<script>
+(function(){
+  const tblBody = document.querySelector('#tbl tbody');
+  const phrase = document.getElementById('phrase');
+  const out = document.getElementById('analysis');
+
+  // ====== Semilla local (si no hay dictionary.json) ======
+  const SEED = [
+    // Palabras ligadas a juegos / atmósferas
+    {term:"guerra",      cat:"guerra",    mood:"sombrio",   score: -2, desc:"Conflicto; activa tensión. Úsala con consciencia."},
+    {term:"tambores",    cat:"guerra",    mood:"luminoso",  score:  2, desc:"Ritmo tribal; foco y cohesión."},
+    {term:"viento",      cat:"viento",    mood:"luminoso",  score:  1, desc:"Movimiento, cambio, respiración del tablero."},
+    {term:"campanas",    cat:"campanas",  mood:"luminoso",  score:  2, desc:"Limpieza y cierre de ciclos."},
+    {term:"calma",       cat:"calma",     mood:"luminoso",  score:  3, desc:"Baja la reactividad; abre la visión."},
+    {term:"compasión",   cat:"paz",       mood:"luminoso",  score:  4, desc:"Eleva el tono del grupo; sana el ego."},
+    {term:"sabiduría",   cat:"sabiduria", mood:"luminoso",  score:  3, desc:"Decisión clara sin violencia interna."},
+
+    // Palabras comunes (pedidas)
+    {term:"perro",       cat:"animales",  mood:"luminoso",  score:  1, desc:"Lealtad, juego, alerta."},
+    {term:"maría",       cat:"neutro",    mood:"neutral",   score:  0, desc:"Nombre propio. Energía depende del contexto."},
+    {term:"arroz",       cat:"neutro",    mood:"neutral",   score:  0, desc:"Básico, sustento, neutralidad."},
+    {term:"edificio",    cat:"neutro",    mood:"neutral",   score:  0, desc:"Estructura; puede indicar rigidez."},
+    {term:"calle",       cat:"neutro",    mood:"neutral",   score:  0, desc:"Tránsito, conexión, apertura de rutas."},
+
+    // De tus SFX/categorías
+    {term:"tigre",       cat:"animales",  mood:"sombrio",   score: -1, desc:"Impacto fuerte, úsalo como acento dramático."},
+    {term:"alarma",      cat:"guerra",    mood:"sombrio",   score: -2, desc:"Urgencia; no abusar para no saturar."},
+    {term:"aplausos",    cat:"alegria",   mood:"luminoso",  score:  2, desc:"Refuerza logros y cierres."},
+    {term:"gong",        cat:"campanas",  mood:"luminoso",  score:  2, desc:"Marca transición/ritual."},
+  ];
+
+  // ====== Estado ======
+  let DICT = [];
+  let loadedFromFile = false;
+
+  // ====== Puntuación por fallback (si no está la palabra) ======
+  const CAT_BASE = {
+    guerra:-1, animales:0, viento:1, campanas:2, calma:2, alegria:2, paz:3, sabiduria:3, neutro:0
+  };
+  const MOOD_BONUS = {luminoso: 1, neutral: 0, sombrio: -1};
+
+  function inferScore(cat, mood){
+    const base = CAT_BASE[cat] ?? 0;
+    const pol  = MOOD_BONUS[mood] ?? 0;
+    return base + pol;
+  }
+
+  // ====== Render ======
+  function render(){
+    tblBody.innerHTML = '';
+    const byTerm = [...DICT].sort((a,b)=> a.term.localeCompare(b.term,'es',{sensitivity:'base'}));
+    byTerm.forEach(w=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${w.term}</strong></td>
+        <td>${w.cat}</td>
+        <td>${w.mood}</td>
+        <td class="${w.score>=0?'ok':'bad'}">${w.score}</td>
+        <td class="muted">${w.desc||''}</td>
+      `;
+      tblBody.appendChild(tr);
+    });
+  }
+
+  function upsertWord(word){
+    const i = DICT.findIndex(x=>x.term.toLowerCase()===word.term.toLowerCase());
+    if (i>=0) DICT[i]=word; else DICT.push(word);
+    saveLocal(); render();
+  }
+
+  function saveLocal(){
+    try{ localStorage.setItem('word_lab_dict', JSON.stringify(DICT)); }catch(_){}
+  }
+  function loadLocal(){
+    try{
+      const raw = localStorage.getItem('word_lab_dict');
+      if (raw){ DICT = JSON.parse(raw); return true; }
+    }catch(_){}
+    return false;
+  }
+
+  // ====== Cargar dictionary.json si existe; si no, local/seed ======
+  fetch('dictionary.json',{cache:'no-store'})
+   .then(r=> r.ok ? r.json() : Promise.reject())
+   .then(json=>{
+     loadedFromFile = true;
+     DICT = Array.isArray(json)&&json.length ? json : SEED.slice();
+     if (!loadLocal()) saveLocal();
+     render();
+   })
+   .catch(()=>{
+     // sin archivo, usamos local o semilla
+     if (!loadLocal()) { DICT = SEED.slice(); saveLocal(); }
+     render();
+   });
+
+  // ====== Analizador ======
+  function findWord(term){
+    const t = term.trim().toLowerCase();
+    return DICT.find(w=> w.term.toLowerCase()===t);
+  }
+  function analyze(text){
+    const tokens = text.toLowerCase().match(/[a-záéíóúüñ]+/gi) || [];
+    if (!tokens.length) return {total:0, items:[]};
+    const items = tokens.map(t=>{
+      const w = findWord(t);
+      if (w) return {term:t, score:w.score, cat:w.cat, mood:w.mood, found:true, desc:w.desc||''};
+      // fallback: si no existe, estimamos desde heurística simple
+      return {term:t, score:0, cat:'neutro', mood:'neutral', found:false, desc:'Sin definición (aún).'};
+    });
+    const total = items.reduce((s,i)=> s + (i.score||0), 0);
+    return {total, items};
+  }
+
+  document.getElementById('btnAnalyze').addEventListener('click', ()=>{
+    const res = analyze(phrase.value||'');
+    const rows = res.items.map(i=>{
+      const tag = i.found ? '<span class="pill">def</span>' : '<span class="pill">new</span>';
+      const cls = i.score>=0?'ok':'bad';
+      return `<div class="row" style="align-items:center;gap:8px;margin:4px 0">
+        ${tag} <strong>${i.term}</strong>
+        <span class="pill">${i.cat}</span>
+        <span class="pill">${i.mood}</span>
+        <span class="${cls}">score: ${i.score}</span>
+        <span class="muted" style="flex:1">${i.desc}</span>
+      </div>`;
+    }).join('');
+    out.innerHTML = `
+      <div class="muted">Resultado:</div>
+      <div style="margin:6px 0 8px"><strong>Total de resonancia:</strong> <span class="${res.total>=0?'ok':'bad'}">${res.total}</span></div>
+      ${rows||'<div class="muted">No hay palabras.</div>'}
+    `;
+  });
+
+  document.getElementById('btnClear').addEventListener('click', ()=>{
+    phrase.value=''; out.innerHTML='';
+  });
+
+  // ====== Agregar palabra ======
+  const $term = document.getElementById('wterm');
+  const $cat  = document.getElementById('wcat');
+  const $mood = document.getElementById('wmood');
+  const $desc = document.getElementById('wdesc');
+
+  document.getElementById('btnAdd').addEventListener('click', ()=>{
+    const term = ($term.value||'').trim();
+    if (!term) return;
+    const cat  = ($cat.value||'neutro').trim().toLowerCase();
+    const mood = ($mood.value||'neutral').trim().toLowerCase();
+    const desc = ($desc.value||'').trim();
+    const score = inferScore(cat, mood);
+    upsertWord({term, cat, mood, score, desc});
+    $term.value=''; $desc.value='';
+  });
+
+  // ====== Exportar ======
+  function download(filename, text){
+    const blob = new Blob([text], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+  }
+  document.getElementById('btnExport').addEventListener('click', ()=>{
+    download('dictionary-export.json', JSON.stringify(DICT, null, 2));
+  });
+})();
+</script>
+</body>
+</html>

@@ -20,10 +20,10 @@
     }
     .wrap{max-width:1100px; margin:0 auto; padding:20px 16px}
 
-    /* ===== HERO ===== */
+    /* HERO */
     .hero{margin-top:4vh;text-align:center;padding:22px 16px;border:1px solid var(--line);
       border-radius:16px;background:var(--panel);
-      box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04)}
+      box-shadow:0 0 38px rgba(0,255,150,.08),inset 0 0 22px rgba(0,255,140,.04)}
     .title{font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:.04em;
       color:var(--green);text-shadow:0 0 16px rgba(0,255,150,.35)}
     .subtitle{margin-top:8px;color:#cfe;opacity:.95;font-size:clamp(14px,1.9vw,18px)}
@@ -35,22 +35,28 @@
       box-shadow:0 0 10px var(--green),0 0 18px rgba(0,255,140,.45);
       transition:transform .12s ease, box-shadow .2s ease}
     .btn:hover{transform:translateY(-1px);box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
-    .btn.alt{border-color:var(--accent);color:var(--accent);
-      box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
+    .btn.alt{border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
 
-    /* ===== Tarjeta buscador ===== */
-    .card{max-width:720px;margin:16px auto;padding:14px;border:1px solid var(--line);
-      border-radius:12px;background:var(--panel)}
-    .small{font-size:.95rem;opacity:.92;color:#cfe}
+    /* GRID doctores */
+    .grid{display:grid;gap:20px;margin-top:28px}
+    @media (min-width: 680px){ .grid{grid-template-columns: 1fr 1fr} }
+    @media (min-width:1080px){ .grid{grid-template-columns: 1fr 1fr 1fr} }
+    .card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:left;
+      box-shadow:0 0 20px rgba(0,255,150,.05), inset 0 0 10px rgba(0,255,140,.03);transition:transform .25s ease, box-shadow .25s ease}
+    .card:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(0,255,150,.15)}
+    .card h3{color:var(--green);margin-bottom:6px}
+    .muted{color:#cfe;opacity:.9;margin-bottom:10px}
+    .tags{color:#ffeb7b;font-weight:700}
+    .card .btn{margin-top:10px}
 
-    /* ===== Sirena ===== */
+    /* === SIRENA (depurada) === */
     #sirenaToggle{
       position:fixed; right:16px; bottom:18px; z-index:10000;
       background:#222; color:#ffaaaa; border:2px solid #ff6666;
-      border-radius:999px; padding:10px 20px; font-weight:900;
+      border-radius:999px; padding:10px 20px; font-weight:900; font-family:ui-sans-serif;
       cursor:pointer; box-shadow:0 0 20px rgba(255,60,60,.25); transition:all .2s ease;
     }
-    #sirenaToggle:hover{ transform:scale(1.04); box-shadow:0 0 26px rgba(255,90,90,.35) }
+    #sirenaToggle:hover{ transform:scale(1.04); box-shadow:0 0 26px rgba(255,90,90,.35); }
     #sirenaToggle.is-on{ background:#550000; color:#ffaaaa; }
 
     #lucesEmergencia{ position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0; }
@@ -61,26 +67,27 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header class="hero">
-      <h1 class="title">🚨 Ambulancia de Juegos™ — Galenos del Nirvana Pro™</h1>
-      <p class="subtitle">Llamado de emergencia lúdica. Resucita tus juegos con voz, sabiduría y energía espiritual.</p>
+      <h1 class="title">🚨 Ambulancia de Juegos™ — Doctores del Nirvana Pro™</h1>
+      <p class="subtitle">
+        Aplica un shock espiritual a tus juegos clásicos. Redescubre tus partidas con voz, sabiduría y energía.
+      </p>
+
       <div class="cta-bar">
         <a class="btn" href="dm-panel.html">🧠 Abrir DM Panel PRO</a>
       </div>
-    </header>
-<!--Manifiesto / Póster -->
-<section class="card" style="max-width:840px;margin:20px auto;padding:0;border:1px solid #113c2d;border-radius:14px;background:#06130f;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.35),0 0 24px rgba(0,255,150,.08)">
-  <img
-    src="assets/departamento-nirvana-pro-poster.png?v=20251110-2"
-    alt="Archivo del Departamento Nirvana Pro™ — Manifiesto del Jugador"
-    style="display:block;width:100%;height:auto"
-    loading="lazy"
-  />
 
-    <!-- ===== Busca tu juego (navega a panel específico) ===== -->
-    <section class="card">
+      <!-- NUEVO BOTÓN -->
+      <div class="cta-bar" style="margin-top:10px">
+        <a class="btn alt" href="word-lab.html">🔡 Word Resonance Lab™</a>
+      </div>
+    </header>
+
+    <!-- === Busca tu juego (navega a dm-panel con ?game=) === -->
+    <section class="card" style="max-width:720px;margin:16px auto;padding:14px;border:1px solid #113c2d;border-radius:12px;background:#06130f">
       <h2 style="color:#00ff7b;margin-bottom:8px">🧭 Busca tu juego</h2>
       <p class="small" style="margin-bottom:8px">Elige tu juego y te llevamos a su sala de emergencia con audio y guía.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -89,7 +96,7 @@
           <option value="risk">Risk</option>
           <option value="monopoly">Monopoly</option>
           <option value="catan">Catan</option>
-          <option value="dnd5e">D&amp;D 5e</option>
+          <option value="dnd5e">D&D 5e</option>
           <option value="uno">UNO</option>
           <option value="chess">Ajedrez</option>
           <option value="magic">Magic: The Gathering</option>
@@ -102,83 +109,37 @@
         <button id="goGame" class="btn">🚑 Ir al DM Panel</button>
       </div>
     </section>
+
+    <script>
+      (function(){
+        const pick = document.getElementById('gamePicker');
+        const go   = document.getElementById('goGame');
+        go.addEventListener('click', ()=>{
+          const g = (pick.value||"").trim().toLowerCase();
+          const url = new URL(location.origin + "/dm-panel.html");
+          if (g) url.searchParams.set('game', g);
+          url.searchParams.set('v', Date.now()); // salta caché
+          location.href = url.toString();
+        });
+      })();
+    </script>
   </div>
 
-  <!-- ===== SIRENA (botón + audio + luces) ===== -->
+  <!-- === Sirena === -->
   <button id="sirenaToggle" aria-pressed="false">🚨 SIRENA ON — ¡Listo para despegar!</button>
   <audio id="sirenaAudio" src="audio/alarms/call-to-attention.mp3" loop preload="auto" playsinline></audio>
-  <div id="lucesEmergencia" aria-hidden="true"></div>
+  <div id="lucesEmergencia" class="active" aria-hidden="true"></div>
 
-  <!-- ===== Navegación por juego ===== -->
   <script>
-    (function () {
-      const pick = document.getElementById('gamePicker');
-      const go   = document.getElementById('goGame');
-
-      // mapa: juego → página correspondiente
-      const PANELS = {
-        risk:        '/risk-panel.html', // panel especial
-        monopoly:    '/dm-panel.html',
-        catan:       '/dm-panel.html',
-        dnd5e:       '/dm-panel.html',
-        uno:         '/dm-panel.html',
-        chess:       '/dm-panel.html',
-        magic:       '/dm-panel.html',
-        tencandles:  '/dm-panel.html',
-        carcassonne: '/dm-panel.html',
-        trivial:     '/dm-panel.html',
-        clue:        '/dm-panel.html',
-        pictionary:  '/dm-panel.html'
-      };
-
-      go.addEventListener('click', () => {
-        const g = (pick.value || "").trim().toLowerCase();
-        const path = PANELS[g] || '/dm-panel.html';
-        const url  = new URL(path, location.origin);
-        if (!PANELS[g]) url.searchParams.set('game', g);
-        url.searchParams.set('v', Date.now()); // saltar caché
-        location.href = url.toString();
-      });
-    })();
-  </script>
-
-  <!-- ===== Sirena depurada (no auto-reproduce; requiere primer tap) ===== -->
-  <script>
-    (function(){
-      const btn = document.getElementById('sirenaToggle');
-      const audio = document.getElementById('sirenaAudio');
-      const fx = document.getElementById('lucesEmergencia');
-      if (!btn || !audio) return;
-
-      let unlocked = false;
-
-      function unlockOnce(){
-        if (unlocked) return;
-        const probe = new Audio();
-        probe.play().catch(()=>{}); // sólo para desbloquear audio
-        unlocked = true;
-      }
-      window.addEventListener('pointerdown', unlockOnce, {once:true});
-
-      function setOn(on){
-        btn.classList.toggle('is-on', on);
-        btn.setAttribute('aria-pressed', on ? 'true':'false');
-        fx.classList.toggle('active', on);
-        btn.textContent = on ? '🛑 APAGAR SIRENA' : '🚨 SIRENA ON — ¡Listo para despegar!';
-      }
-
-      btn.addEventListener('click', async ()=>{
-        unlockOnce();
-        if (audio.paused){
-          audio.volume = .85;
-          try { await audio.play(); setOn(true); }
-          catch(_){ /* bloqueado por navegador */ }
-        } else {
-          try { audio.pause(); audio.currentTime = 0; } catch(_){}
-          setOn(false);
-        }
-      });
-    })();
+    const btn = document.getElementById("sirenaToggle");
+    const audio = document.getElementById("sirenaAudio");
+    const luces = document.getElementById("lucesEmergencia");
+    btn.addEventListener("click", ()=>{
+      const on = btn.classList.toggle("is-on");
+      btn.setAttribute("aria-pressed", on);
+      if(on){ audio.play(); luces.classList.add("active"); btn.textContent="🛑 SIRENA OFF — Silencio operacional"; }
+      else { audio.pause(); audio.currentTime=0; luces.classList.remove("active"); btn.textContent="🚨 SIRENA ON — ¡Listo para despegar!"; }
+    });
   </script>
 </body>
 </html>

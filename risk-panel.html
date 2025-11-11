@@ -39,6 +39,26 @@
       inset 0 0 10px rgba(0,255,140,.03)}
     footer{text-align:center;margin-top:40px;padding-top:10px;
       border-top:1px solid var(--line);color:#9edfc9;font-size:.95rem}
+     /* === Animación sutil de “respiración” === */
+  .panel-img {
+    display:block;
+    width:100%;
+    border-radius:10px;
+    margin:10px 0;
+    border:1px solid var(--line);
+    box-shadow:0 6px 26px rgba(0,0,0,.35),
+                inset 0 0 10px rgba(0,255,140,.03);
+    animation: breathe 5s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    @keyframes breathe {
+  0%   { transform: scale(1); opacity: 1; }
+  40%  { transform: scale(1.06); opacity: 0.9; }
+  60%  { transform: scale(1.03); opacity: 0.95; }
+  100% { transform: scale(1); opacity: 1; }
+}
+  }   
   </style>
 </head>
 

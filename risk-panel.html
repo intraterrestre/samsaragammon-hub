@@ -1,367 +1,113 @@
-<!-- save as risk-panel.html and edit asset paths (poster, audio, pdf) -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>RISK — Operación Nirvana Pro™ — Rescate Lúdico</title>
-<meta name="description" content="Resucita tu Risk: ritual de inicio, música, diagnóstico de los Galenos y cálculo de karma rápido." />
-<style>
-  :root{
-    --bg:#050504; --panel:#071410; --panel2:#0b221a;
-    --line:#113c2d; --green:#00ff7b; --accent:#ffd166; --text:#eafff5;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
-  .wrap{max-width:1100px;margin:28px auto;padding:20px}
-  .hero{padding:20px;border-radius:14px;background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.2));border:1px solid rgba(255,255,255,.02);text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.6)}
-  .title{font-weight:900;color:var(--green);font-size:clamp(20px,3.6vw,36px);text-shadow:0 0 18px rgba(0,255,150,.14)}
-  .subtitle{margin-top:8px;color:#cfe;opacity:.95}
-  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
-  .btn{background:linear-gradient(180deg,#02140f,#031b14);border:1px solid var(--line);padding:10px 18px;border-radius:999px;color:var(--green);font-weight:800;cursor:pointer;box-shadow:0 0 10px rgba(0,255,140,.06)}
-  .btn.alt{border-color:var(--accent);color:var(--accent)}
-  .row{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:14px}
-  .panel{background:var(--panel2);border-radius:12px;padding:14px;border:1px solid var(--line);box-shadow:inset 0 2px 10px rgba(0,0,0,.4)}
-  .flex{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-top:18px}
-  .left{flex:1;min-width:280px}
-  .right{width:360px;min-width:260px}
-  .poster{width:100%;border-radius:10px;border:1px solid rgba(255,255,255,.03);display:block;box-shadow:0 6px 30px rgba(0,0,0,.6)}
-  /* tablero resucitar animation */
-  .board-wrap{position:relative;margin-top:12px}
-  .board{width:100%;height:320px;border-radius:10px;background:#0b0b0b;border:1px solid rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-  .board img{max-width:95%;max-height:95%;transform:scale(1);transition:transform .6s ease,filter .6s ease}
-  .board.resurrect img{transform:scale(1.03);filter:brightness(1.25) saturate(1.2) drop-shadow(0 8px 30px rgba(0,255,100,.12))}
-  .board::after{content:"";position:absolute;inset:0;border-radius:10px;pointer-events:none;transition:box-shadow .4s ease}
-  .board.resurrect::after{box-shadow:0 0 160px rgba(0,255,120,.08) inset, 0 0 120px rgba(0,255,120,.06)}
-  /* pulse heal */
-  .pulse {position:absolute;left:50%;top:50%;width:20px;height:20px;border-radius:999px;transform:translate(-50%,-50%) scale(0.6);background:radial-gradient(circle at center, rgba(0,255,120,.9), rgba(0,255,120,.1));opacity:0;pointer-events:none}
-  .board.resurrect .pulse{animation:pulseHeal 1.4s ease-in-out infinite;opacity:1}
-  @keyframes pulseHeal{0%{transform:translate(-50%,-50%) scale(.6);opacity:.9}50%{transform:translate(-50%,-50%) scale(6);opacity:.14}100%{transform:translate(-50%,-50%) scale(.6);opacity:.0}}
-  /* modal simple */
-  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);z-index:10000}
-  .modal.active{display:flex}
-  .modal-card{background:var(--panel);border-radius:12px;padding:18px;max-width:760px;width:94%;border:1px solid var(--line)}
-  .modal-card h3{color:var(--green);margin:0 0 8px 0}
-  .form-row{display:flex;gap:8px;align-items:center;margin:8px 0}
-  label.small{font-size:.95rem;color:#cfe}
-  input[type=range]{width:100%}
-  .kpi{font-weight:900;color:var(--accent)}
-  footer{margin-top:28px;text-align:center;color:#9edfc9;font-size:.95rem}
-  .download{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:8px;background:#062018;border:1px solid var(--line);color:var(--green);text-decoration:none}
-  /* responsive */
-  @media (max-width:880px){ .flex{flex-direction:column} .right{width:100%} }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🎖️ RISK — Operación Nirvana Pro™</title>
+  <meta name="theme-color" content="#00ff7b" />
+  <meta name="description" content="Manual interactivo de resurrección lúdica para RISK: Operación Nirvana Pro™ — revive tu tablero con el Desfibrilador de Juegos™." />
+  <style>
+    :root{
+      --green:#00ff7b; --accent:#ffd166; --line:#113c2d;
+      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background:#000;color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      line-height:1.55;padding-bottom:80px;
+    }
+    .wrap{max-width:900px;margin:0 auto;padding:20px 16px}
+    header{text-align:center;margin-bottom:20px}
+    h1{color:var(--green);font-size:clamp(26px,4vw,42px);text-shadow:0 0 12px rgba(0,255,120,.35)}
+    h2{color:var(--accent);margin:20px 0 8px}
+    p{margin:10px 0}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 18px;border-radius:999px;border:1px solid var(--green);
+      background:linear-gradient(180deg,#02140f,#031b14);color:var(--green);
+      text-decoration:none;font-weight:800;letter-spacing:.02em;cursor:pointer;
+      box-shadow:0 0 10px var(--green),0 0 18px rgba(0,255,140,.45);
+      transition:transform .12s ease, box-shadow .2s ease}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
+    .btn.alt{border-color:var(--accent);color:var(--accent);
+      box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
+    .card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;
+      padding:18px;margin:18px 0;box-shadow:0 0 20px rgba(0,255,150,.05),
+      inset 0 0 10px rgba(0,255,140,.03)}
+    img.panel-img{display:block;width:100%;border-radius:10px;margin:10px 0;
+      border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.35),
+      inset 0 0 10px rgba(0,255,140,.03)}
+    footer{text-align:center;margin-top:40px;padding-top:10px;
+      border-top:1px solid var(--line);color:#9edfc9;font-size:.95rem}
+  </style>
 </head>
-.panel-img {
-  background:#0a1d17;
-  border:1px solid #113c2d;
-  border-radius:12px;
-  padding:8px;
-  box-shadow:0 6px 26px rgba(0,0,0,.35), inset 0 0 10px rgba(0,255,140,.03);
-}
+
 <body>
-<div class="wrap">
-  <div class="hero panel">
-    <div class="title">RISK — Operación Nirvana Pro™</div>
-    <div class="subtitle">Departamento de Trauma Estratégico — Resucita tu tablero con rituales, sonido y diagnóstico del Dr. Quetzalcóatl.</div>
+  <div class="wrap">
+    <header>
+      <h1>🎖️ RISK — Operación Nirvana Pro™</h1>
+      <p>Manual interactivo del Desfibrilador de Juegos™.  
+      Departamento de Trauma Estratégico – <em>Curvism instead cubism™</em></p>
+      <a class="btn" href="index.html">⬅️ Volver al Hospital</a>
+    </header>
 
-    <div class="cta">
-      <button id="btnIntro" class="btn">▶ Intro épico</button>
-      <button id="btnAmbient" class="btn alt">🔁 Ambient: Iniciar</button>
-      <button id="btnResuc" class="btn">✨ Resucitar tablero</button>
-      <button id="btnDiag" class="btn">🩺 Diagnóstico del Doctor</button>
-    </div>
-    <!-- ===== ENLACES AL MANUAL DE RISK ===== -->
-<div class="cta" style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-  <a class="btn" href="risk-manual.html" target="_blank">📘 Ver Manual Online</a>
-  <a class="btn" href="risk-manual.html?print=1" target="_blank">🖨️ Descargar / Imprimir PDF</a>
-</div>
-<!-- ===================================== -->
-    <div class="row small">
-      <div class="panel" style="padding:8px 12px">
-        Volumen master:
-        <input id="vol" type="range" min="0" max="1" step="0.01" value="0.7" />
+    <section class="card">
+      <img src="assets/risk-poster.png" alt="Póster Risk Nirvana Pro" class="panel-img"/>
+      <h2>🧠 Cómo usar el Panel Nirvana Pro™</h2>
+      <p>1️⃣ Entra al <strong>DM Panel</strong> (botón principal).  
+      2️⃣ Pulsa “Intro Épica” para despertar el tablero.  
+      3️⃣ Pulsa “Ambient” para iniciar el fondo de batalla o calma.  
+      4️⃣ Abre “Shaolín Pro+” → mezcla frases o sonidos de guerra, animales, viento o campanas de calma.  
+      5️⃣ Usa “Diagnóstico del Doctor” → escucha lo que el tablero siente.  
+      6️⃣ Al final, abre el <strong>Karma Calculator™</strong> para medir la energía del grupo.</p>
+    </section>
+
+    <section class="card">
+      <h2>📖 Diagnóstico Inicial</h2>
+      <p>El tablero cuadrado yace sin alma. Las piezas han olvidado su propósito.  
+      Antes de tocar nada, respira profundo. Declara en voz baja:  
+      <em>“Vine a ganar a mi peor enemigo: mi lado oscuro.”</em>  
+      Observa los daños: fichas rotas, alianzas frías, dados sin fe.  
+      Cada detalle habla del alma del grupo.</p>
+      <p>💬 “El alma es el jugador que olvidó que estaba soñando.” — <em>Curvism™, El Espejo Redondo</em></p>
+    </section>
+
+    <section class="card">
+      <h2>⚙️ Aplicación del Desfibrilador Lúdico</h2>
+      <p>Pulsa <strong>Intro Épica</strong> → despierta el espíritu del tablero.  
+      Pulsa <strong>Ambient</strong> → deja que la atmósfera cobre vida.  
+      Pulsa <strong>Resucitar Tablero</strong> → canaliza la energía.  
+      Pulsa <strong>Diagnóstico del Doctor</strong> → escucha al tablero hablar.  
+      💬 “Todo juego revive cuando alguien lo mira con compasión.” — Dr. Quetzalcóatl, Nirvana Pro™</p>
+    </section>
+
+    <section class="card">
+      <h2>🧘 Reanimación Espiritual</h2>
+      <p>Durante la partida:  
+      🎲 Lanza los dados sin miedo.  
+      🙏 Agradece las derrotas: son diagnósticos.  
+      ⚔️ Celebra cada traición como una enseñanza.  
+      Mantra curvista: <em>Om Riska Sat Gammon.</em>  
+      (Deja que el tablero respire solo.)</p>
+      <p>💬 “El que conquista su tablero interior, gobierna el mundo sin mover una ficha.” — <em>Curvism™, Geometría del Dharma</em></p>
+    </section>
+
+    <section class="card">
+      <h2>🕉️ Cierre y Observación</h2>
+      <p>Después del ritual:  
+      📸 Toma una foto del tablero (prueba de resurrección).  
+      ✍️ Escribe tu “lección del alma”.  
+      🔚 Cierra diciendo: “De la conquista del mundo al dominio del alma.”</p>
+      <p>💬 “Toda guerra exterior es un reflejo de una batalla interna aún no comprendida.” — <em>Curvism™, Crónicas del Círculo</em></p>
+    </section>
+
+    <footer>
+      © 2025 Constantino & Federico García — Curvism instead cubism™  
+      <br>Archivo del Departamento Nirvana Pro™ — Operación Resurrección Lúdica (RISK)
+      <div style="margin-top:10px">
+        <a class="btn alt" href="word-lab.html">🔡 Word Resonance Lab™</a>
       </div>
-      <div class="panel" style="padding:8px 12px">
-        Tiempo de resucitación:
-        <select id="resTime">
-          <option value="6">6s</option>
-          <option value="10">10s</option>
-          <option value="16">16s</option>
-        </select>
-      </div>
-    </div>
+    </footer>
   </div>
-
-  <div class="flex">
-    <div class="left">
-      <div class="panel">
-        <!-- poster: reemplaza src por la imagen final (la enfermera auscultando Risk) -->
- <!-- === PANEL VISUAL: RISK (PÓSTER) === -->
-<div class="panel-img" style="margin-top:20px; padding:0">
-  <img
-    src="assets/risk-poster.png?v=20251110"
-    alt="RISK — Operación Nirvana Pro™"
-    style="display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.35)"
-    loading="lazy"
-  />
-</div>
-
-        <p style="margin-top:12px;color:#cfe;font-size:.95rem">
-          Descripción rápida: Este ritual guía la resurrección espiritual del tablero. Usa <strong>Intro</strong> para preparar la escena,
-          <strong>Ambient</strong> para loop de fondo y <strong>Resucitar</strong> cuando quieras "curar" el juego y activar efectos especiales.
-        </p>
-
-        <a class="download" id="pdfDownload" href="assets/RISK_Operacion_Nirvana_Pro_manual.pdf" download>
-          📄 Descargar guía imprimible (PDF)
-        </a>
-      </div>
-    </div>
-
-    <div class="right panel">
-      <h4 style="margin:0 0 8px 0;color:var(--green)">Diagnóstico rápido & Karma</h4>
-
-      <div style="margin-bottom:10px">
-        <p class="small" style="margin:0 0 6px 0">Mini-calculador de Karma (rápido): introduce acciones de la sesión</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <div style="flex:1;min-width:120px">
-            <label class="small">Traiciones (#)</label>
-            <input id="inTra" type="number" min="0" step="1" value="0" style="width:100%;padding:8px;border-radius:8px;background:#031b14;border:1px solid var(--line);color:var(--text)" />
-          </div>
-          <div style="flex:1;min-width:120px">
-            <label class="small">Sacrificios (ej: ceder)</label>
-            <input id="inSac" type="number" min="0" step="1" value="0" style="width:100%;padding:8px;border-radius:8px;background:#031b14;border:1px solid var(--line);color:var(--text)" />
-          </div>
-          <div style="flex:1;min-width:120px">
-            <label class="small">Ayudas / Alianzas</label>
-            <input id="inHelp" type="number" min="0" step="1" value="0" style="width:100%;padding:8px;border-radius:8px;background:#031b14;border:1px solid var(--line);color:var(--text)" />
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button id="calcKarma" class="btn">Calcular Karma</button>
-          <button id="resetKarma" class="btn alt">Reset</button>
-        </div>
-
-        <div style="margin-top:12px">
-          <div>Resultado: <span class="kpi" id="karmaResult">—</span></div>
-          <div style="font-size:.9rem;color:#cfe;margin-top:6px" id="karmaAdvice"></div>
-        </div>
-      </div>
-
-      <hr style="border:none;border-top:1px solid var(--line);margin:12px 0" />
-
-      <div>
-        <h5 style="margin:6px 0;color:#cfe">Tono del ritual (elige)</h5>
-        <select id="ritualTone" style="width:100%;padding:8px;border-radius:8px;background:#031b14;border:1px solid var(--line);color:var(--text)">
-          <option value="redencion">Redención</option>
-          <option value="calma">Calma estratégica</option>
-          <option value="fuego">Furia justa</option>
-          <option value="unidad">Unidad diplomática</option>
-        </select>
-        <p style="margin-top:8px;color:#9edfc9;font-size:.9rem">El tono llena el diagnóstico del doctor con un matiz narrativo. Úsalo para personalizar el audio/texto.</p>
-      </div>
-
-      <div style="margin-top:12px">
-        <button id="btnOpenDiag" class="btn">Abrir Panel de Diagnóstico</button>
-      </div>
-
-    </div>
-  </div>
-
-  <footer>
-    Archivo: Departamento de Nirvana Pro™ · © 2025 Constantino y Federico García — Curvism instead cubism™
-  </footer>
-</div>
-
-<!-- AUDIO ASSETS (replace with your files) -->
-<audio id="audioIntro" src="audio/transitions/fanfarra-epic.mp3" preload="auto"></audio>
-<audio id="audioAmbient" src="audio/ambient/war-dron-loop.mp3" loop preload="auto"></audio>
-<audio id="audioRes" src="audio/effects/resurrect-swell.mp3" preload="auto"></audio>
-
-<!-- Modal (doctor) -->
-<div id="modal" class="modal" role="dialog" aria-hidden="true">
-  <div class="modal-card panel" role="document">
-    <h3>🩺 Diagnóstico — Dr. Quetzalcóatl</h3>
-    <p id="diagText" style="color:#cfe">
-      [Texto de diagnóstico dinámico aquí — tono: redención]
-    </p>
-
-    <div class="form-row">
-      <label class="small">Volumen voz:</label>
-      <input id="voiceVol" type="range" min="0" max="1" step="0.01" value="0.9" />
-    </div>
-
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
-      <button id="btnSpeak" class="btn">🔊 Leer diagnóstico</button>
-      <button id="btnClose" class="btn alt">Cerrar</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ========== Setup elements ========== */
-const intro = document.getElementById('audioIntro');
-const ambient = document.getElementById('audioAmbient');
-const resSfx = document.getElementById('audioRes');
-const vol = document.getElementById('vol');
-
-const btnIntro = document.getElementById('btnIntro');
-const btnAmbient = document.getElementById('btnAmbient');
-const btnResuc = document.getElementById('btnResuc');
-const btnDiag = document.getElementById('btnDiag');
-const board = document.getElementById('board');
-const boardImg = document.getElementById('boardImg');
-const pulse = document.getElementById('pulse');
-const resTime = document.getElementById('resTime');
-
-const inTra = document.getElementById('inTra');
-const inSac = document.getElementById('inSac');
-const inHelp = document.getElementById('inHelp');
-const karmaResult = document.getElementById('karmaResult');
-const karmaAdvice = document.getElementById('karmaAdvice');
-const calcKarma = document.getElementById('calcKarma');
-const resetKarma = document.getElementById('resetKarma');
-const ritualTone = document.getElementById('ritualTone');
-
-const modal = document.getElementById('modal');
-const btnOpenDiag = document.getElementById('btnOpenDiag');
-const btnClose = document.getElementById('btnClose');
-const diagText = document.getElementById('diagText');
-const btnSpeak = document.getElementById('btnSpeak');
-const voiceVol = document.getElementById('voiceVol');
-
-/* ====== audio volumes ====== */
-function setVolumes(){
-  const v = parseFloat(vol.value || '0.7');
-  ambient.volume = v * 0.7; intro.volume = v * 0.95; resSfx.volume = v;
-}
-setVolumes();
-vol.addEventListener('input', setVolumes);
-voiceVol.addEventListener('input', ()=>{}); // used by TTS when invoked
-
-/* ===== Intro button ===== */
-btnIntro.addEventListener('click', ()=>{
-  unlockAudio(); intro.currentTime = 0; intro.play().catch(()=>{});
-});
-
-/* ===== Ambient toggle ===== */
-let ambientOn = false;
-btnAmbient.addEventListener('click', ()=>{
-  unlockAudio();
-  if (!ambientOn){
-    ambient.play().catch(()=>{});
-    ambientOn = true; btnAmbient.textContent = '🔁 Ambient: Parar';
-  } else {
-    ambient.pause(); ambient.currentTime = 0; ambientOn = false; btnAmbient.textContent = '🔁 Ambient: Iniciar';
-  }
-});
-
-/* ===== Resucitar animation ===== */
-let resTimeout = null;
-btnResuc.addEventListener('click', ()=>{
-  unlockAudio();
-  // play sfx, animate board
-  const secs = parseInt(resTime.value || '6',10);
-  board.classList.add('resurrect');
-  resSfx.currentTime = 0; resSfx.play().catch(()=>{});
-  // stop after secs
-  clearTimeout(resTimeout);
-  resTimeout = setTimeout(()=>{ board.classList.remove('resurrect'); }, secs*1000);
-});
-
-/* ===== Mini Karma calculator =====
-   Simple rule:
-     base = 50
-     each traicion -8
-     each sacrificio +6
-     each ayuda +5
-   final clamp 0..100
-   interpretive advice returned.
-*/
-calcKarma.addEventListener('click', ()=>{
-  const t = Math.max(0, parseInt(inTra.value||0,10));
-  const s = Math.max(0, parseInt(inSac.value||0,10));
-  const h = Math.max(0, parseInt(inHelp.value||0,10));
-  let score = 50 - (t*8) + (s*6) + (h*5);
-  score = Math.max(0, Math.min(100, Math.round(score)));
-  karmaResult.textContent = score;
-  // advice
-  let advice = '';
-  if (score >= 75) advice = 'Karma elevado — tu juego trae equilibrio. Bonus narrativo: "Bendición del Comandante" (pequeña ventaja simbólica).';
-  else if (score >= 50) advice = 'Karma neutro — la partida fue intensa y equilibrada. Considera un interludio ritual.';
-  else if (score >= 25) advice = 'Karma tenso — hubo traiciones. Activa carta de "Redención" para recuperar honor.';
-  else advice = 'Karma bajo — esta partida dejó heridas. Ofrece un pequeño acto ritual: todos escriben una reflexión en el Libro de las Guerras del Alma.';
-  karmaAdvice.textContent = advice;
-});
-
-/* reset */
-resetKarma.addEventListener('click', ()=>{
-  inTra.value = 0; inSac.value = 0; inHelp.value = 0; karmaResult.textContent = '—'; karmaAdvice.textContent = '';
-});
-
-/* ====== Diagnóstico (modal + dynamic text) ====== */
-function composeDiagnosis(){
-  const tone = ritualTone.value || 'redencion';
-  const lines = {
-    redencion: `Paciente: tablero "Risk". Diagnóstico: Desequilibrio por conquistas sin sentido. Tratamiento: ritual de redención — declara una intención y cede un territorio en forma simbólica. Firma tu intención: "Juego por redención".`,
-    calma: `Paciente: tablero "Risk". Diagnóstico: Estrategia con ego alto. Tratamiento: cinco minutos de silencio estratégico. Lee la carta de memoria y respira antes de cada ataque.`,
-    fuego: `Paciente: tablero "Risk". Diagnóstico: Ira combativa. Tratamiento: canaliza la furia en un objetivo narrativo — declara "Fuego justo" y limita ataques indiscriminados.`,
-    unidad: `Paciente: tablero "Risk". Diagnóstico: fractura social. Tratamiento: puente diplomático — dos jugadores forjan alianza temporal y reciben 'puntos de honor' por cooperación.`
-  };
-  return lines[tone] || lines.redencion;
-}
-
-function openModal(){
-  diagText.textContent = composeDiagnosis();
-  modal.classList.add('active');
-  modal.setAttribute('aria-hidden','false');
-}
-btnOpenDiag.addEventListener('click', openModal);
-btnDiag.addEventListener('click', openModal);
-btnClose.addEventListener('click', ()=>{ modal.classList.remove('active'); modal.setAttribute('aria-hidden','true'); });
-
-/* ===== TTS (leer diagnóstico) ===== */
-btnSpeak.addEventListener('click', ()=>{
-  const text = diagText.textContent.trim();
-  if (!text) return;
-  if (!('speechSynthesis' in window)){
-    alert('TTS no soportado en este navegador.');
-    return;
-  }
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'es-ES';
-  utter.volume = parseFloat(voiceVol.value||'0.9');
-  // voice selection optional: prefer a Spanish voice if present
-  const voices = speechSynthesis.getVoices() || [];
-  if (voices.length){
-    // pick first voice that contains 'Spanish' or 'es'
-    const prefer = voices.find(v => /es/i.test(v.lang) || /spanish/i.test(v.name));
-    if (prefer) utter.voice = prefer;
-  }
-  speechSynthesis.cancel();
-  speechSynthesis.speak(utter);
-});
-
-/* ===== unlock audio on interaction for mobile autoplay policies ===== */
-let audioUnlocked = false;
-function unlockAudio(){
-  if (audioUnlocked) return;
-  [intro, ambient, resSfx].forEach(a=>{ try{ a.play().then(()=>a.pause()); }catch(e){} });
-  audioUnlocked = true;
-}
-
-/* ==== small UX: keyboard resucitate (R) ==== */
-document.addEventListener('keydown', (e)=>{
-  if (e.key.toLowerCase() === 'r'){ btnResuc.click(); }
-});
-
-/* ==== rotation fallback: if poster missing, show simple placeholder ==== */
-document.getElementById('posterImg').addEventListener('error', function(){
-  this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="100%" height="100%" fill="%23070f0b" /><text x="50%" y="50%" fill="%2300ff7b" font-size="28" text-anchor="middle" dominant-baseline="central">Poster RISK (coloca assets/risk-poster.png)</text></svg>';
-});
-document.getElementById('boardImg').addEventListener('error', function(){
-  this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="100%" height="100%" fill="%230b0b0b" /><text x="50%" y="50%" fill="%2300ff7b" font-size="22" text-anchor="middle" dominant-baseline="central">Tablero (coloca assets/risk-board.png)</text></svg>';
-});
-</script>
 </body>
 </html>

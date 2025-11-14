@@ -456,7 +456,7 @@ const EFX_INLINE = {
     try{ heart.volume=vol; siren.volume=vol; }catch{}
   });
 
-   // ---------- Presets por juego (12 campañas) ----------
+     // ---------- Presets por juego (12 campañas) ----------
   const GAME_PRESETS = {
     risk(){
       $('#btnAmb').click();
@@ -465,13 +465,15 @@ const EFX_INLINE = {
       setTimeout(()=> playClip('audio/battle/bomb-explosion.mp3','battle/bomb-explosion'), 4200);
       setTimeout(()=> playClip('audio/battle/grito-guerra.mp3','battle/grito-guerra'), 5000);
     },
+
     monopoly(){
       $('#btnAmb').click();
-      setTimeout(()=> playClip('audio/scene/casino-ambience.mp3','scene/casino-ambience'), 500);
-      setTimeout(()=> playClip('audio/transitions/arcade-coin.mp3','transitions/arcade-coin'), 2500);
+      setTimeout(()=> playClip('audio/scene/44s-rulet.mp3','scene/44s-rulet'), 500);
+      setTimeout(()=> playClip('audio/bless/3s-ring.mp3','bless/3s-ring'), 2500);
       setTimeout(()=> playClip('audio/animal/baby-crying.mp3','animal/baby-crying'), 3500);
       setTimeout(()=> playClip('audio/alarms/car-alarm.mp3','alarms/car-alarm'), 5500);
     },
+
     catan(){
       $('#btnAmb').click();
       setTimeout(()=> playClip('audio/nature/wind.mp3','nature/wind'), 300);
@@ -479,6 +481,7 @@ const EFX_INLINE = {
       setTimeout(()=> playClip('audio/animal/sheep-bleating.mp3','animal/sheep-bleating'), 3500);
       setTimeout(()=> playClip('audio/scene/tavern-low.mp3','scene/tavern-low'), 6000);
     },
+
     dnd5e(){
       $('#btnAmb').click();
       setTimeout(()=> playClip('audio/scene/tavern-low.mp3','scene/tavern-low'), 300);
@@ -486,55 +489,63 @@ const EFX_INLINE = {
       setTimeout(()=> playClip('audio/nature/storm-thunder-night.mp3','nature/storm-thunder-night'), 4200);
       setTimeout(()=> playClip('audio/animal/monster-roars.mp3','animal/monster-roars'), 6500);
     },
+
     uno(){
       $('#btnAmb').click();
-      setTimeout(()=> playClip('audio/transitions/boing-poioiong.mp3','transitions/boing-poioiong'), 300);
-      setTimeout(()=> playClip('audio/transitions/mini-banjo.mp3','transitions/mini-banjo'), 1400);
-      setTimeout(()=> playClip('audio/transitions/video-game-8bit.mp3','transitions/video-game-8bit'), 2600);
+      setTimeout(()=> playClip('audio/transitions/2s-poioiong.mp3','transitions/2s-poioiong'), 300);
+      setTimeout(()=> playClip('audio/transitions/4s-mini-banjo.mp3','transitions/4s-mini-banjo'), 1400);
+      setTimeout(()=> playClip('audio/transitions/14s-atari.mp3','transitions/14s-atari'), 2600);
       setTimeout(()=> playClip('audio/scene/party-murmur.mp3','scene/party-murmur'), 4200);
     },
+
     chess(){
       $('#btnAmb').click();
       setTimeout(()=> playClip('audio/ritual/bowl-long.mp3','ritual/bowl-long'), 500);
-      setTimeout(()=> playClip('audio/bless/choir-shimmer.mp3','bless/choir-shimmer'), 3000);
+      setTimeout(()=> playClip('audio/bless/11s-gospel-choir.mp3','bless/11s-gospel-choir'), 3000);
       setTimeout(()=> playClip('audio/ritual/low-om.mp3','ritual/low-om'), 5200);
     },
+
     mtg(){
       $('#btnAmb').click();
-      setTimeout(()=> playClip('audio/bless/holy-chants.mp3','bless/holy-chants'), 400);
+      setTimeout(()=> playClip('audio/bless/35-choir-goodbyes-adios.mp3','bless/35-choir-goodbyes-adios'), 400);
       setTimeout(()=> playClip('audio/nature/storm-thunder-night.mp3','nature/storm-thunder-night'), 2600);
       setTimeout(()=> playClip('audio/animal/monster-roar-2.mp3','animal/monster-roar-2'), 4800);
-      setTimeout(()=> playClip('audio/transitions/epic-hit.mp3','transitions/epic-hit'), 6200);
+      setTimeout(()=> playClip('audio/transitions/13s-fanfarra-epic.mp3','transitions/13s-fanfarra-epic'), 6200);
     },
+
     "ten-candles"(){
       $('#btnAmb').click();
       setTimeout(()=> playClip('audio/ritual/shamanic-rattle.mp3','ritual/shamanic-rattle'), 500);
       setTimeout(()=> playClip('audio/ritual/mantra-chant.mp3','ritual/mantra-chant'), 2600);
       setTimeout(()=> playClip('audio/nature/crickets-night.mp3','nature/crickets-night'), 5200);
     },
+
     carcassonne(){
       $('#btnAmb').click();
       setTimeout(()=> playClip('audio/nature/forest-day.mp3','nature/forest-day'), 400);
       setTimeout(()=> playClip('audio/ritual/bansuri.mp3','ritual/bansuri'), 2600);
-      setTimeout(()=> playClip('audio/bless/church-temple-gong.mp3','bless/church-temple-gong'), 5200);
+      setTimeout(()=> playClip('audio/bless/8s-church-bell.mp3','bless/8s-church-bell'), 5200);
     },
+
     trivial(){
       $('#btnAmb').click();
       setTimeout(()=> playClip('audio/scene/office-murmur.mp3','scene/office-murmur'), 500);
-      setTimeout(()=> playClip('audio/transitions/timer-suspense.mp3','transitions/timer-suspense'), 2600);
-      setTimeout(()=> playClip('audio/transitions/game-over.mp3','transitions/game-over'), 5200);
+      setTimeout(()=> playClip('audio/transitions/16s-timer-suspense.mp3','transitions/16s-timer-suspense'), 2600);
+      setTimeout(()=> playClip('audio/scene/10s-game-over.mp3','scene/10s-game-over'), 5200);
     },
+
     clue(){
       $('#btnAmb').click();
       setTimeout(()=> playClip('audio/scene/party-murmur.mp3','scene/party-murmur'), 400);
       setTimeout(()=> playClip('audio/nature/wind-strong.mp3','nature/wind-strong'), 2600);
-      setTimeout(()=> playClip('audio/transitions/suspenso-ascendente.mp3','transitions/suspenso-ascendente'), 4800);
+      setTimeout(()=> playClip('audio/transitions/11s-suspenso-ascendente.mp3','transitions/11s-suspenso-ascendente'), 4800);
       setTimeout(()=> playClip('audio/alarms/siren-blips.mp3','alarms/siren-blips'), 7000);
     },
+
     pictionary(){
       $('#btnAmb').click();
-      setTimeout(()=> playClip('audio/transitions/flute-melody-280554.mp3','transitions/flute-melody-280554'), 500);
-      setTimeout(()=> playClip('audio/bless/mystic-chimes.mp3','bless/mystic-chimes'), 2600);
+      setTimeout(()=> playClip('audio/transitions/22s-flute-melody.mp3','transitions/22s-flute-melody'), 500);
+      setTimeout(()=> playClip('audio/bless/40s-magic-harp-arpeggio.mp3','bless/40s-magic-harp-arpeggio'), 2600);
       setTimeout(()=> playClip('audio/scene/kids-playing.mp3','scene/kids-playing'), 5200);
     }
   };

@@ -57,9 +57,37 @@
   details{border:1px dashed var(--edge);border-radius:12px;background:#13120f;margin-bottom:12px}
   details>summary{list-style:none;cursor:pointer;padding:12px 14px;border-bottom:1px dashed var(--edge);background:#191813;border-radius:12px 12px 0 0}
   details[open]>summary{border-bottom-color:transparent}
-  .sfx-list{padding:10px 12px}
-  .sfx-item{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px dotted #2b281f}
-  .sfx-item:last-child{border-bottom:0}
+  /* [DJ] BLOQUE A — Lista de efectos en 2 columnas */
+.sfx-list{
+  padding:10px 12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.sfx-item{
+  flex:0 0 calc(50% - 4px);   /* 2 columnas */
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px;
+  border-bottom:1px dotted #2b281f;
+  box-sizing:border-box;
+}
+
+.sfx-item:last-child{
+  border-bottom:1px dotted #2b281f; /* da igual, el wrap ya manda */
+}
+
+/* opcional: para que los presets también se acomoden bonito */
+.presets-grid{
+  flex-wrap:wrap;
+  gap:8px;
+}
+.presets-grid .btn{
+  flex:0 0 calc(50% - 6px);
+  justify-content:flex-start;
+}
   .led{width:8px;height:8px;border-radius:999px;background:#38352c;border:1px solid #4b4639}
   .led.on{background:var(--green);box-shadow:0 0 8px var(--green)}
   .name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -74,7 +102,7 @@
     <!-- Back -->
     <div class="row" style="margin-bottom:8px">
       <a class="btn" href="./index.html">← Volver al Hospital</a>
-      <span class="right small muted">Discoteca Nirvana — <strong>DJ Shaolin Pro+™</strong></span>
+      <span class="right small muted">Miniteca Nirvana — <strong>DJ Shaolin Pro+™</strong></span>
     </div>
 
     <!-- HERO: Buda DJ (nombre EXACTO) -->
@@ -94,7 +122,7 @@
       <h2>Ambiente Hospitalario</h2>
       <p class="small muted">Pulso: <em>latido alto</em> + <em>sirena lejana</em>. Inicia para ambientar tu mesa.</p>
       <div class="row">
-        <button id="btnAmb" class="btn ok">▶︎ Iniciar ambiente</button>
+        <button id="btnAmb" class="btn ok">▶︎ ENCIENDE AQUÍ TU MINITECA </button>
         <button id="btnStopAmb" class="btn stop">■ Detener</button>
         <a class="btn ghost" href="./dm-panel.html">🎛 Abrir DM Panel PRO</a>
         <span class="right small muted">Si no se oye, toca “Iniciar ambiente”.</span>
@@ -107,13 +135,30 @@
     </section>
 
     <!-- Presets -->
-    <section class="card panel" style="margin-top:12px">
-      <h2>Presets por Juego</h2>
-      <p class="small muted">Carga combinaciones pensadas para cada campaña (demo: Risk y Catan).</p>
-      <div class="row">
-        <button class="btn pill" id="presetRisk">🎖 Risk — “Resurrección de batalla”</button>
-        <button class="btn pill" id="presetCatan">🌬 Catan — “Vientos y campanas”</button>
-      </div>
+    <!-- [DJ] BLOQUE B — Presets para 12 juegos -->
+<section class="card panel" style="margin-top:12px">
+  <h2>Presets por Juego</h2>
+  <p class="small muted">Elige tu campaña: el DJ Buda adapta el clima sonoro al tipo de batalla interior.</p>
+
+  <div class="row presets-grid">
+    <button class="btn pill" id="presetRisk">🎖 Risk — Invasión Épica</button>
+    <button class="btn pill" id="presetMonopoly">💸 Monopoly — Capitalismo Kármico</button>
+
+    <button class="btn pill" id="presetCatan">🌾 Catan — Aldea en Expansión</button>
+    <button class="btn pill" id="presetDnD5e">🐉 D&D 5e — Calabozo Interior</button>
+
+    <button class="btn pill" id="presetUno">🃏 UNO — Caos de Colores</button>
+    <button class="btn pill" id="presetChess">♟️ Ajedrez — Guerra Silenciosa</button>
+
+    <button class="btn pill" id="presetMTG">✨ Magic — Duelo de Planeswalkers</button>
+    <button class="btn pill" id="presetTenCandles">🕯 Ten Candles — Última Noche</button>
+
+    <button class="btn pill" id="presetCarcassonne">🏰 Carcassonne — Camino del Monje</button>
+    <button class="btn pill" id="presetTrivial">🧠 Trivial — Tormenta de Preguntas</button>
+
+    <button class="btn pill" id="presetClue">🔍 Clue — Misterio en la Mansión</button>
+    <button class="btn pill" id="presetPictionary">🎨 Pictionary/Dixit — Visiones en la Mesa</button>
+  </div>
     </section>
 
     <!-- Chips de categorías -->
@@ -140,113 +185,159 @@
   <audio id="aSiren" src="./audio/alarms/ambulancia-sixteen-secs.mp3" preload="auto" loop playsinline></audio>
 
 <!-- ============================= -->
-<!--  CATÁLOGO INLINE COMPLETO    -->
-<!--  (funciona con file://)      -->
+<!--  [DJ] BLOQUE C — CATÁLOGO    -->
+<!--  INLINE + DURACIONES (s)     -->
 <!-- ============================= -->
 <script>
-/* Si luego subes a Netlify y prefieres efectos.json por fetch,
-   puedes borrar esta constante y cambiar la función getCatalog() abajo. */
 const EFX_INLINE = {
   "alarms": [
-    ["ambulancia-sixteen-secs","audio/alarms/ambulancia-sixteen-secs.mp3"],
-    ["ambulance-siren","audio/alarms/ambulance-siren.mp3"],
-    ["boat-siren-sinking","audio/alarms/boat-siren-sinking.mp3"],
-    ["call-to-attention","audio/alarms/call-to-attention.mp3"],
-    ["cellphone-ringtone-huawei","audio/alarms/cellphone-ringtone-huawei.mp3"],
-    ["eleven-siren","audio/alarms/eleven-siren.mp3"],
-    ["emergency-alert-siren","audio/alarms/emergency-alert-siren.mp3"],
-    ["high-low-siren","audio/alarms/high-low-siren.mp3"],
-    ["mega-horn","audio/alarms/mega-horn.mp3"],
-    ["patroll","audio/alarms/patroll.mp3"],
-    ["ringphone-rock","audio/alarms/ringphone-rock.mp3"],
-    ["siren-blips","audio/alarms/siren-blips.mp3"],
-    ["sirene-alarm","audio/alarms/sirene-alarm.mp3"],
-    ["sos-signal-morse","audio/alarms/sos-signal-morse.mp3"],
-    ["train-crossing-signal","audio/alarms/train-crossing-signal.mp3"]
+    ["ambulancia-sixteen-secs","audio/alarms/ambulancia-sixteen-secs.mp3",16],
+    ["ambulance-siren","audio/alarms/ambulance-siren.mp3",33],
+    ["boat-siren-sinking","audio/alarms/boat-siren-sinking.mp3",29],
+    ["call-to-attention","audio/alarms/call-to-attention.mp3",4],
+    ["car-alarm","audio/alarms/car-alarm.mp3",32],
+    ["cellphone-ringtone-huawei","audio/alarms/cellphone-ringtone-huawei.mp3",29],
+    ["eleven-siren","audio/alarms/eleven-siren.mp3",31],
+    ["emergency-alert-siren","audio/alarms/emergency-alert-siren.mp3",34],
+    ["high-low-siren","audio/alarms/high-low-siren.mp3",7],
+    ["mega-horn","audio/alarms/mega-horn.mp3",12],
+    ["patroll","audio/alarms/patroll.mp3",27],
+    ["ringphone-rock","audio/alarms/ringphone-rock.mp3",23],
+    ["siren-blips","audio/alarms/siren-blips.mp3",5],
+    ["sirene-alarm","audio/alarms/sirene-alarm.mp3",33],
+    ["sos-signal-morse","audio/alarms/sos-signal-morse.mp3",19],
+    ["train-crossing-signal","audio/alarms/train-crossing-signal.mp3",20]
   ],
   "animal": [
-    ["buho","audio/animal/buho.mp3"],
-    ["burrada","audio/animal/burrada.mp3"],
-    ["chimpanzee","audio/animal/chimpanzee.mp3"],
-    ["cochino","audio/animal/cochino.mp3"],
-    ["culebra-cascabel","audio/animal/culebra-cascabel.mp3"],
-    ["donkey-bray-36757","audio/animal/donkey-bray-36757.mp3"],
-    ["gatico","audio/animal/gatico.mp3"],
-    ["horse-galloping","audio/animal/horse-galloping.mp3"],
-    ["horse-neigh","audio/animal/horse-neigh.mp3"],
-    ["kikiriki-gallo","audio/animal/kikiriki-gallo.mp3"],
-    ["lion-loud","audio/animal/lion-loud.mp3"],
-    ["mono","audio/animal/mono.mp3"],
-    ["monster-roar-2","audio/animal/monster-roar-2.mp3"],
-    ["monster-roars","audio/animal/monster-roars.mp3"]
+    ["baby-crying","audio/animal/baby-crying.mp3",29],
+    ["barking-dog","audio/animal/barking-dog.mp3",10],
+    ["big-dog","audio/animal/big-dog.mp3",12],
+    ["bird-conversation","audio/animal/bird-conversation.mp3",37],
+    ["bird-song-forest","audio/animal/bird-song-forest.mp3",31],
+    ["bull-angry","audio/animal/bull-angry.mp3",16],
+    ["buho","audio/animal/buho.mp3",2],
+    ["burrada","audio/animal/burrada.mp3",8],
+    ["cat-meowing","audio/animal/cat-meowing.mp3",18],
+    ["chimpanzee","audio/animal/chimpanzee.mp3",6],
+    ["cochino","audio/animal/cochino.mp3",5],
+    ["cow-moo","audio/animal/cow-moo.mp3",28],
+    ["culebra-cascabel","audio/animal/culebra-cascabel.mp3",13],
+    ["donkey-bray-36757","audio/animal/donkey-bray-36757.mp3",15],
+    ["gatico","audio/animal/gatico.mp3",4],
+    ["goat-meh","audio/animal/goat-meh.mp3",18],
+    ["horse-galloping","audio/animal/horse-galloping.mp3",52],
+    ["horse-neigh","audio/animal/horse-neigh.mp3",22],
+    ["kikiriki-gallo","audio/animal/kikiriki-gallo.mp3",7],
+    ["lion-loud","audio/animal/lion-loud.mp3",10],
+    ["mono","audio/animal/mono.mp3",5],
+    ["monster-roar-2","audio/animal/monster-roar-2.mp3",6],
+    ["monster-roars","audio/animal/monster-roars.mp3",5],
+    ["owl-hooting","audio/animal/owl-hooting.mp3",24],
+    ["pajaro-en-ramas","audio/animal/pajaro-en-ramas.mp3",26],
+    ["pig-oink","audio/animal/pig-oink.mp3",18],
+    ["pigeon","audio/animal/pigeon.mp3",16],
+    ["rooster-crow","audio/animal/rooster-crow.mp3",7],
+    ["sheep-bleating","audio/animal/sheep-bleating.mp3",16],
+    ["snake-hiss","audio/animal/snake-hiss.mp3",8],
+    ["wolf-howl","audio/animal/wolf-howl.mp3",8]
   ],
   "battle": [
-    ["civil-war-fanfares","audio/battle/civil-war-fanfares.mp3"],
-    ["explosion-attack","audio/battle/explosion-attack.mp3"],
-    ["gun-fight-1","audio/battle/gun-fight-1.mp3"],
-    ["gun-fight-2","audio/battle/gun-fight-2.mp3"],
-    ["gun-shots-far","audio/battle/gun-shots-far.mp3"],
-    ["gunfire-ambience","audio/battle/gunfire-ambience.mp3"],
-    ["loud-explosion","audio/battle/loud-explosion.mp3"],
-    ["machine-gun","audio/battle/machine-gun.mp3"],
-    ["marching","audio/battle/marching.mp3"],
-    ["swords-clash","audio/battle/swords-clash.mp3"]
+    ["air-raid-siren","audio/battle/air-raid-siren.mp3",32],
+    ["bomb-explosion","audio/battle/bomb-explosion.mp3",4],
+    ["bullet-whizz","audio/battle/bullet-whizz.mp3",6],
+    ["civil-war-fanfares","audio/battle/civil-war-fanfares.mp3",19],
+    ["gun-fight-1","audio/battle/gun-fight-1.mp3",16],
+    ["gun-fight-2","audio/battle/gun-fight-2.mp3",26],
+    ["gun-shots-far","audio/battle/gun-shots-far.mp3",29],
+    ["gunfire-ambience","audio/battle/gunfire-ambience.mp3",31],
+    ["grenade-pin-pull","audio/battle/grenade-pin-pull.mp3",4],
+    ["grito-guerra","audio/battle/grito-guerra.mp3",4],
+    ["horde-war-drums-loop","audio/battle/horde-war-drums-loop.mp3",70],
+    ["loud-explosion","audio/battle/loud-explosion.mp3",6],
+    ["machine-gun","audio/battle/machine-gun.mp3",7],
+    ["marching","audio/battle/marching.mp3",20],
+    ["metal-shield-hit","audio/battle/metal-shield-hit.mp3",2],
+    ["military-drums","audio/battle/military-drums.mp3",18],
+    ["sword-sounds-slice-slash-crash-swoosh","audio/battle/sword-sounds-slice-slash-crash-swoosh.mp3",31],
+    ["war-ambience","audio/battle/war-ambience.mp3",30]
   ],
   "bless": [
-    ["angelic-choir-intro","audio/bless/angelic-choir-intro.mp3"],
-    ["blessing-echo","audio/bless/blessing-echo.mp3"],
-    ["church-temple-gong","audio/bless/church-temple-gong.mp3"],
-    ["choir-shimmer","audio/bless/choir-shimmer.mp3"],
-    ["mystic-chimes","audio/bless/mystic-chimes.mp3"]
+    ["angel-choir-long","audio/bless/angel-choir-long.mp3",82],
+    ["angelic-choir-intro","audio/bless/angelic-choir-intro.mp3",21],
+    ["blessing-echo","audio/bless/blessing-echo.mp3",11],
+    ["bright-sparkle","audio/bless/bright-sparkle.mp3",5],
+    ["church-temple-gong","audio/bless/church-temple-gong.mp3",17],
+    ["choir-shimmer","audio/bless/choir-shimmer.mp3",11],
+    ["holy-chants","audio/bless/holy-chants.mp3",62],
+    ["mystic-chimes","audio/bless/mystic-chimes.mp3",27],
+    ["organ-chord","audio/bless/organ-chord.mp3",7]
   ],
   "nature": [
-    ["campfire","audio/nature/campfire.mp3"],
-    ["cave-drips","audio/nature/cave-drips.mp3"],
-    ["heart-beat","audio/nature/heart-beat.mp3"],
-    ["rain-thunder","audio/nature/rain-thunder.mp3"],
-    ["stream","audio/nature/stream.mp3"],
-    ["wind","audio/nature/wind.mp3"]
+    ["campfire","audio/nature/campfire.mp3",36],
+    ["cave-drips","audio/nature/cave-drips.mp3",31],
+    ["city-rain","audio/nature/city-rain.mp3",67],
+    ["crickets-night","audio/nature/crickets-night.mp3",32],
+    ["forest-day","audio/nature/forest-day.mp3",63],
+    ["heart-beat","audio/nature/heart-beat.mp3",47],
+    ["rain-thunder","audio/nature/rain-thunder.mp3",32],
+    ["stream","audio/nature/stream.mp3",45],
+    ["storm-thunder-night","audio/nature/storm-thunder-night.mp3",34],
+    ["waves-beach","audio/nature/waves-beach.mp3",63],
+    ["wind","audio/nature/wind.mp3",31],
+    ["wind-strong","audio/nature/wind-strong.mp3",33]
   ],
   "ritual": [
-    ["bansuri","audio/ritual/bansuri.mp3"],
-    ["bowl-long","audio/ritual/bowl-long.mp3"],
-    ["frame-drum","audio/ritual/frame-drum.mp3"],
-    ["low-om","audio/ritual/low-om.mp3"]
+    ["bansuri","audio/ritual/bansuri.mp3",40],
+    ["bowl-long","audio/ritual/bowl-long.mp3",70],
+    ["frame-drum","audio/ritual/frame-drum.mp3",53],
+    ["gong-deep","audio/ritual/gong-deep.mp3",26],
+    ["low-om","audio/ritual/low-om.mp3",63],
+    ["mantra-chant","audio/ritual/mantra-chant.mp3",71],
+    ["shamanic-rattle","audio/ritual/shamanic-rattle.mp3",22]
   ],
   "scene": [
-    ["dados","audio/scene/dados.mp3"],
-    ["emperor","audio/scene/emperor.mp3"],
-    ["market-crowd","audio/scene/market-crowd.mp3"],
-    ["med-bay-beeps","audio/scene/med-bay-beeps.mp3"],
-    ["tavern-low","audio/scene/tavern-low.mp3"]
+    ["casino-ambience","audio/scene/casino-ambience.mp3",41],
+    ["city-street","audio/scene/city-street.mp3",68],
+    ["dados","audio/scene/dados.mp3",7],
+    ["emperor","audio/scene/emperor.mp3",13],
+    ["kids-playing","audio/scene/kids-playing.mp3",35],
+    ["market-crowd","audio/scene/market-crowd.mp3",62],
+    ["med-bay-beeps","audio/scene/med-bay-beeps.mp3",40],
+    ["office-murmur","audio/scene/office-murmur.mp3",47],
+    ["party-murmur","audio/scene/party-murmur.mp3",50],
+    ["tavern-low","audio/scene/tavern-low.mp3",60]
   ],
   "transitions": [
-    ["boing-poioiong","audio/transitions/boing-poioiong.mp3"],
-    ["china-intro","audio/transitions/china-intro.mp3"],
-    ["chinese-flute-hulusi","audio/transitions/chinese-flute-hulusi.mp3"],
-    ["chinese-transition","audio/transitions/chinese-transition.mp3"],
-    ["cuatro-segundos-asiatic-intro","audio/transitions/cuatro-segundos-asiatic-intro.mp3"],
-    ["downsweep-sound-effect","audio/transitions/downsweep-sound-effect.mp3"],
-    ["dron-dos-minutos","audio/transitions/dron-dos-minutos.mp3"],
-    ["fanfara-epic","audio/transitions/fanfara-epic.mp3"],
-    ["flute-melody-280554","audio/transitions/flute-melody-280554.mp3"],
-    ["flauta-flute-melody","audio/transitions/flauta-flute-melody.mp3"],
-    ["funky-distorsion","audio/transitions/funky-distorsion.mp3"],
-    ["half-minute-chinese-mad-beat","audio/transitions/half-minute-chinese-mad-beat.mp3"],
-    ["hypnotic-diahrea","audio/transitions/hypnotic-diahrea.mp3"],
-    ["intro-30-secs-claping","audio/transitions/intro-30-secs-claping.mp3"],
-    ["intro-subiendo","audio/transitions/intro-subiendo.mp3"],
-    ["mini-banjo","audio/transitions/mini-banjo.mp3"],
-    ["nine-seconds-whoosh","audio/transitions/nine-seconds-whoosh.mp3"],
-    ["one-half-coconut-grove-bongo-drum","audio/transitions/one-half-coconut-grove-bongo-drum.mp3"],
-    ["one-minute-intro-interestelar","audio/transitions/one-minute-intro-interestelar.mp3"],
-    ["pulse","audio/transitions/pulse.mp3"],
-    ["rock-drums","audio/transitions/rock-drums.mp3"],
-    ["seventeen-samurai","audio/transitions/seventeen-samurai.mp3"],
-    ["suspenso-ascendente","audio/transitions/suspenso-ascendente.mp3"],
-    ["ten-seconds-bubbles","audio/transitions/ten-seconds-bubbles.mp3"],
-    ["thirteen-seconds-teletransport","audio/transitions/thirteen-seconds-teletransport.mp3"],
-    ["timer-suspense","audio/transitions/timer-suspense.mp3"]
+    ["arcade-coin","audio/transitions/arcade-coin.mp3",3],
+    ["boing-poioiong","audio/transitions/boing-poioiong.mp3",2],
+    ["china-intro","audio/transitions/china-intro.mp3",8],
+    ["chinese-flute-hulusi","audio/transitions/chinese-flute-hulusi.mp3",23],
+    ["chinese-transition","audio/transitions/chinese-transition.mp3",10],
+    ["cuatro-segundos-asiatic-intro","audio/transitions/cuatro-segundos-asiatic-intro.mp3",4],
+    ["downsweep-sound-effect","audio/transitions/downsweep-sound-effect.mp3",6],
+    ["dron-dos-minutos","audio/transitions/dron-dos-minutos.mp3",110],
+    ["epic-hit","audio/transitions/epic-hit.mp3",3],
+    ["fanfara-epic","audio/transitions/fanfara-epic.mp3",13],
+    ["flute-melody-280554","audio/transitions/flute-melody-280554.mp3",36],
+    ["flauta-flute-melody","audio/transitions/flauta-flute-melody.mp3",32],
+    ["funky-distorsion","audio/transitions/funky-distorsion.mp3",18],
+    ["game-over","audio/transitions/game-over.mp3",5],
+    ["half-minute-chinese-mad-beat","audio/transitions/half-minute-chinese-mad-beat.mp3",32],
+    ["hypnotic-diahrea","audio/transitions/hypnotic-diahrea.mp3",19],
+    ["intro-30-secs-claping","audio/transitions/intro-30-secs-claping.mp3",32],
+    ["intro-subiendo","audio/transitions/intro-subiendo.mp3",22],
+    ["mini-banjo","audio/transitions/mini-banjo.mp3",9],
+    ["nine-seconds-whoosh","audio/transitions/nine-seconds-whoosh.mp3",9],
+    ["one-half-coconut-grove-bongo-drum","audio/transitions/one-half-coconut-grove-bongo-drum.mp3",46],
+    ["one-minute-intro-interestelar","audio/transitions/one-minute-intro-interestelar.mp3",63],
+    ["pulse","audio/transitions/pulse.mp3",16],
+    ["rock-drums","audio/transitions/rock-drums.mp3",30],
+    ["seventeen-samurai","audio/transitions/seventeen-samurai.mp3",17],
+    ["suspenso-ascendente","audio/transitions/suspenso-ascendente.mp3",18],
+    ["ten-seconds-bubbles","audio/transitions/ten-seconds-bubbles.mp3",10],
+    ["thirteen-seconds-teletransport","audio/transitions/thirteen-seconds-teletransport.mp3",13],
+    ["timer-suspense","audio/transitions/timer-suspense.mp3",11],
+    ["video-game-8bit","audio/transitions/video-game-8bit.mp3",7]
   ]
 };
 </script>
@@ -365,28 +456,124 @@ const EFX_INLINE = {
     try{ heart.volume=vol; siren.volume=vol; }catch{}
   });
 
-  // ---------- Presets demo ----------
-  $('#presetRisk').addEventListener('click', ()=>{
-    $('#btnAmb').click();
-    setTimeout(()=> playClip('audio/battle/civil-war-fanfares.mp3','battle/civil-war-fanfares'), 250);
-    setTimeout(()=> playClip('audio/battle/loud-explosion.mp3','battle/loud-explosion'), 2200);
-    setTimeout(()=> playClip('audio/scene/emperor.mp3','scene/emperor'), 3000);
-  });
-  $('#presetCatan').addEventListener('click', ()=>{
-    $('#btnAmb').click();
-    setTimeout(()=> playClip('audio/nature/wind.mp3','nature/wind'), 300);
-    setTimeout(()=> playClip('audio/bless/angelic-choir-intro.mp3','bless/angelic-choir-intro'), 1500);
-    setTimeout(()=> playClip('audio/ritual/bansuri.mp3','ritual/bansuri'), 2600);
-  });
+   // ---------- Presets por juego (12 campañas) ----------
+  const GAME_PRESETS = {
+    risk(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/battle/horde-war-drums-loop.mp3','battle/horde-war-drums-loop'), 400);
+      setTimeout(()=> playClip('audio/battle/sword-sounds-slice-slash-crash-swoosh.mp3','battle/sword-sounds-slice-slash-crash-swoosh'), 2000);
+      setTimeout(()=> playClip('audio/battle/bomb-explosion.mp3','battle/bomb-explosion'), 4200);
+      setTimeout(()=> playClip('audio/battle/grito-guerra.mp3','battle/grito-guerra'), 5000);
+    },
+    monopoly(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/scene/casino-ambience.mp3','scene/casino-ambience'), 500);
+      setTimeout(()=> playClip('audio/transitions/arcade-coin.mp3','transitions/arcade-coin'), 2500);
+      setTimeout(()=> playClip('audio/animal/baby-crying.mp3','animal/baby-crying'), 3500);
+      setTimeout(()=> playClip('audio/alarms/car-alarm.mp3','alarms/car-alarm'), 5500);
+    },
+    catan(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/nature/wind.mp3','nature/wind'), 300);
+      setTimeout(()=> playClip('audio/nature/campfire.mp3','nature/campfire'), 2000);
+      setTimeout(()=> playClip('audio/animal/sheep-bleating.mp3','animal/sheep-bleating'), 3500);
+      setTimeout(()=> playClip('audio/scene/tavern-low.mp3','scene/tavern-low'), 6000);
+    },
+    dnd5e(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/scene/tavern-low.mp3','scene/tavern-low'), 300);
+      setTimeout(()=> playClip('audio/ritual/low-om.mp3','ritual/low-om'), 2200);
+      setTimeout(()=> playClip('audio/nature/storm-thunder-night.mp3','nature/storm-thunder-night'), 4200);
+      setTimeout(()=> playClip('audio/animal/monster-roars.mp3','animal/monster-roars'), 6500);
+    },
+    uno(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/transitions/boing-poioiong.mp3','transitions/boing-poioiong'), 300);
+      setTimeout(()=> playClip('audio/transitions/mini-banjo.mp3','transitions/mini-banjo'), 1400);
+      setTimeout(()=> playClip('audio/transitions/video-game-8bit.mp3','transitions/video-game-8bit'), 2600);
+      setTimeout(()=> playClip('audio/scene/party-murmur.mp3','scene/party-murmur'), 4200);
+    },
+    chess(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/ritual/bowl-long.mp3','ritual/bowl-long'), 500);
+      setTimeout(()=> playClip('audio/bless/choir-shimmer.mp3','bless/choir-shimmer'), 3000);
+      setTimeout(()=> playClip('audio/ritual/low-om.mp3','ritual/low-om'), 5200);
+    },
+    mtg(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/bless/holy-chants.mp3','bless/holy-chants'), 400);
+      setTimeout(()=> playClip('audio/nature/storm-thunder-night.mp3','nature/storm-thunder-night'), 2600);
+      setTimeout(()=> playClip('audio/animal/monster-roar-2.mp3','animal/monster-roar-2'), 4800);
+      setTimeout(()=> playClip('audio/transitions/epic-hit.mp3','transitions/epic-hit'), 6200);
+    },
+    "ten-candles"(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/ritual/shamanic-rattle.mp3','ritual/shamanic-rattle'), 500);
+      setTimeout(()=> playClip('audio/ritual/mantra-chant.mp3','ritual/mantra-chant'), 2600);
+      setTimeout(()=> playClip('audio/nature/crickets-night.mp3','nature/crickets-night'), 5200);
+    },
+    carcassonne(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/nature/forest-day.mp3','nature/forest-day'), 400);
+      setTimeout(()=> playClip('audio/ritual/bansuri.mp3','ritual/bansuri'), 2600);
+      setTimeout(()=> playClip('audio/bless/church-temple-gong.mp3','bless/church-temple-gong'), 5200);
+    },
+    trivial(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/scene/office-murmur.mp3','scene/office-murmur'), 500);
+      setTimeout(()=> playClip('audio/transitions/timer-suspense.mp3','transitions/timer-suspense'), 2600);
+      setTimeout(()=> playClip('audio/transitions/game-over.mp3','transitions/game-over'), 5200);
+    },
+    clue(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/scene/party-murmur.mp3','scene/party-murmur'), 400);
+      setTimeout(()=> playClip('audio/nature/wind-strong.mp3','nature/wind-strong'), 2600);
+      setTimeout(()=> playClip('audio/transitions/suspenso-ascendente.mp3','transitions/suspenso-ascendente'), 4800);
+      setTimeout(()=> playClip('audio/alarms/siren-blips.mp3','alarms/siren-blips'), 7000);
+    },
+    pictionary(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/transitions/flute-melody-280554.mp3','transitions/flute-melody-280554'), 500);
+      setTimeout(()=> playClip('audio/bless/mystic-chimes.mp3','bless/mystic-chimes'), 2600);
+      setTimeout(()=> playClip('audio/scene/kids-playing.mp3','scene/kids-playing'), 5200);
+    }
+  };
 
+  [
+    ['presetRisk','risk'],
+    ['presetMonopoly','monopoly'],
+    ['presetCatan','catan'],
+    ['presetDnD5e','dnd5e'],
+    ['presetUno','uno'],
+    ['presetChess','chess'],
+    ['presetMTG','mtg'],
+    ['presetTenCandles','ten-candles'],
+    ['presetCarcassonne','carcassonne'],
+    ['presetTrivial','trivial'],
+    ['presetClue','clue'],
+    ['presetPictionary','pictionary']
+  ].forEach(([btnId,key])=>{
+    const btn = $('#'+btnId);
+    if(btn && GAME_PRESETS[key]){
+      btn.addEventListener('click', ()=> GAME_PRESETS[key]());
+    }
+  });
   // ---------- Botones globales ----------
   $('#btnStopLast').addEventListener('click', stopLast);
   $('#btnStopAll').addEventListener('click', stopAll);
 
   // ---------- Pintar chips + catálogo ----------
   const ORDER  = ['alarms','animal','battle','transitions','scene','nature','ritual','bless'];
-  const TITLES = {alarms:'🚑 Alarmas',animal:'🐾 Animales',battle:'⚔️ Guerra',transitions:'➡️ Transiciones',
-                  scene:'🎭 Escena',nature:'🌿 Naturaleza',ritual:'🕯 Música Ritual',bless:'✨ Bendiciones Mágicas'};
+  const TITLES = {
+    alarms:'🚑 Alarmas',
+    animal:'🐾 Animales',
+    battle:'⚔️ Guerra',
+    transitions:'➡️ Transiciones',
+    scene:'🎭 Escena',
+    nature:'🌿 Naturaleza',
+    ritual:'🕯 Música Ritual',
+    bless:'✨ Bendiciones Mágicas'
+  };
 
   function paintCatbar(keys){
     const bar = $('#catbar'); bar.innerHTML='';
@@ -408,21 +595,25 @@ const EFX_INLINE = {
     const cont=$('#catalog'); cont.innerHTML='';
     keys.forEach(k=>{
       const sec=document.createElement('details');
-      sec.id='cat-'+k; sec.open=true;
+      sec.id='cat-'+k;
+      sec.open=true; // grupos abiertos por defecto
 
       const sum=document.createElement('summary');
       sum.innerHTML=`<strong>${TITLES[k]||k}</strong> <span class="small muted">— ${data[k].length} pista(s)</span>`;
       sec.appendChild(sum);
 
       const list=document.createElement('div'); list.className='sfx-list';
-      data[k].forEach(([name,src])=>{
+      data[k].forEach(([name,src,dur])=>{
         const row  = document.createElement('div'); row.className='sfx-item';
         const led  = document.createElement('span'); led.className='led';
-        const label= document.createElement('div');  label.className='name'; label.textContent=name;
+        const label= document.createElement('div');  label.className='name';
+
+        // nombre + segundos (si los hay)
+        label.textContent = dur ? `${name} · ${dur}s` : name;
+
         const play = document.createElement('button'); play.className='btn pill';      play.textContent='▶ Reproducir';
         const stop = document.createElement('button'); stop.className='btn pill stop'; stop.textContent='■ Parar último';
 
-        // --- contador ×N por pista + LED sincronizado ---
         const key = `${k}/${name}`;
         const badge=document.createElement('span'); badge.className='pill muted'; badge.textContent='×0';
 

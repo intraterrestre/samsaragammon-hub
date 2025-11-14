@@ -1,133 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>🎖️ RISK — Operación Nirvana Pro™</title>
-  <meta name="theme-color" content="#00ff7b" />
-  <meta name="description" content="Manual interactivo de resurrección lúdica para RISK: Operación Nirvana Pro™ — revive tu tablero con el Desfibrilador de Juegos™." />
-  <style>
-    :root{
-      --green:#00ff7b; --accent:#ffd166; --line:#113c2d;
-      --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      background:#000;color:var(--text);
-      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
-      line-height:1.55;padding-bottom:80px;
-    }
-    .wrap{max-width:900px;margin:0 auto;padding:20px 16px}
-    header{text-align:center;margin-bottom:20px}
-    h1{color:var(--green);font-size:clamp(26px,4vw,42px);text-shadow:0 0 12px rgba(0,255,120,.35)}
-    h2{color:var(--accent);margin:20px 0 8px}
-    p{margin:10px 0}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:10px 18px;border-radius:999px;border:1px solid var(--green);
-      background:linear-gradient(180deg,#02140f,#031b14);color:var(--green);
-      text-decoration:none;font-weight:800;letter-spacing:.02em;cursor:pointer;
-      box-shadow:0 0 10px var(--green),0 0 18px rgba(0,255,140,.45);
-      transition:transform .12s ease, box-shadow .2s ease}
-    .btn:hover{transform:translateY(-1px);box-shadow:0 0 16px var(--green),0 0 32px rgba(0,255,140,.55)}
-    .btn.alt{border-color:var(--accent);color:var(--accent);
-      box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45)}
-    .card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;
-      padding:18px;margin:18px 0;box-shadow:0 0 20px rgba(0,255,150,.05),
-      inset 0 0 10px rgba(0,255,140,.03)}
-    img.panel-img{display:block;width:100%;border-radius:10px;margin:10px 0;
-      border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.35),
-      inset 0 0 10px rgba(0,255,140,.03)}
-    footer{text-align:center;margin-top:40px;padding-top:10px;
-      border-top:1px solid var(--line);color:#9edfc9;font-size:.95rem}
-     /* === Animación sutil de “respiración” === */
-  .panel-img {
-    display:block;
-    width:100%;
-    border-radius:10px;
-    margin:10px 0;
-    border:1px solid var(--line);
-    box-shadow:0 6px 26px rgba(0,0,0,.35),
-                inset 0 0 10px rgba(0,255,140,.03);
-    animation: breathe 5s ease-in-out infinite;
-  }
-
-  @keyframes breathe {
-    @keyframes breathe {
-  0%   { transform: scale(1); opacity: 1; }
-  40%  { transform: scale(1.06); opacity: 0.9; }
-  60%  { transform: scale(1.03); opacity: 0.95; }
-  100% { transform: scale(1); opacity: 1; }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>🎖️ RISK — Operación Nirvana Pro™</title>
+<meta name="theme-color" content="#06130f"/>
+<style>
+:root{
+  --bg:#06130f;--fg:#eafff6;--edge:#113c2d;--card:#071a14;
+  --acc:#00ff7b;--muted:#a9e6d1
 }
-  }   
-  </style>
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Arial,sans-serif}
+.wrap{max-width:860px;margin:24px auto;padding:16px}
+.card{border:1px solid var(--edge);border-radius:16px;background:var(--card);
+  box-shadow:0 10px 40px rgba(0,0,0,.35);overflow:hidden;margin-bottom:18px}
+.panel{padding:16px}
+.hero{text-align:center;padding:16px}
+.hero img{width:100%;max-width:600px;height:auto;border-radius:14px;
+  box-shadow:0 6px 24px rgba(0,255,123,.15);
+  animation:fadeIn 2s ease forwards;opacity:0}
+@keyframes fadeIn{0%{opacity:0;transform:scale(.95);filter:blur(3px)}
+  100%{opacity:1;transform:scale(1);filter:blur(0)}}
+h1,h2{margin:.6rem 0;text-align:center}
+.muted{opacity:.85}
+.btn{background:#0a221b;border:1px solid var(--edge);color:var(--fg);
+  padding:8px 12px;border-radius:10px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;margin:2px;text-decoration:none}
+.btn.primary{background:linear-gradient(180deg,#103428,#0b241d)}
+.btn.small{font-size:.85rem;padding:6px 10px}
+.center{text-align:center}
+blockquote{border-left:4px solid var(--acc);padding-left:10px;margin-left:0;
+  color:var(--muted);font-style:italic}
+footer{text-align:center;font-size:.8rem;opacity:.7;margin-top:20px}
+</style>
 </head>
-
 <body>
-  <div class="wrap">
-    <header>
-      <h1>🎖️ RISK — Operación Nirvana Pro™</h1>
-      <p>Manual interactivo del Desfibrilador de Juegos™.  
-      Departamento de Trauma Estratégico – <em>Curvism instead cubism™</em></p>
-      <a class="btn" href="index.html">⬅️ Volver al Hospital</a>
-    </header>
+<div class="wrap">
 
-    <section class="card">
-      <img src="assets/risk-poster.png" alt="Póster Risk Nirvana Pro" class="panel-img"/>
-      <h2>🧠 Cómo usar el Panel Nirvana Pro™</h2>
-      <p>1️⃣ Entra al <strong>DM Panel</strong> (botón principal).  
-      2️⃣ Pulsa “Intro Épica” para despertar el tablero.  
-      3️⃣ Pulsa “Ambient” para iniciar el fondo de batalla o calma.  
-      4️⃣ Abre “Shaolín Pro+” → mezcla frases o sonidos de guerra, animales, viento o campanas de calma.  
-      5️⃣ Usa “Diagnóstico del Doctor” → escucha lo que el tablero siente.  
-      6️⃣ Al final, abre el <strong>Karma Calculator™</strong> para medir la energía del grupo.</p>
-    </section>
+<section class="card hero">
+  <img src="./assets/risk-poster.png" alt="Risk — Operación Nirvana Pro™" loading="eager">
+</section>
 
-    <section class="card">
-      <h2>📖 Diagnóstico Inicial</h2>
-      <p>El tablero cuadrado yace sin alma. Las piezas han olvidado su propósito.  
-      Antes de tocar nada, respira profundo. Declara en voz baja:  
-      <em>“Vine a ganar a mi peor enemigo: mi lado oscuro.”</em>  
-      Observa los daños: fichas rotas, alianzas frías, dados sin fe.  
-      Cada detalle habla del alma del grupo.</p>
-      <p>💬 “El alma es el jugador que olvidó que estaba soñando.” — <em>Curvism™, El Espejo Redondo</em></p>
-    </section>
-
-    <section class="card">
-      <h2>⚙️ Aplicación del Desfibrilador Lúdico</h2>
-      <p>Pulsa <strong>Intro Épica</strong> → despierta el espíritu del tablero.  
-      Pulsa <strong>Ambient</strong> → deja que la atmósfera cobre vida.  
-      Pulsa <strong>Resucitar Tablero</strong> → canaliza la energía.  
-      Pulsa <strong>Diagnóstico del Doctor</strong> → escucha al tablero hablar.  
-      💬 “Todo juego revive cuando alguien lo mira con compasión.” — Dr. Quetzalcóatl, Nirvana Pro™</p>
-    </section>
-
-    <section class="card">
-      <h2>🧘 Reanimación Espiritual</h2>
-      <p>Durante la partida:  
-      🎲 Lanza los dados sin miedo.  
-      🙏 Agradece las derrotas: son diagnósticos.  
-      ⚔️ Celebra cada traición como una enseñanza.  
-      Mantra curvista: <em>Om Riska Sat Gammon.</em>  
-      (Deja que el tablero respire solo.)</p>
-      <p>💬 “El que conquista su tablero interior, gobierna el mundo sin mover una ficha.” — <em>Curvism™, Geometría del Dharma</em></p>
-    </section>
-
-    <section class="card">
-      <h2>🕉️ Cierre y Observación</h2>
-      <p>Después del ritual:  
-      📸 Toma una foto del tablero (prueba de resurrección).  
-      ✍️ Escribe tu “lección del alma”.  
-      🔚 Cierra diciendo: “De la conquista del mundo al dominio del alma.”</p>
-      <p>💬 “Toda guerra exterior es un reflejo de una batalla interna aún no comprendida.” — <em>Curvism™, Crónicas del Círculo</em></p>
-    </section>
-
-    <footer>
-      © 2025 Constantino & Federico García — Curvism instead cubism™  
-      <br>Archivo del Departamento Nirvana Pro™ — Operación Resurrección Lúdica (RISK)
-      <div style="margin-top:10px">
-        <a class="btn alt" href="word-lab.html">🔡 Word Resonance Lab™</a>
-      </div>
-    </footer>
+<section class="card panel">
+  <h1>🎖️ RISK — Operación Nirvana Pro™</h1>
+  <p class="center muted">Manual interactivo del <strong>Desfibrilador de Juegos™</strong><br>
+  Departamento de Trauma Estratégico — <em>Curvism instead cubism™</em></p>
+  <div class="center">
+    <a class="btn" href="./index.html">⬅️ Volver al Hospital</a>
   </div>
+</section>
+
+<section class="card panel">
+  <h2>🧠 Cómo usar el Panel Nirvana Pro™</h2>
+  <p>Lee cada paso y actívalo al instante:</p>
+  <div class="center">
+    <button class="btn primary" onclick="playPreset('intro')">🎺 Intro Épica</button>
+    <button class="btn" onclick="playPreset('ambient')">🌫 Ambient</button>
+    <button class="btn" onclick="playPreset('shaolin')">🧘 Shaolin Pro+</button>
+    <button class="btn" onclick="playPreset('doctor')">🩺 Diagnóstico del Doctor</button>
+    <button class="btn" onclick="playPreset('karma')">☯️ Karma Calculator™</button>
+  </div>
+</section>
+
+<section class="card panel">
+  <h2>📖 Diagnóstico Inicial</h2>
+  <p>El tablero yace sin alma. Las piezas han olvidado su propósito. Antes de tocar nada, respira y declara:</p>
+  <blockquote>“Vine a ganar a mi peor enemigo: mi lado oscuro.”</blockquote>
+  <p>Observa las heridas: fichas rotas, alianzas frías, dados sin fe. Cada detalle habla del alma del grupo.</p>
+  <blockquote>“El alma es el jugador que olvidó que estaba soñando.” — Curvism™, El Espejo Redondo</blockquote>
+</section>
+
+<section class="card panel">
+  <h2>⚙️ Aplicación del Desfibrilador Lúdico</h2>
+  <p>Activa cada fase del ritual curvista:</p>
+  <div class="center">
+    <button class="btn primary small" onclick="playPreset('intro')">🎺 Intro Épica</button>
+    <button class="btn small" onclick="playPreset('ambient')">🌫 Ambient</button>
+    <button class="btn small" onclick="playPreset('resurrect')">⚡ Resucitar Tablero</button>
+    <button class="btn small" onclick="playPreset('doctor')">🩺 Diagnóstico</button>
+    <button class="btn small" onclick="stopAll()">⏹ Parar todo</button>
+  </div>
+  <blockquote>“Todo juego revive cuando alguien lo mira con compasión.” — Dr. Quetzalcóatl, Nirvana Pro™</blockquote>
+</section>
+<div class="center" style="margin-top:8px">
+  <a class="btn" href="./word-resonance-lab.html" target="_blank">🔡 Word Resonance Lab™</a>
+</div>
+<section class="card panel">
+  <h2>🧘 Reanimación Espiritual</h2>
+  <ul>
+    <li>🎲 Lanza los dados sin miedo.</li>
+    <li>🙏 Agradece las derrotas: son diagnósticos.</li>
+    <li>⚔️ Celebra cada traición como una enseñanza.</li>
+  </ul>
+  <p class="center"><strong>Mantra curvista:</strong> Om Riska Sat Gammon.</p>
+  <blockquote>“Quien conquista su tablero interior gobierna el mundo sin mover una ficha.” — Curvism™, Geometría del Dharma</blockquote>
+</section>
+
+<section class="card panel">
+  <h2>🕉️ Cierre y Observación</h2>
+  <ul>
+    <li>📸 Fotografía el tablero (resurrección confirmada).</li>
+    <li>✍️ Escribe tu lección del alma.</li>
+    <li>🔚 Pronuncia: “De la conquista del mundo al dominio del alma.”</li>
+  </ul>
+  <blockquote>“Toda guerra exterior es reflejo de una batalla interna aún no comprendida.” — Curvism™, Crónicas del Círculo</blockquote>
+</section>
+
+<footer>
+  © 2025 Constantino & Federico García — Curvism instead cubism™<br>
+  Archivo del Departamento Nirvana Pro™ — Operación Resurrección Lúdica (RISK)
+</footer>
+
+</div>
+
+<script>
+// --- utilidades básicas ---
+const audioPlaying = new Set();
+function play(path,vol=0.8){
+  const a = new Audio(path);
+  a.volume = vol;
+  a.onended=()=>audioPlaying.delete(a);
+  a.play().catch(()=>{});
+  audioPlaying.add(a);
+}
+function stopAll(){
+  audioPlaying.forEach(a=>{try{a.pause();a.currentTime=0;}catch{}});
+  audioPlaying.clear();
+}
+
+// --- presets simplificados ---
+function playPreset(key){
+  stopAll();
+  switch(key){
+    case 'intro':
+      play('./audio/battle/civil-war-fanfares.mp3',0.9);
+      break;
+    case 'ambient':
+      play('./audio/nature/heart-beat.mp3',0.6);
+      play('./audio/alarms/ambulancia-sixteen-secs.mp3',0.3);
+      break;
+    case 'shaolin':
+      play('./audio/bless/church-temple-gong.mp3',0.8);
+      break;
+    case 'doctor':
+      play('./audio/scene/emperor.mp3',0.8);
+      break;
+    case 'resurrect':
+      play('./audio/ritual/bansuri.mp3',0.7);
+      play('./audio/animal/tigre.mp3',0.7);
+      break;
+    case 'karma':
+      window.open('./karma-calculator.html','_blank');
+      return;
+  }
+}
+</script>
+
 </body>
 </html>

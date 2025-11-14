@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>KarmaCalculator™ — Modo Venenoso (β)</title>
+  <meta name="theme-color" content="#00ff7b"/>
+  <style>
+    :root{--bg:#06130f;--fg:#e8fff7;--edge:#113c2d;--card:#071a14;--acc:#00ff7b;--muted:#a9e6d1}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    .wrap{max-width:1100px;margin:24px auto;padding:16px}
+    .card{border:1px solid var(--edge);border-radius:16px;background:var(--card);box-shadow:0 10px 40px rgba(0,0,0,.35);overflow:hidden}
+    .panel{padding:16px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .btn{background:#0a221b;border:1px solid var(--edge);color:var(--fg);padding:10px 14px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    .btn.primary{border-color:#167a5d}
+    .btn.ghost{background:transparent}
+    h1,h2,h3{margin:.2rem 0}
+    .hero img{
+      display:block;width:100%;max-width:640px;height:auto;
+      margin:30px auto 12px auto;border-radius:14px;
+      box-shadow:0 6px 20px rgba(0,255,123,.1);
+      opacity:0;transform:scale(0.96);
+      animation: portalFade 2s cubic-bezier(.25,.1,.1,1) forwards;
+    }
+    @keyframes portalFade{
+      0%{opacity:0;transform:scale(0.92) rotateX(6deg);filter:blur(5px)}
+      50%{opacity:.45;transform:scale(1.02) rotateX(2deg);filter:blur(2px)}
+      100%{opacity:1;transform:scale(1);filter:blur(0)}
+    }
+    .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+    .box{border:1px dashed #184936;padding:12px;border-radius:12px;background:#0b1d17}
+    .small{font-size:.95rem}
+    .badge{display:inline-block;padding:4px 8px;border:1px solid var(--edge);border-radius:999px;background:#0e2b21;color:var(--fg);font-size:.8rem}
+    .field{display:grid;gap:6px;margin:10px 0}
+    select,input[type="number"]{background:#0a221b;border:1px solid var(--edge);color:var(--fg);padding:10px 12px;border-radius:10px}
+    .nidanas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+    .note{font-size:.9rem;color:#bfeede}
+    .result{font-size:1.1rem}
+    .center{text-align:center}
+    /* Interpretación curvista */
+    .interp{margin-top:12px;border:1px dashed #1a5a45;background:#0a1f1a;padding:12px;border-radius:12px}
+    .interp h3{margin:.2rem 0 6px 0}
+    .tag{display:inline-block;margin-right:6px;margin-bottom:6px;padding:4px 8px;border-radius:999px;border:1px solid #174b39;background:#0e2b21;font-size:.8rem}
+    .sev-benigno{color:#9ff0c8}
+    .sev-estable{color:#d7ffe9}
+    .sev-intenso{color:#ffe29a}
+    .sev-critico{color:#ffb3b3}
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} .hero img{max-width:88%} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- barra superior -->
+    <section class="panel row" style="justify-content:space-between;padding:0 4px 8px 4px">
+      <a class="btn" href="./index.html">← Volver al Hospital</a>
+      <span class="badge">Beta pedagógica curvista</span>
+    </section>
+
+    <!-- HERO -->
+    <section class="card hero">
+      <img src="./assets/veneno-poster.png"
+           alt="KarmaCalculator™ — Modo Venenoso"
+           onerror="this.src='./assets/departamento-nirvana-pro-poster.png'">
+    </section>
+<!-- Subtítulo departamental -->
+<section class="card panel" style="margin-top:-8px;text-align:center;position:relative;overflow:hidden">
+  <h2 style="margin:.4rem 0 0;color:#fffae0;font-weight:600">
+    Departamento de Toxicología Kármica<br>
+    <span style="font-weight:400;opacity:.9">Diagnóstico y <span style="color:#ff7272">PRÓXIMA CURA</span> del Deseo, la Ignorancia y la Aversión.</span>
+  </h2>
+  <div style="
+      margin-top:8px;
+      display:inline-block;
+      border:2px solid #b33;
+      border-radius:50%;
+      padding:12px 20px;
+      font-family:serif;
+      color:#b33;
+      font-size:.9rem;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      opacity:0;
+      animation:fadeSeal 2.5s 0.5s forwards;
+      ">
+    ☯ Departamento Nirvana Pro™ ☯
+  </div>
+</section>
+
+<style>
+@keyframes fadeSeal{
+  0%{opacity:0;transform:scale(0.6) rotate(-6deg)}
+  60%{opacity:.85;transform:scale(1.08) rotate(3deg)}
+  100%{opacity:1;transform:scale(1) rotate(0)}
+}
+</style>
+    <!-- Encabezado -->
+    <section class="card panel">
+      <h1 style="margin:0">KarmaCalculator™ — Modo Venenoso (β)</h1>
+      <p class="muted">Prototipo para explorar la combinación <strong>veneno + reino + nidanas</strong> y su efecto multiplicador simbólico.</p>
+      <div class="box small">
+        <h3 style="margin:.2rem 0">Explicación breve</h3>
+        <p>En la tradición budista hay tres fuerzas mentales que mantienen a los seres atrapados en el ciclo del sufrimiento (Samsara): <strong>Ignorancia</strong>, <strong>Deseo</strong> y <strong>Aversión</strong>. Se las llama “tres venenos” porque oscurecen la percepción y disparan reacciones automáticas.</p>
+        <p>Aquí las usamos como <em>mecánica pedagógica</em>: al combinar un veneno con un <strong>reino</strong> (estado mental) y con ciertas <strong>nidanas</strong> (eslabones causales), se obtiene un <strong>multiplicador</strong> que intensifica o suaviza consecuencias dentro del juego.</p>
+      </div>
+    </section>
+
+    <!-- Contenido principal -->
+    <section class="grid" style="margin-top:12px">
+      <!-- Lado izquierdo: teoría -->
+      <div class="card panel">
+        <h2 style="margin:0">Reinos como estados mentales</h2>
+        <ul class="small">
+          <li><strong>Devas</strong> — comodidad que adormece</li>
+          <li><strong>Asuras</strong> — rivalidad y orgullo</li>
+          <li><strong>Humanos</strong> — equilibrio y posibilidad de despertar</li>
+          <li><strong>Animales</strong> — hábito e instinto</li>
+          <li><strong>Pretas</strong> — carencia y deseo sin fin</li>
+          <li><strong>Infierno</strong> — rabia y sufrimiento intenso</li>
+        </ul>
+
+        <h2 style="margin:.6rem 0 0">Nidanas como procesos internos</h2>
+        <p class="small">Las 12 Nidanas describen cómo la mente fabrica experiencia: desde la Ignorancia hasta el Renacimiento. Entenderlas ayuda a detectar el punto donde giramos la rueda.</p>
+        <p class="small">Más términos: <a class="btn ghost" href="./word-resonance-lab.html">Diccionario Curvista (Word Lab™)</a></p>
+      </div>
+
+      <!-- Lado derecho: calculadora -->
+      <div class="card panel">
+        <h2 style="margin:0">Parámetros venenosos</h2>
+
+        <div class="field">
+          <label for="veneno">Veneno</label>
+          <select id="veneno">
+            <option value="ignorancia">Ignorancia (cerdo)</option>
+            <option value="deseo">Deseo (ave)</option>
+            <option value="aversion">Aversión (serpiente)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reino">Reino</label>
+          <select id="reino">
+            <option value="humanos">Humanos</option>
+            <option value="devas">Devas</option>
+            <option value="asuras">Asuras</option>
+            <option value="animales">Animales</option>
+            <option value="pretas">Pretas</option>
+            <option value="infierno">Infierno</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Nidanas sugeridas (elige 1–3)</label>
+          <div class="nidanas" id="nidanas"></div>
+          <div class="note">Tip: en pruebas curvistas, Ignorancia ↔ nidanas 1–3; Deseo ↔ 7–9; Aversión ↔ 6 y 10–12.</div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid #143b2d;margin:12px 0">
+
+        <div class="field">
+          <label for="base">Resultado base</label>
+          <input id="base" type="number" min="0" step="1" value="10">
+        </div>
+
+        <div class="row">
+          <button class="btn primary" id="calc">Aplicar multiplicador</button>
+          <span class="badge">Límite de seguridad: 0.70–1.40</span>
+        </div>
+
+        <div class="box result" id="out" style="margin-top:10px">
+          Multiplicador venenoso: <strong id="mult">—</strong><br>
+          Resultado final: <strong id="final">—</strong>
+        </div>
+
+        <!-- Micro-interpretación curvista -->
+        <div class="interp" id="insight" style="display:none">
+          <h3>Lectura curvista</h3>
+          <div class="small" id="insightText"></div>
+          <div style="margin-top:8px" id="insightTags"></div>
+        </div>
+
+        <div class="box small" style="margin-top:10px">
+          <h3 style="margin:.2rem 0">Ruleta (opcional)</h3>
+          <p>La severidad de la consecuencia se escala por el multiplicador.</p>
+          <div class="row">
+            <button class="btn" id="roll">🎲 Lanzar ruleta</button>
+            <label class="row"><input id="soft" type="checkbox" checked> <span class="small">Modo suave</span></label>
+          </div>
+          <div class="row small" style="margin-top:6px">
+            <div>Consec. base: <span id="cbase">—</span></div>
+            <div>· Multiplicador: <span id="cmult">—</span></div>
+            <div>· Consec. final: <span id="cfinal">—</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Por qué estos pesos -->
+    <section class="card panel" style="margin-top:12px">
+      <h2 style="margin:0">Por qué estos “pesos” (presión mental)</h2>
+      <p class="small">Llamamos “pesos” a la presión mental que ejerce cada factor para empujar una decisión en una dirección. No es doctrina: es un punto de partida para experimentar.</p>
+      <ul class="small">
+        <li><strong>Ignorancia (1.10)</strong>: raíz del ciclo; empuje difuso y estructural.</li>
+        <li><strong>Deseo (1.20)</strong>: engancha y acelera; eleva la intensidad de las consecuencias.</li>
+        <li><strong>Aversión (1.15)</strong>: corta y endurece; impacto intermedio con picos severos.</li>
+      </ul>
+      <p class="small">Mapeo tentativo: Ignorancia → nidanas 1–3; Deseo → 7–9; Aversión → 6 y 10–12. Cada nidana tiene un peso ~1.00–1.30 (más alto en Trishna/Upadana).</p>
+      <p class="small">Ajuste por reino: sesgos suaves de −0.3 a +0.2 (Infierno más severo, Devas más benigno).</p>
+      <p class="small muted">Fórmula: peso del veneno × promedio de pesos de nidanas × ajuste del reino.</p>
+    </section>
+
+    <!-- Cierre + enlaces -->
+    <section class="panel row" style="justify-content:center;margin-top:8px">
+      <a class="btn" href="./index.html">← Volver al Hospital</a>
+      <a class="btn primary" href="./word-resonance-lab.html">🪶 Depurar Palabras en el Word Lab™</a>
+    </section>
+
+  </div>
+
+  <script>
+    // --- Datos base ---
+    const pesosVeneno = { ignorancia:1.10, deseo:1.20, aversion:1.15 };
+    const ajusteReino  = { devas:0.95, asuras:1.05, humanos:1.00, animales:1.02, pretas:1.08, infierno:1.20 };
+    const listaNidanas = [
+      { id:1,  nombre:"Avidya",    peso:1.30 },
+      { id:2,  nombre:"Samskara",  peso:1.10 },
+      { id:3,  nombre:"Vijñana",   peso:1.00 },
+      { id:4,  nombre:"Nama-rupa", peso:1.05 },
+      { id:5,  nombre:"Shadayatana", peso:1.00 },
+      { id:6,  nombre:"Sparsha",   peso:1.10 },
+      { id:7,  nombre:"Vedana",    peso:1.10 },
+      { id:8,  nombre:"Trishna",   peso:1.25 },
+      { id:9,  nombre:"Upadana",   peso:1.30 },
+      { id:10, nombre:"Bhava",     peso:1.15 },
+      { id:11, nombre:"Jati",      peso:1.05 },
+      { id:12, nombre:"Jaramarana", peso:1.10 }
+    ];
+
+    // --- Micro-interpretaciones ---
+    const microVeneno = {
+      ignorancia: "La visión se nubla en lo estructural: confunde mapa con territorio.",
+      deseo:      "La mente acelera hacia el objeto: se estrecha el encuadre y sube la urgencia.",
+      aversion:   "Tendencia a cortar/defender: aparece rigidez o contraataque."
+    };
+    const microReino = {
+      devas:     "Comodidad: baja fricción, pero riesgo de adormecimiento.",
+      asuras:    "Competencia y orgullo: compara, rivaliza, busca victoria simbólica.",
+      humanos:   "Equilibrio: hay espacio para decidir con lucidez.",
+      animales:  "Hábito/instinto: repetir lo conocido parece seguro.",
+      pretas:    "Carencia: sensación de ‘nunca suficiente’.",
+      infierno:  "Picos de rabia/dolor: decisiones a la defensiva."
+    };
+    const microCombo = {
+      "deseo:asuras":     "Impulso de conquista y brillo: gran empuje, pero fácil caer en sobre-extensión.",
+      "aversion:infierno":"Ciclo de dureza: vigila castigos y decisiones reactivas.",
+      "ignorancia:devas":"Todo parece bien… pero la inercia manda. Prende una luz de intención.",
+      "deseo:pretas":     "Enganche + carencia: el tablero ‘pide’ más de lo que puede dar."
+    };
+    const mantras = {
+      benigno: "Respira y suelta. La claridad ya está.",
+      estable: "Observa sin prisa. La decisión madura.",
+      intenso: "Baja la velocidad. Reencuadra tu intención.",
+      critico: "Pausa total. Vuelve al centro antes de actuar."
+    };
+    function severidad(mult){
+      if(mult < 0.90) return {k:"benigno",  t:"Suave / amortiguado 💧"};
+      if(mult < 1.10) return {k:"estable",  t:"Equilibrado ⚖️"};
+      if(mult < 1.25) return {k:"intenso",  t:"Intensificado 🔥"};
+      return               {k:"critico",   t:"Crítico ⚡"};
+    }
+    function interpretar({ven, rei, ns, mult}){
+      const sev = severidad(mult);
+      const nsTxt = ns.length ? ns.map(n=>`${n.id} ${n.nombre}`).join(", ") : "—";
+      const comboKey = `${ven}:${rei}`;
+      const líneas = [
+        `<strong class="sev-${sev.k}">${sev.t}</strong> · multiplicador ${mult.toFixed(3)}`,
+        `🧪 Veneno: <em>${ven}</em> — ${microVeneno[ven]||""}`,
+        `🏞️ Reino: <em>${rei}</em> — ${microReino[rei]||""}`,
+        microCombo[comboKey] ? `🧩 Combo: ${microCombo[comboKey]}` : "",
+        `🕉️ Mantra: <em>${mantras[sev.k]}</em>`
+      ].filter(Boolean);
+      const tags = [
+        `<span class="tag">Nidanas: ${nsTxt}</span>`,
+        `<span class="tag">Rango seguro: 0.70–1.40</span>`
+      ];
+      return {html: líneas.map(l=>`<p class="small">${l}</p>`).join(""), tags: tags.join("")};
+    }
+
+    // --- UI Nidanas ---
+    const $nid = document.getElementById('nidanas');
+    listaNidanas.forEach(n=>{
+      const id = 'n'+n.id;
+      const w  = document.createElement('label');
+      w.className='row';
+      w.innerHTML = `<input type="checkbox" id="${id}" data-id="${n.id}" data-peso="${n.peso}"> <span>${n.id} ${n.nombre} · peso ${n.peso}</span>`;
+      $nid.appendChild(w);
+    });
+    function seleccionNidanas(){
+      const chosen = [...$nid.querySelectorAll('input[type=checkbox]:checked')];
+      return chosen.map(x=>({ id:+x.dataset.id, nombre:listaNidanas.find(n=>n.id==x.dataset.id).nombre, peso:+x.dataset.peso }));
+    }
+
+    // --- Cálculo + salida ---
+    function calcular(){
+      const ven  = document.getElementById('veneno').value;
+      const rei  = document.getElementById('reino').value;
+      const base = parseFloat(document.getElementById('base').value||'0');
+
+      const ns = seleccionNidanas().slice(0,3);
+      const avgN = ns.length ? (ns.reduce((s,n)=>s+n.peso,0)/ns.length) : 1.00;
+
+      const mult  = +(pesosVeneno[ven] * avgN * ajusteReino[rei]).toFixed(3);
+      const final = +(base * mult).toFixed(3);
+
+      document.getElementById('mult').textContent   = mult.toFixed(3);
+      document.getElementById('final').textContent  = final.toFixed(3);
+      document.getElementById('cbase').textContent  = base.toFixed(0);
+      document.getElementById('cmult').textContent  = mult.toFixed(3);
+      document.getElementById('cfinal').textContent = final.toFixed(3);
+
+      const {html, tags} = interpretar({ven, rei, ns, mult});
+      document.getElementById('insightText').innerHTML = html;
+      document.getElementById('insightTags').innerHTML = tags;
+      document.getElementById('insight').style.display = 'block';
+    }
+
+    function ruleta(){
+      const mult = parseFloat(document.getElementById('mult').textContent || '1');
+      const suave = document.getElementById('soft').checked;
+      let roll = Math.floor(Math.random()*100)+1;
+      if(suave) roll = Math.min(roll, 70);
+      const consec = Math.round(roll * mult);
+      document.getElementById('cbase').textContent  = String(roll);
+      document.getElementById('cmult').textContent  = mult.toFixed(3);
+      document.getElementById('cfinal').textContent = String(consec);
+    }
+
+    document.getElementById('calc').addEventListener('click', calcular);
+    document.getElementById('roll').addEventListener('click', ruleta);
+  </script>
+</body>
+</html>

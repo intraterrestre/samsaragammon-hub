@@ -117,22 +117,24 @@
       </p>
     </section>
 
-    <!-- Ambiente hospitalario -->
-    <section class="card panel" style="margin-top:12px">
-      <h2>Ambiente Hospitalario</h2>
-      <p class="small muted">Pulso: <em>latido alto</em> + <em>sirena lejana</em>. Inicia para ambientar tu mesa.</p>
-      <div class="row">
-        <button id="btnAmb" class="btn ok">▶︎ ENCIENDE LA MINITECA </button>
-        <button id="btnStopAmb" class="btn stop">■ Detener</button>
-                <span class="right small muted">Si no se oye, toca “ENCIENDE LA MINITECA”.</span>
-      </div>
-      <div class="row" style="margin-top:8px">
-        <span class="small muted">Volumen maestro</span>
-        <input id="vol" type="range" min="0" max="1" step="0.01" value="0.72">
-        <span class="pill muted">Reproducción: <span id="nowPlaying">0</span></span>
-      </div>
-    </section>
-
+    <!-- Ambiente espritual y hospitalario -->
+    
+<section class="card panel" style="margin-top:12px">
+  <h2>Ambiente Hospitalario</h2>
+  <p class="small muted">Pulso: <em>latido alto</em> + <em>sirena lejana</em>. Inicia para ambientar tu mesa.</p>
+  <div class="row">
+    <button id="btnAmb" class="btn ok">▶︎ Iniciar ambiente base</button>
+    <button id="btnStopAmb" class="btn stop">■ Detener</button>
+    <span class="right small muted">
+      Si no se oye nada, toca a Buda DJ para iniciar el sonido de tu viaje espiritual.
+    </span>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <span class="small muted">Volumen maestro</span>
+    <input id="vol" type="range" min="0" max="1" step="0.01" value="0.72">
+    <span class="pill muted">Reproducción: <span id="nowPlaying">0</span></span>
+  </div>
+</section>
     <!-- Presets -->
     <!-- [DJ] BLOQUE B — Presets para 12 juegos -->
 <section class="card panel" style="margin-top:12px">
@@ -296,7 +298,33 @@
     for(const {audio} of PLAYING.values()){ try{ audio.volume=vol; }catch{} }
     try{ heart.volume=vol; siren.volume=vol; }catch{}
   });
+  // ---------- Click en Buda DJ = ritual de inicio ----------
+  const poster = $('#poster');
+  if (poster) {
+    // Que se vea “clicable”
+    poster.style.cursor = 'pointer';
+    poster.title = 'Haz clic para que Buda DJ inicie tu viaje sonoro';
 
+    poster.addEventListener('click', () => {
+      // 1) Inicia ambiente base (latido + sirena)
+      const btnAmb = $('#btnAmb');
+      if (btnAmb) btnAmb.click();
+
+      // 2) Cuenco tibetano (ritual de apertura)
+      playClip(
+        'audio/ritual/19s-cuencos-tibetanos.mp3',
+        'ritual/19s-cuencos-tibetanos'
+      );
+
+      // 3) Scratch del DJ unos milisegundos después
+      setTimeout(() => {
+        playClip(
+          'audio/scene/2s-dj-record_scratch.mp3',
+          'scene/2s-dj-record_scratch'
+        );
+      }, 500);
+    });
+  }
      // ---------- Presets por juego (12 campañas) ----------
     // ---------- Presets por juego (12 campañas) ----------
   const GAME_PRESETS = {
@@ -432,66 +460,90 @@
       bar.appendChild(chip);
     });
   }
-
-    function paintCatalog(data){
-    const keys=[...ORDER.filter(k=>data[k]), ...Object.keys(data).filter(k=>!ORDER.includes(k))];
+  function paintCatalog(data){
+    const keys = [
+      ...ORDER.filter(k => data[k]),
+      ...Object.keys(data).filter(k => !ORDER.includes(k))
+    ];
     paintCatbar(keys);
 
-    const cont=$('#catalog'); 
-    cont.innerHTML='';
-    keys.forEach(k=>{
-      const sec=document.createElement('details');
-      sec.id='cat-'+k;
-      sec.open=true; // grupos abiertos por defecto
+    const cont = $('#catalog');
+    cont.innerHTML = '';
 
-      const sum=document.createElement('summary');
-      sum.innerHTML=`<strong>${TITLES[k]||k}</strong> <span class="small muted">— ${data[k].length} pista(s)</span>`;
+    keys.forEach(k => {
+      const sec = document.createElement('details');
+      sec.id = 'cat-' + k;
+      sec.open = true; // grupos abiertos por defecto
+
+      const sum = document.createElement('summary');
+      sum.innerHTML = `<strong>${TITLES[k] || k}</strong> <span class="small muted">— ${data[k].length} pista(s)</span>`;
       sec.appendChild(sum);
 
-      const list=document.createElement('div'); 
-      list.className='sfx-list';
-      data[k].forEach(([name,src,dur])=>{
-        const row  = document.createElement('div'); 
-        row.className='sfx-item';
-        const led  = document.createElement('span'); 
-        led.className='led';
-        const label= document.createElement('div');  
-        label.className='name';
+      const list = document.createElement('div');
+      list.className = 'sfx-list';
+
+      // Cada item puede venir como:
+      // 1) [name, src, dur]
+      // 2) { name, src, dur }
+      // 3) "audio/alarms/ambulancia.mp3"
+      data[k].forEach(item => {
+        let name, src, dur;
+
+        if (Array.isArray(item)) {
+          [name, src, dur] = item;
+        } else if (item && typeof item === 'object') {
+          name = item.name || item.n || item.title || '';
+          src  = item.src  || item.path || item.file || '';
+          dur  = item.dur  || item.seconds || item.len || item.d;
+        } else if (typeof item === 'string') {
+          src = item.trim();
+          const m = src.match(/\/([^\/]+)\.[a-z0-9]+$/i);
+          name = m ? m[1] : src;
+        }
+
+        if (!src) return; // si no hay ruta, saltamos
+
+        const row   = document.createElement('div'); row.className = 'sfx-item';
+        const led   = document.createElement('span'); led.className = 'led';
+        const label = document.createElement('div');  label.className = 'name';
 
         // nombre + segundos (si los hay)
         label.textContent = dur ? `${name} · ${dur}s` : name;
 
-        const play = document.createElement('button'); 
-        play.className='btn pill';      
-        play.textContent='▶ Reproducir';
-        const stop = document.createElement('button'); 
-        stop.className='btn pill stop'; 
-        stop.textContent='■ Parar último';
+        const play = document.createElement('button');
+        play.className = 'btn pill';
+        play.textContent = '▶ Reproducir';
+
+        const stop = document.createElement('button');
+        stop.className = 'btn pill stop';
+        stop.textContent = '■ Parar último';
 
         const key = `${k}/${name}`;
-        const badge=document.createElement('span'); 
-        badge.className='pill muted'; 
-        badge.textContent='×0';
+        const badge = document.createElement('span');
+        badge.className = 'pill muted';
+        badge.textContent = '×0';
 
         function refreshBadge(){
-          const n = COUNTS.get(key)||0;
-          badge.textContent='×'+n;
-          if(n===0) led.classList.remove('on');
+          const n = COUNTS.get(key) || 0;
+          badge.textContent = '×' + n;
+          if (n === 0) led.classList.remove('on');
         }
 
-        play.addEventListener('click', ()=>{
+        play.addEventListener('click', () => {
           const id = playClip(src, key, led);
-          if(id) refreshBadge();
+          if (id) refreshBadge();
         });
-        stop.addEventListener('click', ()=>{
+
+        stop.addEventListener('click', () => {
           stopLast();
           requestAnimationFrame(refreshBadge);
         });
 
-        row.append(led,label,play,stop,badge);
+        row.append(led, label, play, stop, badge);
         list.appendChild(row);
       });
 
+      // 🔴 ESTO FALTABA:
       sec.appendChild(list);
       cont.appendChild(sec);
     });

@@ -122,10 +122,9 @@
       <h2>Ambiente Hospitalario</h2>
       <p class="small muted">Pulso: <em>latido alto</em> + <em>sirena lejana</em>. Inicia para ambientar tu mesa.</p>
       <div class="row">
-        <button id="btnAmb" class="btn ok">▶︎ ENCIENDE AQUÍ TU MINITECA </button>
+        <button id="btnAmb" class="btn ok">▶︎ ENCIENDE LA MINITECA </button>
         <button id="btnStopAmb" class="btn stop">■ Detener</button>
-        <a class="btn ghost" href="./dm-panel.html">🎛 Abrir DM Panel PRO</a>
-        <span class="right small muted">Si no se oye, toca “Iniciar ambiente”.</span>
+                <span class="right small muted">Si no se oye, toca “ENCIENDE LA MINITECA”.</span>
       </div>
       <div class="row" style="margin-top:8px">
         <span class="small muted">Volumen maestro</span>
@@ -183,164 +182,6 @@
   <!-- Audio ambiente (latido + sirena) -->
   <audio id="aHeart" src="./audio/nature/heart-beat.mp3" preload="auto" loop playsinline></audio>
   <audio id="aSiren" src="./audio/alarms/ambulancia-sixteen-secs.mp3" preload="auto" loop playsinline></audio>
-
-<!-- ============================= -->
-<!--  [DJ] BLOQUE C — CATÁLOGO    -->
-<!--  INLINE + DURACIONES (s)     -->
-<!-- ============================= -->
-<script>
-const EFX_INLINE = {
-  "alarms": [
-    ["ambulancia-sixteen-secs","audio/alarms/ambulancia-sixteen-secs.mp3",16],
-    ["ambulance-siren","audio/alarms/ambulance-siren.mp3",33],
-    ["boat-siren-sinking","audio/alarms/boat-siren-sinking.mp3",29],
-    ["call-to-attention","audio/alarms/call-to-attention.mp3",4],
-    ["car-alarm","audio/alarms/car-alarm.mp3",32],
-    ["cellphone-ringtone-huawei","audio/alarms/cellphone-ringtone-huawei.mp3",29],
-    ["eleven-siren","audio/alarms/eleven-siren.mp3",31],
-    ["emergency-alert-siren","audio/alarms/emergency-alert-siren.mp3",34],
-    ["high-low-siren","audio/alarms/high-low-siren.mp3",7],
-    ["mega-horn","audio/alarms/mega-horn.mp3",12],
-    ["patroll","audio/alarms/patroll.mp3",27],
-    ["ringphone-rock","audio/alarms/ringphone-rock.mp3",23],
-    ["siren-blips","audio/alarms/siren-blips.mp3",5],
-    ["sirene-alarm","audio/alarms/sirene-alarm.mp3",33],
-    ["sos-signal-morse","audio/alarms/sos-signal-morse.mp3",19],
-    ["train-crossing-signal","audio/alarms/train-crossing-signal.mp3",20]
-  ],
-  "animal": [
-    ["baby-crying","audio/animal/baby-crying.mp3",29],
-    ["barking-dog","audio/animal/barking-dog.mp3",10],
-    ["big-dog","audio/animal/big-dog.mp3",12],
-    ["bird-conversation","audio/animal/bird-conversation.mp3",37],
-    ["bird-song-forest","audio/animal/bird-song-forest.mp3",31],
-    ["bull-angry","audio/animal/bull-angry.mp3",16],
-    ["buho","audio/animal/buho.mp3",2],
-    ["burrada","audio/animal/burrada.mp3",8],
-    ["cat-meowing","audio/animal/cat-meowing.mp3",18],
-    ["chimpanzee","audio/animal/chimpanzee.mp3",6],
-    ["cochino","audio/animal/cochino.mp3",5],
-    ["cow-moo","audio/animal/cow-moo.mp3",28],
-    ["culebra-cascabel","audio/animal/culebra-cascabel.mp3",13],
-    ["donkey-bray-36757","audio/animal/donkey-bray-36757.mp3",15],
-    ["gatico","audio/animal/gatico.mp3",4],
-    ["goat-meh","audio/animal/goat-meh.mp3",18],
-    ["horse-galloping","audio/animal/horse-galloping.mp3",52],
-    ["horse-neigh","audio/animal/horse-neigh.mp3",22],
-    ["kikiriki-gallo","audio/animal/kikiriki-gallo.mp3",7],
-    ["lion-loud","audio/animal/lion-loud.mp3",10],
-    ["mono","audio/animal/mono.mp3",5],
-    ["monster-roar-2","audio/animal/monster-roar-2.mp3",6],
-    ["monster-roars","audio/animal/monster-roars.mp3",5],
-    ["owl-hooting","audio/animal/owl-hooting.mp3",24],
-    ["pajaro-en-ramas","audio/animal/pajaro-en-ramas.mp3",26],
-    ["pig-oink","audio/animal/pig-oink.mp3",18],
-    ["pigeon","audio/animal/pigeon.mp3",16],
-    ["rooster-crow","audio/animal/rooster-crow.mp3",7],
-    ["sheep-bleating","audio/animal/sheep-bleating.mp3",16],
-    ["snake-hiss","audio/animal/snake-hiss.mp3",8],
-    ["wolf-howl","audio/animal/wolf-howl.mp3",8]
-  ],
-  "battle": [
-    ["air-raid-siren","audio/battle/air-raid-siren.mp3",32],
-    ["bomb-explosion","audio/battle/bomb-explosion.mp3",4],
-    ["bullet-whizz","audio/battle/bullet-whizz.mp3",6],
-    ["civil-war-fanfares","audio/battle/civil-war-fanfares.mp3",19],
-    ["gun-fight-1","audio/battle/gun-fight-1.mp3",16],
-    ["gun-fight-2","audio/battle/gun-fight-2.mp3",26],
-    ["gun-shots-far","audio/battle/gun-shots-far.mp3",29],
-    ["gunfire-ambience","audio/battle/gunfire-ambience.mp3",31],
-    ["grenade-pin-pull","audio/battle/grenade-pin-pull.mp3",4],
-    ["grito-guerra","audio/battle/grito-guerra.mp3",4],
-    ["horde-war-drums-loop","audio/battle/horde-war-drums-loop.mp3",70],
-    ["loud-explosion","audio/battle/loud-explosion.mp3",6],
-    ["machine-gun","audio/battle/machine-gun.mp3",7],
-    ["marching","audio/battle/marching.mp3",20],
-    ["metal-shield-hit","audio/battle/metal-shield-hit.mp3",2],
-    ["military-drums","audio/battle/military-drums.mp3",18],
-    ["sword-sounds-slice-slash-crash-swoosh","audio/battle/sword-sounds-slice-slash-crash-swoosh.mp3",31],
-    ["war-ambience","audio/battle/war-ambience.mp3",30]
-  ],
-  "bless": [
-    ["angel-choir-long","audio/bless/angel-choir-long.mp3",82],
-    ["angelic-choir-intro","audio/bless/angelic-choir-intro.mp3",21],
-    ["blessing-echo","audio/bless/blessing-echo.mp3",11],
-    ["bright-sparkle","audio/bless/bright-sparkle.mp3",5],
-    ["church-temple-gong","audio/bless/church-temple-gong.mp3",17],
-    ["choir-shimmer","audio/bless/choir-shimmer.mp3",11],
-    ["holy-chants","audio/bless/holy-chants.mp3",62],
-    ["mystic-chimes","audio/bless/mystic-chimes.mp3",27],
-    ["organ-chord","audio/bless/organ-chord.mp3",7]
-  ],
-  "nature": [
-    ["campfire","audio/nature/campfire.mp3",36],
-    ["cave-drips","audio/nature/cave-drips.mp3",31],
-    ["city-rain","audio/nature/city-rain.mp3",67],
-    ["crickets-night","audio/nature/crickets-night.mp3",32],
-    ["forest-day","audio/nature/forest-day.mp3",63],
-    ["heart-beat","audio/nature/heart-beat.mp3",47],
-    ["rain-thunder","audio/nature/rain-thunder.mp3",32],
-    ["stream","audio/nature/stream.mp3",45],
-    ["storm-thunder-night","audio/nature/storm-thunder-night.mp3",34],
-    ["waves-beach","audio/nature/waves-beach.mp3",63],
-    ["wind","audio/nature/wind.mp3",31],
-    ["wind-strong","audio/nature/wind-strong.mp3",33]
-  ],
-  "ritual": [
-    ["bansuri","audio/ritual/bansuri.mp3",40],
-    ["bowl-long","audio/ritual/bowl-long.mp3",70],
-    ["frame-drum","audio/ritual/frame-drum.mp3",53],
-    ["gong-deep","audio/ritual/gong-deep.mp3",26],
-    ["low-om","audio/ritual/low-om.mp3",63],
-    ["mantra-chant","audio/ritual/mantra-chant.mp3",71],
-    ["shamanic-rattle","audio/ritual/shamanic-rattle.mp3",22]
-  ],
-  "scene": [
-    ["casino-ambience","audio/scene/casino-ambience.mp3",41],
-    ["city-street","audio/scene/city-street.mp3",68],
-    ["dados","audio/scene/dados.mp3",7],
-    ["emperor","audio/scene/emperor.mp3",13],
-    ["kids-playing","audio/scene/kids-playing.mp3",35],
-    ["market-crowd","audio/scene/market-crowd.mp3",62],
-    ["med-bay-beeps","audio/scene/med-bay-beeps.mp3",40],
-    ["office-murmur","audio/scene/office-murmur.mp3",47],
-    ["party-murmur","audio/scene/party-murmur.mp3",50],
-    ["tavern-low","audio/scene/tavern-low.mp3",60]
-  ],
-  "transitions": [
-    ["arcade-coin","audio/transitions/arcade-coin.mp3",3],
-    ["boing-poioiong","audio/transitions/boing-poioiong.mp3",2],
-    ["china-intro","audio/transitions/china-intro.mp3",8],
-    ["chinese-flute-hulusi","audio/transitions/chinese-flute-hulusi.mp3",23],
-    ["chinese-transition","audio/transitions/chinese-transition.mp3",10],
-    ["cuatro-segundos-asiatic-intro","audio/transitions/cuatro-segundos-asiatic-intro.mp3",4],
-    ["downsweep-sound-effect","audio/transitions/downsweep-sound-effect.mp3",6],
-    ["dron-dos-minutos","audio/transitions/dron-dos-minutos.mp3",110],
-    ["epic-hit","audio/transitions/epic-hit.mp3",3],
-    ["fanfara-epic","audio/transitions/fanfara-epic.mp3",13],
-    ["flute-melody-280554","audio/transitions/flute-melody-280554.mp3",36],
-    ["flauta-flute-melody","audio/transitions/flauta-flute-melody.mp3",32],
-    ["funky-distorsion","audio/transitions/funky-distorsion.mp3",18],
-    ["game-over","audio/transitions/game-over.mp3",5],
-    ["half-minute-chinese-mad-beat","audio/transitions/half-minute-chinese-mad-beat.mp3",32],
-    ["hypnotic-diahrea","audio/transitions/hypnotic-diahrea.mp3",19],
-    ["intro-30-secs-claping","audio/transitions/intro-30-secs-claping.mp3",32],
-    ["intro-subiendo","audio/transitions/intro-subiendo.mp3",22],
-    ["mini-banjo","audio/transitions/mini-banjo.mp3",9],
-    ["nine-seconds-whoosh","audio/transitions/nine-seconds-whoosh.mp3",9],
-    ["one-half-coconut-grove-bongo-drum","audio/transitions/one-half-coconut-grove-bongo-drum.mp3",46],
-    ["one-minute-intro-interestelar","audio/transitions/one-minute-intro-interestelar.mp3",63],
-    ["pulse","audio/transitions/pulse.mp3",16],
-    ["rock-drums","audio/transitions/rock-drums.mp3",30],
-    ["seventeen-samurai","audio/transitions/seventeen-samurai.mp3",17],
-    ["suspenso-ascendente","audio/transitions/suspenso-ascendente.mp3",18],
-    ["ten-seconds-bubbles","audio/transitions/ten-seconds-bubbles.mp3",10],
-    ["thirteen-seconds-teletransport","audio/transitions/thirteen-seconds-teletransport.mp3",13],
-    ["timer-suspense","audio/transitions/timer-suspense.mp3",11],
-    ["video-game-8bit","audio/transitions/video-game-8bit.mp3",7]
-  ]
-};
-</script>
 
 <!-- ============= -->
 <!--  LÓGICA UI    -->
@@ -592,11 +433,12 @@ const EFX_INLINE = {
     });
   }
 
-  function paintCatalog(data){
+    function paintCatalog(data){
     const keys=[...ORDER.filter(k=>data[k]), ...Object.keys(data).filter(k=>!ORDER.includes(k))];
     paintCatbar(keys);
 
-    const cont=$('#catalog'); cont.innerHTML='';
+    const cont=$('#catalog'); 
+    cont.innerHTML='';
     keys.forEach(k=>{
       const sec=document.createElement('details');
       sec.id='cat-'+k;
@@ -606,20 +448,30 @@ const EFX_INLINE = {
       sum.innerHTML=`<strong>${TITLES[k]||k}</strong> <span class="small muted">— ${data[k].length} pista(s)</span>`;
       sec.appendChild(sum);
 
-      const list=document.createElement('div'); list.className='sfx-list';
+      const list=document.createElement('div'); 
+      list.className='sfx-list';
       data[k].forEach(([name,src,dur])=>{
-        const row  = document.createElement('div'); row.className='sfx-item';
-        const led  = document.createElement('span'); led.className='led';
-        const label= document.createElement('div');  label.className='name';
+        const row  = document.createElement('div'); 
+        row.className='sfx-item';
+        const led  = document.createElement('span'); 
+        led.className='led';
+        const label= document.createElement('div');  
+        label.className='name';
 
         // nombre + segundos (si los hay)
         label.textContent = dur ? `${name} · ${dur}s` : name;
 
-        const play = document.createElement('button'); play.className='btn pill';      play.textContent='▶ Reproducir';
-        const stop = document.createElement('button'); stop.className='btn pill stop'; stop.textContent='■ Parar último';
+        const play = document.createElement('button'); 
+        play.className='btn pill';      
+        play.textContent='▶ Reproducir';
+        const stop = document.createElement('button'); 
+        stop.className='btn pill stop'; 
+        stop.textContent='■ Parar último';
 
         const key = `${k}/${name}`;
-        const badge=document.createElement('span'); badge.className='pill muted'; badge.textContent='×0';
+        const badge=document.createElement('span'); 
+        badge.className='pill muted'; 
+        badge.textContent='×0';
 
         function refreshBadge(){
           const n = COUNTS.get(key)||0;
@@ -645,11 +497,17 @@ const EFX_INLINE = {
     });
   }
 
-  // Catálogo inline (EFX_INLINE) ya está definido arriba en este HTML
-  paintCatalog(EFX_INLINE);
-
-  // contador global al inicio (0)
-  updatePlayingCount();
+  // Cargamos el catálogo desde efectos.json (mismo directorio que shaolin-pro.html)
+  fetch('./efectos.json')
+    .then(r => r.json())
+    .then(data => {
+      paintCatalog(data);
+      updatePlayingCount();
+    })
+    .catch(err => {
+      console.error('No se pudo cargar efectos.json', err);
+      updatePlayingCount();
+    });
 
 })();
 </script>

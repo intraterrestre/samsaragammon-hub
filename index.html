@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
+<<<<<<< HEAD
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Samsaragammon — HUB Curvista</title>
@@ -73,11 +74,50 @@
       0% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.7; transform: scale(1.03); }
       100% { opacity: 1; transform: scale(1); }
+=======
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Ambulancia de Juegos™ — Doctores del Nirvana Pro™</title>
+  <meta name="theme-color" content="#00ff7b"/>
+  <style>
+    :root{--bg:#06130f;--fg:#e8fff7;--edge:#113c2d;--card:#071a14;--acc:#00ff7b;--muted:#a9e6d1}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    .wrap{max-width:1100px;margin:24px auto;padding:16px}
+    .card{border:1px solid var(--edge);border-radius:16px;background:var(--card);box-shadow:0 10px 40px rgba(0,0,0,.35);overflow:hidden}
+    .panel{padding:16px}
+
+    /* HERO sin jitter */
+    .hero img{
+      display:block;width:100%;max-width:720px;height:auto;
+      margin:40px auto 20px auto;border-radius:14px;
+      box-shadow:0 6px 20px rgba(0,255,123,.10);
+    }
+
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{background:#0a221b;border:1px solid var(--edge);color:var(--fg);padding:10px 14px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    .btn.primary{border-color:#167a5d}
+    .center{text-align:center}
+    .badge{display:inline-block;padding:4px 8px;border:1px solid var(--edge);border-radius:999px;background:#0e2b21;color:var(--fg);font-size:.8rem}
+    .cta{border-left:4px solid var(--acc);padding-left:10px}
+
+    .table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    .table th{font-weight:600;text-align:left;padding:8px 10px;color:#dffaf0}
+    .table td{padding:10px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);background:#0b1d17}
+
+    @media (max-width:720px){
+      .hero img{max-width:92%}
+      .table thead{display:none}
+      .table tr{display:grid;grid-template-columns:1fr;gap:6px}
+      .table td[data-h]:before{content:attr(data-h) " · ";color:#9fe9d0}
+>>>>>>> 8b995fe5983d8dc19ebe453f32068c37216cb3b3
     }
   </style>
 </head>
 <body>
+  <div class="wrap">
 
+<<<<<<< HEAD
   <h1>🌀 Samsaragammon — HUB Curvista</h1>
   <div class="intro">
     <p>Bienvenido al templo digital del juego filosófico.</p>
@@ -95,5 +135,172 @@
   <a class="enlace-ritual" href="tabla-curvista.html">🧩 Tabla Curvista + Reinos</a>
   <a class="enlace-ritual" href="colaborar.html">🤝 Cómo Colaborar</a>
 <a class="enlace-ritual" href="karma.html">⚖️ Karma Curvista</a>
+=======
+    <!-- HERO con póster correcto -->
+    <section class="card hero">
+      <img src="./assets/departamento-nirvana-pro-poster.png"
+           alt="Departamento Nirvana Pro™ — Ambulancia de Juegos™"
+           loading="eager" decoding="async">
+    </section>
+
+    <!-- Introducción + instrucción anti-zombie -->
+    <section class="card panel" style="margin-top:16px">
+      <h1 style="margin:0">Ambulancia de Juegos™ — Doctores del Nirvana Pro™</h1>
+      <p class="muted">Aplica un shock espiritual a tus juegos clásicos. Redescubre tus partidas con voz, sabiduría y energía.</p>
+      <p class="cta"><strong>Instrucción anti-Zombie:</strong> elige tu juego y <em>amenízalo</em> ahora — te llevamos directo a su sala de emergencia.</p>
+    </section>
+
+    <!-- Tabla de juegos con enlaces directos a SHAOLIN PRO (DJ) -->
+    <section class="card panel" style="margin-top:12px">
+      <h2 style="margin:0">Tabla de Paneles Curvistas</h2>
+      <p class="muted" style="margin-top:4px">Cada juego es un módulo ritual. Haz clic en <em>Amenizar</em> para abrir la Discoteca (DJ Shaolin Pro+) con su arsenal.</p>
+
+      <table class="table" id="games">
+        <thead>
+          <tr>
+            <th>Juego</th>
+            <th>Panel</th>
+            <th>Póster</th>
+            <th class="center">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filas generadas por JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- BLOQUE MERCURIO / WORD LAB -->
+    <section class="card panel" style="margin-top:16px">
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div style="flex:1;min-width:260px;max-width:520px">
+          <img src="./assets/word-lab-poster.png" alt="Word Resonance Lab™ — Mercurio"
+               style="display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 8px 30px rgba(0,255,123,.12)">
+        </div>
+        <div style="flex:1;min-width:260px">
+          <h2 style="margin-top:0">Word Resonance Lab™</h2>
+          <p class="muted">
+            El laboratorio etimológico-energético de Nirvana Pro™. Perfecto para <strong>Scrabble</strong> y juegos de palabras:
+            busca el <em>origen</em> y la <em>resonancia</em> de cada término y revisa tu <strong>carga kármica</strong> en tus partidas (o en la vida diaria).
+          </p>
+          <!-- ENLACE CORREGIDO -->
+          <a class="btn" href="./word-resonance-lab.html" target="_blank">🔮 Entrar al Laboratorio de Palabras</a>
+          <div style="margin-top:8px">
+            <span class="badge">Etimología</span>
+            <span class="badge">Energía curvista</span>
+            <span class="badge">Modo juego</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 💿 Discoteca Nirvana — Panel Shaolin Pro+ -->
+  <section class="card panel" id="discoteca" style="margin:20px auto 28px;max-width:1100px;text-align:center;">
+    <h2 style="margin:.4rem 0; text-align:center;">💿 Discoteca Nirvana — Panel Shaolin Pro+</h2>
+    <p style="text-align:center; line-height:1.5; margin:0 auto; max-width:560px;">
+      <em>Pulso del hospital:</em> <strong>latido alto</strong> + <strong>sirenas lejanas</strong>.<br>
+      <span style="opacity:.9;">Inicia para ambientar tus partidas o reanimar tableros clínicamente muertos.</span>
+    </p>
+
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:14px;">
+      <button class="btn primary" id="soundToggle">🔊 Iniciar ambiente</button>
+      <button class="btn" id="soundStop" disabled>⏹️ Detener</button>
+      <!-- ENLACE CORREGIDO: abre SHAOLIN PRO con arsenal visible -->
+      <a class="btn" href="./shaolin-pro.html?game=risk&open=effects" target="_blank">🎚️ Abrir DM Panel PRO</a>
+    </div>
+
+    <audio id="beat" preload="auto" loop src="./audio/nature/heart-beat.mp3"></audio>
+    <audio id="siren" preload="auto" loop src="./audio/alarms/ambulancia-sixteen-secs.mp3"></audio>
+
+    <small style="display:block; margin-top:12px; text-align:center; opacity:.6;">
+      Si no se oye, toca “Iniciar ambiente” (los navegadores requieren interacción para reproducir audio).
+    </small>
+  </section>
+
+  <script>
+    // Tabla de juegos -> todos apuntan al DJ Shaolin Pro (con arsenal)
+    const rows = [
+      { key:'risk',        name:'Risk',                 poster:'risk-poster.png'        },
+      { key:'monopoly',    name:'Monopoly',             poster:'monopoly-poster.png'    },
+      { key:'catan',       name:'Catan',                poster:'catan-poster.png'       },
+      { key:'dnd5e',       name:'D&D 5e',               poster:'dnd5e-poster.png'       },
+      { key:'uno',         name:'UNO',                  poster:'uno-poster.png'         },
+      { key:'chess',       name:'Ajedrez',              poster:'chess-poster.png'       },
+      { key:'mtg',         name:'Magic: The Gathering', poster:'mtg-poster.png'         },
+      { key:'ten-candles', name:'Ten Candles',          poster:'ten-candles-poster.png' },
+      { key:'carcassonne', name:'Carcassonne',          poster:'carcassonne-poster.png' },
+      { key:'trivial',     name:'Trivial Pursuit',      poster:'trivial-poster.png'     },
+      { key:'clue',        name:'Clue / Cluedo',        poster:'clue-poster.png'        },
+      { key:'pictionary',  name:'Pictionary / Dixit',   poster:'pictionary-poster.png'  }
+    ];
+    const DEFAULT_POSTER = './assets/departamento-nirvana-pro-poster.png';
+    const $tbody = document.querySelector('#games tbody');
+
+    function mkRow(g){
+      const tr = document.createElement('tr');
+
+      const tdGame = document.createElement('td');
+      tdGame.textContent = g.name;
+      tr.appendChild(tdGame);
+
+      const tdPanel = document.createElement('td');
+      const panelUrl = `./shaolin-pro.html?game=${encodeURIComponent(g.key)}&open=effects`;
+      tdPanel.innerHTML = `<a class="btn" href="${panelUrl}" target="_blank">/shaolin-pro?game=${g.key}</a>`;
+      tdPanel.setAttribute('data-h','Panel');
+      tr.appendChild(tdPanel);
+
+      const tdPoster = document.createElement('td');
+      tdPoster.innerHTML = `<code>${g.poster || '—'}</code>`;
+      tdPoster.setAttribute('data-h','Póster');
+      tr.appendChild(tdPoster);
+
+      const tdGo = document.createElement('td');
+      tdGo.className = 'center';
+      const a = document.createElement('a');
+      a.className = 'btn primary';
+      a.href = panelUrl;
+      a.target = '_blank';
+      a.textContent = '🎬 Amenizar';
+      tdGo.appendChild(a);
+      tr.appendChild(tdGo);
+
+      return tr;
+    }
+
+    rows.forEach(g => $tbody.appendChild(mkRow(g)));
+  </script>
+
+  <script>
+    // Bloque de audio simple (latido + sirena)
+    (() => {
+      const $beat  = document.getElementById('beat');
+      const $siren = document.getElementById('siren');
+      const $toggle= document.getElementById('soundToggle');
+      const $stop  = document.getElementById('soundStop');
+      let playing = false;
+
+      async function startAudio() {
+        try {
+          await $beat.play(); await $siren.play();
+          playing = true; $toggle.textContent = '🔇 Pausar ambiente'; $stop.disabled = false;
+        } catch(e) { console.warn('Autoplay bloqueado:', e); }
+      }
+      function pauseAudio() {
+        $beat.pause(); $siren.pause();
+        playing = false; $toggle.textContent = '🔊 Reanudar ambiente';
+      }
+      function stopAudio() {
+        pauseAudio(); $beat.currentTime = 0; $siren.currentTime = 0; $toggle.textContent = '🔊 Iniciar ambiente'; $stop.disabled = true;
+      }
+
+      $toggle.addEventListener('click', ()=>{ playing ? pauseAudio() : startAudio(); });
+      $stop.addEventListener('click', stopAudio);
+      // Volúmenes iniciales
+      $beat.volume = 0.85; $siren.volume = 0.20;
+    })();
+  </script>
+>>>>>>> 8b995fe5983d8dc19ebe453f32068c37216cb3b3
 </body>
 </html>

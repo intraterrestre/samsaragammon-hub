@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Word Resonance Lab™ — Karma Calculator</title>
+  <meta name="theme-color" content="#00ff7b" />
+
+  <style>
+    :root{--green:#00ff7b;--line:#113c2d;--panel:#06130f;--text:#eafff5;--accent:#ffd166}
+    *{box-sizing:border-box}
+    body{margin:0;background:#000;color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial}
+    .wrap{max-width:980px;margin:0 auto;padding:18px 14px}
+    header{border:1px solid var(--line);border-radius:14px;background:#06130f;
+      padding:16px;text-align:center;box-shadow:0 0 30px rgba(0,255,150,.08)}
+    h1{margin:0;color:var(--green)}
+    .sub{opacity:.9;margin-top:6px}
+    .grid{display:grid;gap:12px;margin-top:14px}
+    @media(min-width:880px){.grid{grid-template-columns: 1.1fr .9fr}}
+    .card{border:1px solid var(--line);border-radius:12px;background:#071511;padding:14px}
+    label{display:block;font-weight:700;margin:6px 0 4px}
+    input,select,textarea{width:100%;background:#031b14;border:1px solid var(--line);
+      color:var(--text);border-radius:10px;padding:10px}
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .row>*{flex:1}
+    button{background:linear-gradient(180deg,#02140f,#032017);border:1px solid var(--green);
+      color:var(--green);padding:10px 14px;border-radius:999px;font-weight:900;cursor:pointer}
+    button.alt{border-color:var(--accent);color:var(--accent)}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.95rem}
+    th,td{border-bottom:1px solid #0e2b22;padding:8px 6px;vertical-align:top}
+    th{text-align:left;color:#bfffe5}
+    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin-right:6px}
+    .muted{opacity:.9;color:#cfe}
+    footer{margin:22px 0 18px;text-align:center;color:#9edfc9;font-size:.95rem;border-top:1px solid var(--line);padding-top:12px}
+    .ok{color:#91ffcf}
+    .bad{color:#ffb3b3}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Word Resonance Lab™</h1>
+      <p class="sub">Laboratorio Kármico del Verbo · Departamento de Resonancia Etimológica — Nirvana Pro™</p>
+    </header>
+
+    <!-- Póster principal del Word Resonance Lab -->
+    <section class="card" style="max-width:860px;margin:20px auto;padding:0;border:1px solid #113c2d;border-radius:14px;background:#06130f;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.35)">
+      <img
+        src="/assets/word-lab-poster.png?v=20251111"
+        alt="Mercurio · Laboratorio Kármico del Verbo"
+        style="display:block;width:100%;height:auto"
+        loading="lazy"
+      />
+    </section>
+
+    <div style="padding:16px;text-align:center;color:#cff">
+      <p style="font-size:1rem;opacity:.9;margin:.5em 0">
+        🜍 <strong>Laboratorio Kármico del Verbo</strong> — Word Resonance Lab™
+      </p>
+      <p style="font-size:.9rem;opacity:.7">
+        Departamento de Resonancia Etimológica — Nirvana Pro™
+      </p>
+    </div>
+
+    <!-- TODO: aquí puedes añadir el buscador, tabla de palabras, etc. -->
+    <!-- <section class="card">…</section> -->
+    <footer>© 2025 Constantino y Federico García — Curvism instead cubism™</footer>
+  </div>
+</body>
+</html>

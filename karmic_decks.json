@@ -1,0 +1,32 @@
+{
+  "risk": {
+    "meta": { "doctor": "Dr. Stratikus", "energia": "Estrategia y destino" },
+    "dharma": [
+      "Alianza compasiva: cede voluntariamente 1 territorio a un jugador en desventaja (gana 2 tropas en tu capital).",
+      "Respiro de la razón: realiza un turno sin atacar; al final, coloca +2 tropas en un territorio vulnerable.",
+      "Juramento de honor: respeta una tregua anunciada por 2 rondas; obtén +3 tropas de refuerzo una vez cumplido."
+    ],
+    "karma": [
+      "Orgullo imprudente: ataca 2 veces seguidas al mismo jugador; pierde 1 tropa adicional si fallas.",
+      "Gafe del conquistador: si tomas un continente, sufres -1 tropa en un territorio frontera (agotamiento).",
+      "Traición latente: si rompes una alianza pública, retira 2 tropas de tu ejército más grande."
+    ],
+    "interaction": [
+      "Puente humanitario: intercambia 1 tropa con otro jugador (ambos ganan 1 tropa en capital por cooperación).",
+      "Mediación: cancela un ataque en curso entre dos rivales si ambos aceptan; obtienen +1 tropa cada uno.",
+      "Diplomacia veloz: firma un pacto de no agresión por 1 ronda; quien lo rompa sufre -2 tropas."
+    ]
+  },
+
+  "monopoly":  { "meta": {"doctor":"Dra. Codicia"},      "dharma":[], "karma":[], "interaction":[] },
+  "catan":      { "meta": {"doctor":"Dr. Harmonus"},      "dharma":[], "karma":[], "interaction":[] },
+  "dnd5e":      { "meta": {"doctor":"Maestro Chandra"},   "dharma":[], "karma":[], "interaction":[] },
+  "uno":        { "meta": {"doctor":"Dr. Caótico"},       "dharma":[], "karma":[], "interaction":[] },
+  "chess":      { "meta": {"doctor":"Monje Kasparananda"},"dharma":[], "karma":[], "interaction":[] },
+  "magic":      { "meta": {"doctor":"Maga N’taea"},       "dharma":[], "karma":[], "interaction":[] },
+  "tencandles": { "meta": {"doctor":"Dr. Thanatos"},      "dharma":[], "karma":[], "interaction":[] },
+  "carcassonne":{ "meta": {"doctor":"Arq. Métrico"},      "dharma":[], "karma":[], "interaction":[] },
+  "trivial":    { "meta": {"doctor":"Dra. Mnemosyne"},    "dharma":[], "karma":[], "interaction":[] },
+  "clue":       { "meta": {"doctor":"Inspector Dharma"},  "dharma":[], "karma":[], "interaction":[] },
+  "pictionary": { "meta": {"doctor":"Dr. Imaginario"},    "dharma":[], "karma":[], "interaction":[] }
+}

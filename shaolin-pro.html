@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Discoteca Nirvana — DJ Shaolin Pro+™</title>
+<meta name="theme-color" content="#1a1916"/>
+
+<style>
+  :root{
+    /* Tema ámbar monástico */
+    --bg:#0f0f0d;        /* fondo pizarra */
+    --panel:#151412;     /* tarjetas */
+    --ink:#f8efe0;       /* texto principal */
+    --muted:#dac9a8;     /* texto suave */
+    --edge:#3b372f;      /* bordes */
+    --amber:#f0b849;     /* acento ámbar */
+    --green:#84fba2;     /* OK / leds */
+    --danger:#f7a3a3;    /* stop */
+  }
+  html,body{
+    margin:0;padding:0;
+    background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,"Helvetica Neue",Arial
+  }
+  .wrap{max-width:1080px;margin:24px auto;padding:16px}
+
+  .card{
+    background:var(--panel);border:1px solid var(--edge);border-radius:16px;
+    box-shadow:0 10px 32px rgba(0,0,0,.35);overflow:hidden
+  }
+  .panel{padding:16px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .right{margin-left:auto}
+  h1,h2,h3{margin:.6rem 0}
+  .muted{color:var(--muted)}
+  .small{font-size:.92rem}
+
+  .btn{
+    background:#191712;border:1px solid var(--edge);color:var(--ink);
+    padding:9px 12px;border-radius:10px;cursor:pointer
+  }
+  .btn.ghost{background:transparent}
+  .btn.ok{border-color:#1e3a29;background:#14231b}
+  .btn.stop{border-color:#402323;background:#271616;color:var(--danger)}
+  .pill{font-size:.86rem;border-radius:999px;padding:6px 10px}
+
+  /* HERO */
+  .hero{padding:12px}
+  .hero img#poster{
+    display:block;width:100%;max-width:720px;height:auto;margin:0 auto;
+    border-radius:14px;border:1px solid var(--edge);
+    box-shadow:0 12px 36px rgba(0,0,0,.35);
+  }
+
+  /* Barra de chips (centrada) */
+  .catbar{
+    display:flex;justify-content:center;flex-wrap:wrap;
+    gap:10px;margin:8px 0 0
+  }
+  .chip{
+    border:1px solid var(--edge);background:#1b1a16;border-radius:999px;
+    padding:6px 10px;color:var(--ink);cursor:pointer
+  }
+  .chip:hover{background:#201f19}
+
+  /* Arsenal */
+  #arsenal{scroll-margin-top:20px}
+  details{
+    border:1px dashed var(--edge);border-radius:12px;
+    background:#13120f;margin-bottom:12px
+  }
+  details>summary{
+    list-style:none;cursor:pointer;
+    padding:12px 14px;border-bottom:1px dashed var(--edge);
+    background:#191813;border-radius:12px 12px 0 0
+  }
+  details[open]>summary{border-bottom-color:transparent}
+
+  /* Lista de efectos en 2 columnas */
+  .sfx-list{
+    padding:10px 12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .sfx-item{
+    flex:0 0 calc(50% - 4px);   /* 2 columnas */
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px;
+    border-bottom:1px dotted #2b281f;
+    box-sizing:border-box;
+  }
+  .sfx-item:last-child{
+    border-bottom:1px dotted #2b281f;
+  }
+
+  /* Presets bonitos */
+  .presets-grid{
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .presets-grid .btn{
+    flex:0 0 calc(50% - 6px);
+    justify-content:flex-start;
+  }
+
+  .led{
+    width:8px;height:8px;border-radius:999px;
+    background:#38352c;border:1px solid #4b4639
+  }
+  .led.on{
+    background:var(--green);
+    box-shadow:0 0 8px var(--green)
+  }
+  .name{
+    flex:1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis
+  }
+
+  input[type="range"]{width:220px}
+  footer{padding:14px;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- Back -->
+    <div class="row" style="margin-bottom:8px">
+      <a class="btn" href="./index.html">← Volver al Hospital</a>
+      <span class="right small muted">Miniteca Nirvana — <strong>DJ Shaolin Pro+™</strong></span>
+    </div>
+
+    <!-- HERO: Buda DJ -->
+    <section class="card panel hero" id="top">
+      <img id="poster"
+           src="./assets/buda-dj-poster.png"
+           alt="Buda DJ señalando la luna y haciendo scratch"
+           width="1280" height="720" loading="eager" decoding="async">
+      <p class="small muted" style="text-align:center;margin:.6rem 0 0">
+        Discoteca Nirvana — Panel Shaolin Pro+™
+      </p>
+      <p class="small" style="text-align:center;margin:.2rem 0 0;color:#ffd27a">
+        Idea de mezcla: 🌿 Naturaleza + ✨ Bendición + 🎭 Escena (volumen bajo).
+      </p>
+    </section>
+
+    <!-- Ambiente espiritual y hospitalario -->
+    <section class="card panel" style="margin-top:12px">
+      <h2>Ambiente Hospitalario</h2>
+      <p class="small muted">
+        Pulso: <em>latido alto</em> + <em>sirena lejana</em>. Inicia para ambientar tu mesa.
+      </p>
+      <div class="row">
+        <button id="btnAmb" class="btn ok">▶︎ Iniciar ambiente base</button>
+        <button id="btnStopAmb" class="btn stop">■ Detener</button>
+        <span class="right small muted">
+          Si no se oye nada, toca a Buda DJ para iniciar el sonido de tu viaje espiritual.
+        </span>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <span class="small muted">Volumen maestro</span>
+        <input id="vol" type="range" min="0" max="1" step="0.01" value="0.72">
+        <span class="pill muted">Reproducción: <span id="nowPlaying">0</span></span>
+      </div>
+    </section>
+
+    <!-- Presets por juego -->
+    <section class="card panel" style="margin-top:12px">
+      <h2>Presets por Juego</h2>
+      <p class="small muted">
+        Elige tu campaña: el DJ Buda adapta el clima sonoro al tipo de batalla interior.
+      </p>
+
+      <div class="row presets-grid">
+        <button class="btn pill" id="presetRisk">🎖 Risk — Invasión Épica</button>
+        <button class="btn pill" id="presetMonopoly">💸 Monopoly — Capitalismo Kármico</button>
+
+        <button class="btn pill" id="presetCatan">🌾 Catan — Aldea en Expansión</button>
+        <button class="btn pill" id="presetDnD5e">🐉 D&D 5e — Calabozo Interior</button>
+
+        <button class="btn pill" id="presetUno">🃏 UNO — Caos de Colores</button>
+        <button class="btn pill" id="presetChess">♟️ Ajedrez — Guerra Silenciosa</button>
+
+        <button class="btn pill" id="presetMTG">✨ Magic — Duelo de Planeswalkers</button>
+        <button class="btn pill" id="presetTenCandles">🕯 Ten Candles — Última Noche</button>
+
+        <button class="btn pill" id="presetCarcassonne">🏰 Carcassonne — Camino del Monje</button>
+        <button class="btn pill" id="presetTrivial">🧠 Trivial — Tormenta de Preguntas</button>
+
+        <button class="btn pill" id="presetClue">🔍 Clue — Misterio en la Mansión</button>
+        <button class="btn pill" id="presetPictionary">🎨 Pictionary/Dixit — Visiones en la Mesa</button>
+      </div>
+    </section>
+
+    <!-- ⭐ Favoritos del DJ (dinámico, editable) -->
+    <section class="card panel" id="fav-panel" style="margin-top:12px; display:none">
+      <h2>⭐ Favoritos del DJ</h2>
+      <p class="small muted">
+        Prepara aquí la bandeja de sonidos que usarás en tu partida.<br>
+        Añade o quita favoritos desde el catálogo de abajo (botón ☆ Fav / ★ Quitar).
+      </p>
+      <div id="fav-list" class="sfx-list"></div>
+    </section>
+
+    <!-- Chips de categorías -->
+    <section class="card panel" style="margin-top:12px">
+      <div id="catbar" class="catbar"></div>
+    </section>
+
+    <!-- Arsenal visible -->
+    <section class="card panel" id="arsenal" style="margin-top:12px">
+      <h2 style="margin:0 0 6px 0">Shaolin Pro+ — Efectos por categoría</h2>
+      <p class="small muted">
+        Dispara varios sonidos a la vez. Un LED verde indica qué pista está sonando.
+      </p>
+      <div id="catalog"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="btnStopLast">⏹ Parar último</button>
+        <button class="btn stop" id="btnStopAll">⛔ Parar TODO</button>
+      </div>
+    </section>
+
+    <footer>© 2025 Constantino & Federico García — Curvism instead cubism™</footer>
+  </div>
+
+  <!-- Audio ambiente (latido + sirena) -->
+  <audio id="aHeart" src="./audio/nature/16s-heart-beat.mp3" preload="auto" loop playsinline></audio>
+  <audio id="aSiren" src="./audio/alarms/16s-ambulancia.mp3" preload="auto" loop playsinline></audio>
+
+<!-- ============= -->
+<!--  LÓGICA UI    -->
+<!-- ============= -->
+<script>
+(()=>{
+
+  // ---------- Helpers ----------
+  const $  = (q,ctx=document)=>ctx.querySelector(q);
+
+  // ---------- Mezclador v2 ----------
+  const PLAYING = new Map();     // id -> { audio, key, led }
+  const STACK   = [];            // ids en orden (para "Parar último")
+  const COUNTS  = new Map();     // key (cat/archivo) -> nº instancias
+  let UID = 0;
+  const newId = ()=>'a'+(++UID);
+
+  const MAX_POLYPHONY_GLOBAL = Infinity;
+  const MAX_POLY_PER_CAT = {};   // p.ej. { alarms: 6, battle: 8 }
+
+  function updatePlayingCount(){
+    const el = $('#nowPlaying'); if (el) el.textContent = PLAYING.size;
+  }
+  function incKey(key){ COUNTS.set(key,(COUNTS.get(key)||0)+1); }
+  function decKey(key){
+    const n=(COUNTS.get(key)||0)-1;
+    if(n>0) COUNTS.set(key,n); else COUNTS.delete(key);
+  }
+
+  function playClip(src,key,led){
+    if (MAX_POLYPHONY_GLOBAL!==Infinity && PLAYING.size>=MAX_POLYPHONY_GLOBAL) return null;
+    if (key){
+      const cat = key.split('/')[0];
+      const enCat = Array.from(PLAYING.values()).filter(v=>v.key?.startsWith(cat+'/')).length;
+      const cap   = MAX_POLY_PER_CAT[cat] ?? Infinity;
+      if (enCat>=cap) return null;
+    }
+
+    const a = new Audio(src);
+    a.volume = parseFloat($('#vol')?.value || '0.72');
+    a.playsInline = true;
+
+    const id = newId();
+    PLAYING.set(id,{audio:a,key,led});
+    STACK.push(id);
+    if(key) incKey(key);
+    if(led) led.classList.add('on');
+    updatePlayingCount();
+
+    a.addEventListener('ended',()=> hardStop(id),{once:true});
+    a.play().catch(()=>{}); // interacción requerida
+    return id;
+  }
+
+  function hardStop(id){
+    const item = PLAYING.get(id);
+    if(!item) return;
+    const {audio,key,led} = item;
+
+    try{
+      const steps=12, dec=(audio.volume||1)/steps;
+      const iv=setInterval(()=>{
+        audio.volume=Math.max(0,audio.volume-dec);
+        if(audio.volume<=0.001){
+          clearInterval(iv);
+          try{ audio.pause(); audio.currentTime=0; }catch{}
+        }
+      },16);
+    }catch{
+      try{ audio.pause(); audio.currentTime=0; }catch{}
+    }
+
+    PLAYING.delete(id);
+    const i=STACK.lastIndexOf(id); if(i>-1) STACK.splice(i,1);
+    if(key) decKey(key);
+
+    if(led){
+      const still = Array.from(PLAYING.values()).some(v=>v.key===key);
+      if(!still) led.classList.remove('on');
+    }
+    updatePlayingCount();
+  }
+
+  function stopLast(){
+    const last = STACK.pop();
+    if(last) hardStop(last);
+  }
+
+  function stopAll(){
+    // también apagamos ambiente
+    try{ heart.pause(); heart.currentTime=0; }catch{}
+    try{ siren.pause(); siren.currentTime=0; }catch{}
+    Array.from(PLAYING.keys()).forEach(hardStop);
+  }
+
+  // ---------- Ambiente ----------
+  const heart = $('#aHeart');
+  const siren = $('#aSiren');
+
+  $('#btnAmb').addEventListener('click', ()=>{
+    try{
+      heart.currentTime=0; siren.currentTime=0;
+      const vol = parseFloat($('#vol').value||'0.72');
+      heart.volume=vol; siren.volume=vol;
+      heart.play(); siren.play();
+    }catch{}
+  });
+
+  $('#btnStopAmb').addEventListener('click', ()=>{
+    try{ heart.pause(); siren.pause(); }catch{}
+  });
+
+  $('#vol').addEventListener('input', e=>{
+    const vol=parseFloat(e.target.value||'0.72');
+    for(const {audio} of PLAYING.values()){
+      try{ audio.volume=vol; }catch{}
+    }
+    try{ heart.volume=vol; siren.volume=vol; }catch{}
+  });
+
+  // ---------- Click en Buda DJ = ritual de inicio ----------
+  const poster = $('#poster');
+  if (poster) {
+    poster.style.cursor = 'pointer';
+    poster.title = 'Haz clic para que Buda DJ inicie tu viaje sonoro';
+
+    poster.addEventListener('click', () => {
+      // 1) Inicia ambiente base (latido + sirena)
+      const btnAmb = $('#btnAmb');
+      if (btnAmb) btnAmb.click();
+
+      // 2) Cuenco tibetano (ritual de apertura)
+      playClip(
+        'audio/ritual/19s-cuencos-tibetanos.mp3',
+        'ritual/19s-cuencos-tibetanos'
+      );
+
+      // 3) Scratch del DJ unos milisegundos después
+      setTimeout(() => {
+        playClip(
+          'audio/scene/2s-dj-record_scratch.mp3',
+          'scene/2s-dj-record_scratch'
+        );
+      }, 500);
+    });
+  }
+
+  // ---------- Favoritos (localStorage) ----------
+  const FAV_STORAGE_KEY = 'shaolin-favs-v1';
+  let FAVS = [];
+
+  function loadFavs(){
+    try{
+      const raw = localStorage.getItem(FAV_STORAGE_KEY);
+      if(!raw){ FAVS = []; return; }
+      const arr = JSON.parse(raw);
+      FAVS = Array.isArray(arr) ? arr.filter(it => it && it.src) : [];
+    }catch{
+      FAVS = [];
+    }
+  }
+
+  function saveFavs(){
+    try{
+      localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(FAVS));
+    }catch{}
+  }
+
+  function isFav(src){
+    return FAVS.some(f => f.src === src);
+  }
+
+  function paintFavoritos(){
+    const panel = $('#fav-panel');
+    const box   = $('#fav-list');
+    if(!panel || !box) return;
+
+    box.innerHTML = '';
+
+    if(!FAVS.length){
+      panel.style.display = 'none';
+      return;
+    }
+    panel.style.display = 'block';
+
+    FAVS.forEach(f => {
+      const row   = document.createElement('div');
+      row.className = 'sfx-item';
+
+      const label = document.createElement('div');
+      label.className = 'name';
+      label.textContent = f.dur ? `${f.name} · ${f.dur}s` : f.name;
+
+      const play = document.createElement('button');
+      play.className = 'btn pill';
+      play.textContent = '▶ Reproducir';
+      play.addEventListener('click', () => {
+        playClip(f.src, f.key);
+      });
+
+      const remove = document.createElement('button');
+      remove.className = 'btn pill stop';
+      remove.textContent = '✕ Quitar';
+      remove.addEventListener('click', () => {
+        FAVS = FAVS.filter(x => x.src !== f.src);
+        saveFavs();
+        paintFavoritos();
+        document.dispatchEvent(new CustomEvent('shaolin-favs-updated'));
+      });
+
+      row.append(label, play, remove);
+      box.appendChild(row);
+    });
+  }
+
+  loadFavs();
+
+  // ---------- Presets por juego (12 campañas) ----------
+  const GAME_PRESETS = {
+    risk(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/battle/15s-horde-war-drums-loop.mp3','battle/horde-war-drums-loop'), 400);
+      setTimeout(()=> playClip('audio/battle/61s-civil-war-fanfares.mp3','battle/civil-war-fanfares'), 2400);
+      setTimeout(()=> playClip('audio/battle/12s-bomb-explosion.mp3','battle/bomb-explosion'), 5200);
+      setTimeout(()=> playClip('audio/battle/2s-grito-guerra.mp3','battle/grito-guerra'), 6500);
+    },
+    monopoly(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/scene/44s-rulet.mp3','scene/rulet'), 500);
+      setTimeout(()=> playClip('audio/scene/65s-spinning-ruleta.mp3','scene/spinning-ruleta'), 2600);
+      setTimeout(()=> playClip('audio/scene/30s-pop-pop-corn-popping.mp3','scene/pop-pop-corn-popping'), 5200);
+      setTimeout(()=> playClip('audio/scene/10s-game-over.mp3','scene/game-over'), 8200);
+    },
+    catan(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/nature/17s-wind.mp3','nature/wind'), 300);
+      setTimeout(()=> playClip('audio/nature/14s-thunder-and-rumbling.mp3','nature/thunder-and-rumbling'), 2300);
+      setTimeout(()=> playClip('audio/animal/30s-ranas-cantando.mp3','animal/ranas-cantando'), 4300);
+      setTimeout(()=> playClip('audio/scene/3s-dados.mp3','scene/dados'), 7200);
+    },
+    dnd5e(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/ritual/19s-cuencos-tibetanos.mp3','ritual/cuencos-tibetanos'), 500);
+      setTimeout(()=> playClip('audio/scene/72s-carpintero-tallando.mp3','scene/carpintero-tallando'), 2600);
+      setTimeout(()=> playClip('audio/nature/18s-big-thunder.mp3','nature/big-thunder'), 5200);
+      setTimeout(()=> playClip('audio/animal/37s-monster-roars.mp3','animal/monster-roars'), 7800);
+    },
+    uno(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/transitions/2s-poioiong.mp3','transitions/poioiong'), 300);
+      setTimeout(()=> playClip('audio/transitions/4s-mini-banjo.mp3','transitions/mini-banjo'), 1300);
+      setTimeout(()=> playClip('audio/scene/10s-applause.mp3','scene/applause'), 2600);
+      setTimeout(()=> playClip('audio/scene/5s-baby-laughter.mp3','scene/baby-laughter'), 4200);
+    },
+    chess(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/ritual/13s-indian-flaute.mp3','ritual/indian-flaute'), 600);
+      setTimeout(()=> playClip('audio/bless/40s-magic-harp-arpeggio.mp3','bless/magic-harp-arpeggio'), 2600);
+      setTimeout(()=> playClip('audio/ritual/22s-tribal-chant-drone.mp3','ritual/tribal-chant-drone'), 6200);
+    },
+    mtg(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/bless/35-choir-goodbyes-adios.mp3','bless/choir-goodbyes-adios'), 400);
+      setTimeout(()=> playClip('audio/nature/60s-thunder-sound.mp3','nature/thunder-sound'), 2600);
+      setTimeout(()=> playClip('audio/animal/48s-lion-loud.mp3','animal/lion-loud'), 5200);
+      setTimeout(()=> playClip('audio/transitions/13s-teletransport.mp3','transitions/teletransport'), 7800);
+    },
+    "ten-candles"(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/ritual/21s-short-suspense-dungeons.mp3','ritual/short-suspense-dungeons'), 500);
+      setTimeout(()=> playClip('audio/ritual/29s-melancolic.mp3','ritual/melancolic'), 2600);
+      setTimeout(()=> playClip('audio/nature/9s-mid-nights-sound.mp3','nature/mid-nights-sound'), 5200);
+      setTimeout(()=> playClip('audio/scene/19-witch-laughter.mp3','scene/witch-laughter'), 7800);
+    },
+    carcassonne(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/nature/301s-cold-snowfall.mp3','nature/cold-snowfall'), 400);
+      setTimeout(()=> playClip('audio/ritual/25s-tibetan-buddhist-drum.mp3','ritual/tibetan-buddhist-drum'), 2600);
+      setTimeout(()=> playClip('audio/bless/8s-church-bell.mp3','bless/church-bell'), 5200);
+    },
+    trivial(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/scene/33s-corona-announcement-subway-hvv-hamburg.mp3','scene/corona-announcement-subway'), 500);
+      setTimeout(()=> playClip('audio/transitions/16s-timer-suspense.mp3','transitions/timer-suspense'), 2600);
+      setTimeout(()=> playClip('audio/transitions/10s-chinese-transition.mp3','transitions/chinese-transition'), 5200);
+      setTimeout(()=> playClip('audio/scene/10s-game-over.mp3','scene/game-over'), 7800);
+    },
+    clue(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/scene/27s-come-back-alive-whisper.mp3','scene/come-back-alive-whisper'), 400);
+      setTimeout(()=> playClip('audio/nature/30s-storm-windy.mp3','nature/storm-windy'), 2600);
+      setTimeout(()=> playClip('audio/transitions/11s-suspenso-ascendente.mp3','transitions/suspenso-ascendente'), 5200);
+      setTimeout(()=> playClip('audio/alarms/17s-siren-blips.mp3','alarms/siren-blips'), 7800);
+    },
+    pictionary(){
+      $('#btnAmb').click();
+      setTimeout(()=> playClip('audio/transitions/22s-flute-melody.mp3','transitions/flute-melody'), 500);
+      setTimeout(()=> playClip('audio/bless/26s-dizi-flute.mp3','bless/dizi-flute'), 2600);
+      setTimeout(()=> playClip('audio/scene/49s-inhales-and-exhales.mp3','scene/inhales-and-exhales'), 5200);
+      setTimeout(()=> playClip('audio/scene/8s-help-me.mp3','scene/help-me'), 8800);
+    }
+  };
+
+  [
+    ['presetRisk','risk'],
+    ['presetMonopoly','monopoly'],
+    ['presetCatan','catan'],
+    ['presetDnD5e','dnd5e'],
+    ['presetUno','uno'],
+    ['presetChess','chess'],
+    ['presetMTG','mtg'],
+    ['presetTenCandles','ten-candles'],
+    ['presetCarcassonne','carcassonne'],
+    ['presetTrivial','trivial'],
+    ['presetClue','clue'],
+    ['presetPictionary','pictionary']
+  ].forEach(([btnId,key])=>{
+    const btn = $('#'+btnId);
+    if(btn && GAME_PRESETS[key]){
+      btn.addEventListener('click', ()=> GAME_PRESETS[key]());
+    }
+  });
+
+  // ---------- Botones globales ----------
+  $('#btnStopLast').addEventListener('click', stopLast);
+  $('#btnStopAll').addEventListener('click', stopAll);
+
+  // ---------- Chips + catálogo ----------
+  const ORDER  = ['alarms','animal','battle','transitions','scene','nature','ritual','bless'];
+  const TITLES = {
+    alarms:'🚑 Alarmas',
+    animal:'🐾 Animales',
+    battle:'⚔️ Guerra',
+    transitions:'➡️ Transiciones',
+    scene:'🎭 Escena',
+    nature:'🌿 Naturaleza',
+    ritual:'🕯 Música Ritual',
+    bless:'✨ Bendiciones Mágicas'
+  };
+
+  function paintCatbar(keys){
+    const bar = $('#catbar'); bar.innerHTML='';
+    keys.forEach(k=>{
+      const chip=document.createElement('span');
+      chip.className='chip'; chip.textContent=TITLES[k]||k;
+      chip.addEventListener('click',()=>{
+        const el=document.getElementById('cat-'+k);
+        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+      bar.appendChild(chip);
+    });
+  }
+
+  function paintCatalog(data){
+    const keys = [
+      ...ORDER.filter(k => data[k]),
+      ...Object.keys(data).filter(k => !ORDER.includes(k))
+    ];
+    paintCatbar(keys);
+
+    const cont = $('#catalog');
+    cont.innerHTML = '';
+
+    keys.forEach(k => {
+      const sec = document.createElement('details');
+      sec.id = 'cat-' + k;
+      sec.open = true;
+
+      const sum = document.createElement('summary');
+      sum.innerHTML = `<strong>${TITLES[k] || k}</strong> <span class="small muted">— ${data[k].length} pista(s)</span>`;
+      sec.appendChild(sum);
+
+      const list = document.createElement('div');
+      list.className = 'sfx-list';
+
+      data[k].forEach(item => {
+        let name, src, dur;
+
+        if (Array.isArray(item)) {
+          [name, src, dur] = item;
+        } else if (item && typeof item === 'object') {
+          name = item.name || item.n || item.title || '';
+          src  = item.src  || item.path || item.file || '';
+          dur  = item.dur  || item.seconds || item.len || item.d;
+        } else if (typeof item === 'string') {
+          src = item.trim();
+          const m = src.match(/\/([^\/]+)\.[a-z0-9]+$/i);
+          name = m ? m[1] : src;
+        }
+
+        if (!src) return;
+
+        const row   = document.createElement('div'); row.className = 'sfx-item';
+        const led   = document.createElement('span'); led.className = 'led';
+        const label = document.createElement('div');  label.className = 'name';
+
+        label.textContent = dur ? `${name} · ${dur}s` : name;
+
+        const play = document.createElement('button');
+        play.className = 'btn pill';
+        play.textContent = '▶ Reproducir';
+
+        const stop = document.createElement('button');
+        stop.className = 'btn pill stop';
+        stop.textContent = '■ Parar último';
+
+        const key = `${k}/${name}`;
+        const badge = document.createElement('span');
+        badge.className = 'pill muted';
+        badge.textContent = '×0';
+
+        // ---- Botón de favoritos (toggle) ----
+        const favBtn = document.createElement('button');
+        favBtn.className = 'btn pill';
+
+        function syncFavBtn(){
+          if(isFav(src)){
+            favBtn.textContent = '★ Quitar';
+          } else {
+            favBtn.textContent = '☆ Fav';
+          }
+        }
+        syncFavBtn();
+
+        favBtn.addEventListener('click', () => {
+          if(isFav(src)){
+            FAVS = FAVS.filter(f => f.src !== src);
+          } else {
+            FAVS.push({ name, src, dur, key });
+          }
+          saveFavs();
+          paintFavoritos();
+          syncFavBtn();
+        });
+
+        function refreshBadge(){
+          const n = COUNTS.get(key) || 0;
+          badge.textContent = '×' + n;
+          if (n === 0) led.classList.remove('on');
+        }
+
+        play.addEventListener('click', () => {
+          const id = playClip(src, key, led);
+          if (id) refreshBadge();
+        });
+
+        stop.addEventListener('click', () => {
+          stopLast();
+          requestAnimationFrame(refreshBadge);
+        });
+
+        row.append(led, label, play, stop, favBtn, badge);
+        list.appendChild(row);
+      });
+
+      sec.appendChild(list);
+      cont.appendChild(sec);
+    });
+  }
+
+  // Cargamos el catálogo desde efectos.json
+  fetch('./efectos.json')
+    .then(r => r.json())
+    .then(data => {
+      paintCatalog(data);
+      updatePlayingCount();
+      paintFavoritos();
+    })
+    .catch(err => {
+      console.error('No se pudo cargar efectos.json', err);
+      updatePlayingCount();
+    });
+
+})();
+</script>
+</body>
+</html>

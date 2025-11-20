@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Word Resonance Lab™ — Karmacalculator</title>
+  <meta name="theme-color" content="#00ff7b" />
+  <style>
+    :root{
+      --bg:#06130f; --fg:#e8fff7; --edge:#113c2d; --card:#071a14; --acc:#00ff7b;
+      --muted:#a9e6d1;
+    }
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    .wrap{max-width:1100px;margin:24px auto;padding:16px}
+    .card{border:1px solid var(--edge);border-radius:16px;background:var(--card);
+      box-shadow:0 10px 40px rgba(0,0,0,.35);overflow:hidden}
+    .panel{padding:16px}
+    .hero img{display:block;width:100%;height:auto}
+    .muted{color:var(--muted)}
+    h1,h2{margin:10px 0 6px}
+    input[type="text"]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--edge);
+      background:#0a221b;color:var(--fg);outline:none}
+    .grid{display:grid;gap:12px;grid-template-columns:1fr}
+    @media(min-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
+    .badge{display:inline-block;background:#0e2b21;color:var(--fg);border:1px solid var(--edge);
+      padding:4px 8px;border-radius:999px;font-size:.8rem;margin:2px 4px 0 0}
+    .btn{background:#0a221b;border:1px solid var(--edge);color:var(--fg);
+      padding:10px 12px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .btn:hover{filter:brightness(1.05)}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .small{font-size:.92rem}
+    .pill{padding:2px 8px;border-radius:999px;border:1px solid var(--edge);background:#082019}
+    .card-word{position:relative}
+    .card-word .title{font-weight:800;font-size:1.2rem;display:flex;gap:8px;align-items:center}
+    .sep{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);margin:10px 0}
+    .kidz *{transition:all .2s ease}
+    .kidz .badge{background:#14253b}
+    .kidz .btn{background:#122a4a}
+    .kidz .title{font-size:1.3rem}
+    .kidz .confetti{display:block}
+    .sticker{position:absolute;right:10px;top:10px;font-size:22px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    .toolbar .left,.toolbar .right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .notice{border-left:4px solid var(--acc);padding:8px 12px;border-radius:8px;background:#062019}
+    .footer{opacity:.8;margin-top:16px}
+    .confetti{display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none}
+  </style>
+</head>
+<body>
+  <canvas class="confetti" id="confetti"></canvas>
+  <div class="wrap" id="app">
+    <!-- HERO -->
+    <section class="card hero">
+      <img
+        src="./assets/word-lab-poster.png"
+        alt="Word Resonance Lab™ — Póster"
+        loading="eager"
+        decoding="async"
+        onerror="console.error('No se encontró ./assets/word-lab-poster.png');"
+      />
+    </section>
+
+    <!-- TOOLBAR -->
+    <section class="card panel" style="margin-top:16px">
+      <div class="toolbar">
+        <div class="left">
+          <h1 style="margin:0">Word Resonance Lab™</h1>
+          <span class="pill small">Nirvana Pro™ Karmacalculator</span>
+        </div>
+        <div class="right">
+          <button class="btn" id="kidsToggle">🎈 Modo niños: OFF</button>
+          <button class="btn" id="randomWord">🎲 Palabra del día</button>
+          <a class="btn" href="./dm-panel.html?game=risk">🧭 Ir a DM Panel</a>
+        </div>
+      </div>
+      <p class="muted small" style="margin-top:6px">
+        Busca una palabra, explora su etimología y su **resonancia curvista**. Para niñas y niños, activa el Modo Niños para una experiencia más lúdica.
+      </p>
+      <div class="row" style="margin-top:10px">
+        <input id="search" type="text" placeholder="🔎 Buscar palabra (ej.: raíz, juego, karma, voz)">
+        <button class="btn" id="clearSearch">✖ Limpiar</button>
+        <button class="btn" id="quizOpen">🧩 Quiz</button>
+        <button class="btn" id="exportJSON">💾 Exportar diccionario</button>
+      </div>
+    </section>
+
+    <!-- TARJETAS -->
+    <section class="panel" style="padding-left:0;padding-right:0">
+      <div class="grid" id="cards"></div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="card panel" style="margin-top:16px" id="quizCard">
+      <h2>🧩 Mini‑Quiz: ¿Qué significa la raíz?</h2>
+      <p class="muted small">Elige la opción correcta. ¡Gana confeti y pegatinas virtuales 🎉!</p>
+      <div class="row" id="quizRow" style="margin-top:8px"></div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="quizNext">Siguiente pregunta</button>
+        <span id="quizScore" class="small muted">Puntuación: 0</span>
+      </div>
+    </section>
+
+    <p class="footer small">© 2025 Curvism instead cubism™ — Hospital de Juegos Curvistas.</p>
+  </div>
+
+  <script>
+    // =========================
+    // Datos semilla del diccionario
+    // =========================
+    const diccionario = [
+      {
+        term: "raíz",
+        idioma: "es",
+        etimologia: {
+          raiz: "del lat. radix, radicis",
+          componentes: ["rad- (base, origen)"],
+          siglo_aprox: "s. XIII",
+          notas: "Extiende su sentido a causa u origen de lo abstracto."
+        },
+        energia_curvista: {
+          polaridad: "armónica",
+          vectores: ["cauce","sustento","anclaje"],
+          resonancia: "Invoca origen y sostén; favorece decisiones con fundamento.",
+          usos_expandentes: ["nombrar el origen con respeto","trazar genealogías de ideas"],
+          usos_contraidos: ["rigidizar el origen como dogma"]
+        },
+        memoria_colectiva: {
+          asociaciones: ["árbol","origen","fuerza"],
+          contextos: ["herencia cultural","música de raíces"]
+        },
+        sticker: "🌱"
+      },
+      {
+        term: "juego",
+        idioma: "es",
+        etimologia: {
+          raiz: "del lat. iocus (broma, diversión) → ludus (juego)",
+          componentes: ["iocus/ludus"],
+          siglo_aprox: "s. XIII–XIV",
+          notas: "Campo semántico compartido con 'lúdico'."
+        },
+        energia_curvista: {
+          polaridad: "armónica",
+          vectores: ["apertura","ensayo","improvisación"],
+          resonancia: "Afloja rigideces; permite explorar sin miedo al error.",
+          usos_expandentes: ["aprender haciendo","probar hipótesis creativas"],
+          usos_contraidos: ["competir sin cuidado por el otro"]
+        },
+        memoria_colectiva: {
+          asociaciones: ["tablero","amigos","risa"],
+          contextos: ["educación","terapia","diseño de experiencias"]
+        },
+        sticker: "🎲"
+      },
+      {
+        term: "karma",
+        idioma: "sa → es",
+        etimologia: {
+          raiz: "del sánscrito कर्म (kárman): acto, acción",
+          componentes: ["√kṛ (hacer)"],
+          siglo_aprox: "antigüedad",
+          notas: "Entra al español vía traducciones filosóficas/religiosas."
+        },
+        energia_curvista: {
+          polaridad: "neutra",
+          vectores: ["causa","efecto","aprendizaje"],
+          resonancia: "Recordatorio de que toda acción deja huella modelable.",
+          usos_expandentes: ["responsabilidad amable","reparación consciente"],
+          usos_contraidos: ["fatalismo rígido (‘estaba escrito’)"]
+        },
+        memoria_colectiva: {
+          asociaciones: ["ley de causa y efecto","buenas/malas acciones"],
+          contextos: ["filosofía","budismo popular"]
+        },
+        sticker: "🌀"
+      },
+      {
+        term: "voz",
+        idioma: "es",
+        etimologia: {
+          raiz: "del lat. vox, vocis",
+          componentes: ["voc- (llamar)"],
+          siglo_aprox: "latín clásico → romance",
+          notas: "Parentesco con 'invocar', 'vocación'."
+        },
+        energia_curvista: {
+          polaridad: "armónica",
+          vectores: ["expresión","presencia","vínculo"],
+          resonancia: "Al poner voz, aparece el puente con el otro y contigo.",
+          usos_expandentes: ["decir la verdad con cuidado","cantar para aflojar tensiones"],
+          usos_contraidos: ["gritar para dominar"]
+        },
+        memoria_colectiva: {
+          asociaciones: ["canto","palabra","micrófono"],
+          contextos: ["poesía","radio","asambleas"]
+        },
+        sticker: "🎤"
+      }
+    ];
+
+    // =========================
+    // Render de tarjetas
+    // =========================
+    const $cards = document.getElementById('cards');
+    const $search = document.getElementById('search');
+    const $clearSearch = document.getElementById('clearSearch');
+    const $kidsToggle = document.getElementById('kidsToggle');
+    const $randomWord = document.getElementById('randomWord');
+    const $quizOpen = document.getElementById('quizOpen');
+    const $export = document.getElementById('exportJSON');
+    const $app = document.getElementById('app');
+
+    function h(tag, attrs={}, inner=''){
+      const el = document.createElement(tag);
+      Object.entries(attrs).forEach(([k,v])=>{
+        if(k==='class') el.className = v;
+        else if(k.startsWith('on') && typeof v==='function') el.addEventListener(k.slice(2), v);
+        else el.setAttribute(k,v);
+      });
+      if(inner!==undefined){
+        if(typeof inner==='string') el.innerHTML = inner;
+        else if(inner) el.appendChild(inner);
+      }
+      return el;
+    }
+
+    function renderCards(list){
+      $cards.innerHTML = '';
+      list.forEach((item)=>{
+        const root = h('div', {class:'card card-word panel'});
+        const title = h('div', {class:'title'}, `<span class="sticker">${item.sticker||'✨'}</span>${item.term} <span class="badge">${item.idioma}</span>`);
+        const ety = item.etimologia||{};
+        const curv = item.energia_curvista||{};
+        const memo = item.memoria_colectiva||{};
+
+        const etyEl = h('div', {}, `
+          <div><span class="badge">🧬 Etimología</span></div>
+          <div class="small muted" style="margin-top:6px">
+            <strong>Raíz:</strong> ${ety.raiz||'-'}<br/>
+            <strong>Componentes:</strong> ${(ety.componentes||[]).join(', ')||'-'}<br/>
+            <strong>Siglo aprox.:</strong> ${ety.siglo_aprox||'-'}<br/>
+            <strong>Notas:</strong> ${ety.notas||'-'}
+          </div>
+        `);
+
+        const curvEl = h('div', {}, `
+          <div style="margin-top:8px"><span class="badge">💫 Energía curvista</span></div>
+          <div class="small muted" style="margin-top:6px">
+            <strong>Polaridad:</strong> ${curv.polaridad||'-'}<br/>
+            <strong>Vectores:</strong> ${(curv.vectores||[]).join(', ')||'-'}<br/>
+            <strong>Resonancia:</strong> ${curv.resonancia||'-'}<br/>
+            <strong>Usos expandentes:</strong> ${(curv.usos_expandentes||[]).join('; ')||'-'}<br/>
+            <strong>Usos contraídos:</strong> ${(curv.usos_contraidos||[]).join('; ')||'-'}
+          </div>
+        `);
+
+        const memEl = h('div', {}, `
+          <div style="margin-top:8px"><span class="badge">🧠 Memoria colectiva</span></div>
+          <div class="small muted" style="margin-top:6px">
+            <strong>Asociaciones:</strong> ${(memo.asociaciones||[]).join(', ')||'-'}<br/>
+            <strong>Contextos:</strong> ${(memo.contextos||[]).join(', ')||'-'}
+          </div>
+        `);
+
+        const controls = h('div', {class:'row', style:'margin-top:10px'});
+        const btnSpeak = h('button', {class:'btn', onclick:()=>speak(item.term)}, '🔉 Pronunciar');
+        const btnRes = h('button', {class:'btn', onclick:()=>alert(curv.resonancia||'—')}, '✨ Resonancia');
+        controls.append(btnSpeak, btnRes);
+
+        root.append(title, h('div',{class:'sep'}), etyEl, curvEl, memEl, controls);
+        $cards.appendChild(root);
+      });
+    }
+
+    // =========================
+    // Búsqueda
+    // =========================
+    function filterList(q){
+      q = (q||'').trim().toLowerCase();
+      if(!q) return diccionario;
+      return diccionario.filter(d =>
+        d.term.toLowerCase().includes(q) ||
+        JSON.stringify(d).toLowerCase().includes(q)
+      );
+    }
+    $search.addEventListener('input', ()=> renderCards(filterList($search.value)));
+    $clearSearch.addEventListener('click', ()=>{ $search.value=''; renderCards(diccionario); });
+
+    // =========================
+    // Modo Niños (temas, stickers y confeti)
+    // =========================
+    let kids = false;
+    function toggleKids(){
+      kids = !kids;
+      $app.classList.toggle('kidz', kids);
+      document.getElementById('kidsToggle').textContent = kids ? '🎈 Modo niños: ON' : '🎈 Modo niños: OFF';
+      if(kids) launchConfetti(100);
+    }
+    $kidsToggle.addEventListener('click', toggleKids);
+
+    // =========================
+    // Palabra del día (random scroll + ping)
+    // =========================
+    function randomWord(){
+      const i = Math.floor(Math.random()*diccionario.length);
+      const term = diccionario[i].term;
+      $search.value = term;
+      renderCards(filterList(term));
+      speak(term);
+      setTimeout(()=>window.scrollTo({top:document.querySelector('.card-word')?.offsetTop-20||0,behavior:'smooth'}), 100);
+    }
+    $randomWord.addEventListener('click', randomWord);
+
+    // =========================
+    // Web Speech (pronunciar)
+    // =========================
+    function speak(text){
+      try{
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'es-ES';
+        speechSynthesis.cancel();
+        speechSynthesis.speak(u);
+      }catch(e){ console.warn('Speech no disponible'); }
+    }
+
+    // =========================
+    // Exportar JSON
+    // =========================
+    function exportJSON(){
+      const blob = new Blob([JSON.stringify(diccionario, null, 2)], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'diccionario-curvista.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+    $export.addEventListener('click', exportJSON);
+
+    // =========================
+    // Mini‑Quiz para peques
+    // =========================
+    const quizRow = document.getElementById('quizRow');
+    const quizNext = document.getElementById('quizNext');
+    const quizScore = document.getElementById('quizScore');
+    let score = 0;
+    let currentQ = null;
+
+    const distractores = [
+      "montaña", "río", "cielo", "energía", "camino", "casa", "luz", "jardín"
+    ];
+
+    function makeQuestion(){
+      // Elegimos una entrada y preguntamos por su RAÍZ etimológica
+      const entry = diccionario[Math.floor(Math.random()*diccionario.length)];
+      const correct = (entry.etimologia?.raiz || '').replace(/<[^>]+>/g,'').trim();
+      const options = new Set([correct]);
+      while(options.size < 4){
+        const opt = distractores[Math.floor(Math.random()*distractores.length)];
+        options.add(opt);
+      }
+      const opts = Array.from(options).sort(()=>Math.random()-.5);
+      currentQ = {entry, correct};
+
+      quizRow.innerHTML = `<div class="notice"><strong>¿Cuál es la “raíz etimológica” de <em>${entry.term}</em>?</strong></div>`;
+      const row = document.createElement('div'); row.className='row'; row.style.marginTop='8px';
+      opts.forEach(o=>{
+        const b = h('button',{class:'btn', onclick:()=>answer(o)}, o);
+        row.appendChild(b);
+      });
+      quizRow.appendChild(row);
+    }
+
+    function answer(opt){
+      if(!currentQ) return;
+      if(opt === currentQ.correct){
+        score += 1;
+        launchConfetti(200);
+        alert('¡Correcto! 🎉');
+      }else{
+        score = Math.max(0, score - 1);
+        alert(`Ups… La respuesta correcta era:\n${currentQ.correct}`);
+      }
+      quizScore.textContent = `Puntuación: ${score}`;
+    }
+
+    quizNext.addEventListener('click', makeQuestion);
+
+    // =========================
+    // Confeti minimalista (canvas)
+    // =========================
+    const cnv = document.getElementById('confetti');
+    const ctx = cnv.getContext('2d');
+    let parts = [];
+    function launchConfetti(n=120){
+      resizeConfetti();
+      cnv.style.display='block';
+      for(let i=0;i<n;i++){
+        parts.push({
+          x: Math.random()*cnv.width,
+          y: -10,
+          vx: (Math.random()-.5)*2,
+          vy: Math.random()*2+1,
+          s: Math.random()*4+2,
+          a: Math.random()*Math.PI*2
+        });
+      }
+      requestAnimationFrame(tick);
+      setTimeout(()=>cnv.style.display='none', 1200);
+    }
+    function resizeConfetti(){
+      cnv.width = innerWidth; cnv.height = innerHeight;
+    }
+    addEventListener('resize', resizeConfetti);
+    function tick(){
+      ctx.clearRect(0,0,cnv.width,cnv.height);
+      parts.forEach(p=>{
+        p.x += p.vx; p.y += p.vy; p.a += 0.1;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.a);
+        ctx.fillStyle = 'hsl('+(Math.random()*360)+' 100% 70%)';
+        ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s);
+        ctx.restore();
+      });
+      parts = parts.filter(p=>p.y<cnv.height+20);
+      if(parts.length>0) requestAnimationFrame(tick);
+    }
+
+    // =========================
+    // Arranque
+    // =========================
+    renderCards(diccionario);
+    makeQuestion();
+  </script>
+</body>
+</html>

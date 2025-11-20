@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Maestro Shaolín — Turbo Master Dragon</title>
+<meta name="description" content="Consejero kármico para D&D: lecturas del Maestro, ambiente Shaolín y efectos especiales sin complicaciones." />
+<meta name="theme-color" content="#00ff7b" />
+<style>
+  :root{
+    --green:#00ff7b; --accent:#ffd166; --line:#103527;
+    --panel:#06130f; --panel2:#0a1d17; --text:#eafff5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:#000;color:var(--text);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    line-height:1.55; overflow-x:hidden;
+  }
+  .matrix-bg{position:fixed; inset:0; z-index:-1; opacity:.14; pointer-events:none}
+
+  .wrap{max-width:980px; margin:0 auto; padding:20px 16px}
+  header.hero{
+    margin-top:5vh; margin-bottom:18px; text-align:center;
+    padding:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel);
+    box-shadow:0 0 38px rgba(0,255,150,.08), inset 0 0 22px rgba(0,255,140,.04)
+  }
+  .title{font-size:clamp(26px,4vw,40px); color:var(--green); font-weight:800; letter-spacing:.04em; margin-bottom:4px; text-shadow:0 0 10px rgba(0,255,150,.35)}
+  .subtitle{color:#bfeee0; opacity:.95; font-size:clamp(14px,1.9vw,16px)}
+
+  .grid{display:grid; gap:16px; grid-template-columns:1fr}
+  @media(min-width:900px){ .grid{grid-template-columns: 1.1fr .9fr;} }
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px}
+  h2.section{color:var(--green); font-size:clamp(18px,2.4vw,22px); margin-bottom:10px; text-shadow:0 0 10px rgba(0,255,150,.25)}
+  .muted{color:#cfe; opacity:.95}
+
+  .controls{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 16px; border-radius:999px; border:1px solid var(--green);
+    background:linear-gradient(180deg,#02140f,#031b14);
+    color:var(--green); text-decoration:none; font-weight:800; letter-spacing:.02em;
+    box-shadow:0 0 10px var(--green), 0 0 18px rgba(0,255,140,.45);
+    transition:transform .12s ease, box-shadow .2s ease; cursor:pointer
+  }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 16px var(--green), 0 0 32px rgba(0,255,140,.55) }
+  .btn.alt{ border-color:var(--accent); color:var(--accent); box-shadow:0 0 10px var(--accent),0 0 18px rgba(255,209,102,.45) }
+  .btn.warn{ border-color:#ff6b6b; color:#ff6b6b; box-shadow:0 0 10px #ff6b6b,0 0 18px rgba(255,107,107,.45) }
+
+  .reading{background:rgba(0,0,0,.5); border:1px dashed var(--line); border-radius:12px; padding:14px; min-height:140px; white-space:pre-line}
+
+  .col{display:flex; flex-direction:column; gap:10px}
+  .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .slider{width:180px}
+  select{
+    width:100%; padding:10px; border-radius:10px; border:1px solid var(--line);
+    background:#031b14; color:#eafff5; font:inherit;
+  }
+
+  footer{margin:26px 0 20px; text-align:center; color:#9edfc9; font-size:.95rem; border-top:1px solid var(--line); padding-top:14px}
+  .mini{opacity:.75; font-size:.9rem; margin-top:6px}
+</style>
+</head>
+<body>
+  <canvas class="matrix-bg" id="matrixBg" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="title">Maestro Shaolín</div>
+      <div class="subtitle">Consejero kármico del <strong>Turbo Master Dragon™</strong> para tus partidas de D&D.</div>
+    </header>
+
+    <!-- Bloque de ambiente y SFX -->
+    <div class="card">
+      <h2 class="section">🌿 Ambiente Shaolín & SFX</h2>
+      <p class="muted">Ambient = base musical larga (en bucle). SFX = toques cortos que puedes superponer para dramatizar.</p>
+      <div class="controls">
+        <button id="btnAmbient" class="btn">🌿 Ambient: ▶ Iniciar</button>
+        <button id="btnSfx" class="btn alt">🎲 SFX aleatorio</button>
+        <button id="btnStopAll" class="btn warn">⏹️ Parar todo</button>
+        <label class="row" style="gap:8px;margin-left:auto">
+          Volumen <input id="vol" class="slider" type="range" min="0" max="1" step="0.01" value="0.5" />
+        </label>
+        <label class="row" style="gap:8px">
+          <input id="duck" type="checkbox" checked /> Atenuar música al hablar
+        </label>
+      </div>
+      <p class="muted">Consejo DM: activa el Ambient al empezar la sesión y dispara SFX en momentos clave.</p>
+    </div>
+
+    <section class="grid">
+      <!-- Lectura del Maestro -->
+      <div class="card">
+        <h2 class="section">🧘 Lectura del Maestro</h2>
+        <p class="muted">
+          Pulsa para que el Maestro lea tu <strong>última tirada</strong> de la Calculadora (misma web, clave <code>karmicCalculator</code>)
+          o genere una lectura ritual.
+        </p>
+        <div class="controls">
+          <button id="btnReadLast" class="btn">📖 Leer última tirada</button>
+          <button id="btnRandom" class="btn alt">🎲 Lectura aleatoria</button>
+          <button id="btnToggleVoice" class="btn" aria-pressed="true">🗣️ Voz del Maestro: ON</button>
+        </div>
+        <div id="readingText" class="reading">El viento está quieto. Trae tu tirada o pide una lectura y escucharás el consejo.</div>
+        <div class="controls">
+          <button id="btnRepeat" class="btn">🔁 Repetir</button>
+          <button id="btnStopTTS" class="btn warn">⏹️ Parar voz</button>
+        </div>
+      </div>
+
+      <!-- Voz (simple) -->
+      <div class="card col">
+        <h2 class="section">🎛️ Voz</h2>
+        <label class="muted">Selecciona la voz del Maestro</label>
+        <select id="voiceSelect"></select>
+        <p class="muted">Tip: usa <strong>Shaolín Pro+</strong> (Ambient + SFX) para dar ambiente musical. La voz atenúa la música y luego vuelve a subir.</p>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.
+      <div class="mini">Turbo Master Dragon™ · Maestro Shaolín (v6).</div>
+    </footer>
+  </div>
+
+<script>
+/* ===== Fondo Matrix (ligero) ===== */
+(function(){
+  const c=document.getElementById('matrixBg'),x=c.getContext('2d');
+  function R(){ c.width=innerWidth; c.height=innerHeight; }
+  R(); addEventListener('resize',R);
+  const A='アカサタナハマヤラワ0123456789☯KARMA DHARMA'.split(''), fs=14;
+  let cols=Math.floor(c.width/fs), drops=Array(cols).fill(1);
+  setInterval(()=>{
+    if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
+    x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
+    x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      x.fillText(A[(Math.random()*A.length)|0],i*fs,drops[i]*fs);
+      if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    }
+  },33);
+})();
+
+/* ===== Estado global simple ===== */
+const state = {
+  ambient:null,
+  ambientOn:false,
+  ambientPlaylist:[
+    // usa tus audios largos; puedes añadir más archivos aquí
+    "chinese-beat-190047.mp3",
+    "music-transition-ancient-back-etlx-247347.mp3"
+  ],
+  sfxList:[
+    "alone-samurai-in-mountain-430719.mp3",
+    "asiatic-intro_3-283719.mp3",
+    "birds-chirping-67827.mp3",
+    "China-cymbal-transition-sound-effect.mp3",
+    "chinese-flute-hulusi-76116.mp3",
+    "chinese-ident-transition-1-283708.mp3",
+    "dizi-flute-02-72563.mp3",
+    "fireworks-07-419025.mp3",
+    "Gong-sound.mp3",
+    "gongfeb11-91065.mp3",
+    "INTROCHINO.mp3",
+    "spike-one-31462.mp3",
+    "tibetan-buddhist-drum-314994.mp3"
+  ],
+  activeSfx:[],
+  voiceOn:true,
+  voices:[],
+  currentVoice:null
+};
+
+/* ===== Utilidades ===== */
+function byId(id){ return document.getElementById(id); }
+function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
+
+/* ===== Audio: Ambient & SFX ===== */
+function ensureAmbient(){
+  if (state.ambient) return state.ambient;
+  const a = new Audio(`audio/shaolin/${pick(state.ambientPlaylist)}`);
+  a.loop = true;
+  a.volume = parseFloat(byId('vol').value || '0.5');
+  a.onended = ()=>{ /* con loop=true no llega aquí */ };
+  state.ambient = a;
+  return a;
+}
+function toggleAmbient(){
+  const btn = byId('btnAmbient');
+  const a = ensureAmbient();
+  if (!state.ambientOn){
+    a.play().catch(()=>{});
+    state.ambientOn = true;
+    btn.textContent = "🌿 Ambient: ⏸️ Pausar";
+  } else {
+    a.pause();
+    state.ambientOn = false;
+    btn.textContent = "🌿 Ambient: ▶ Iniciar";
+  }
+}
+function playSfx(){
+  const file = pick(state.sfxList);
+  const a = new Audio(`audio/shaolin/${file}`);
+  a.volume = parseFloat(byId('vol').value || '0.5');
+  state.activeSfx.push(a);
+  a.onended = ()=>{ state.activeSfx = state.activeSfx.filter(x=>x!==a); };
+  a.play().catch(()=>{});
+}
+function stopAllAudio(){
+  if (state.ambient){ state.ambient.pause(); state.ambient.currentTime = 0; state.ambientOn = false; byId('btnAmbient').textContent="🌿 Ambient: ▶ Iniciar"; }
+  state.activeSfx.forEach(a=>{ try{ a.pause(); a.currentTime=0; }catch(_){ } });
+  state.activeSfx = [];
+}
+
+/* ===== Lecturas del Maestro ===== */
+const FALLBACK_KARMA = [
+  {type:"karma",   result:"AUTOGOL: Retrocede 3 espacios"},
+  {type:"karma",   result:"PÉRDIDA DE TURNO por arrogancia espiritual"},
+  {type:"dharma",  result:"AVANCE RÁPIDO: +4 espacios"},
+  {type:"dharma",  result:"INMUNIDAD KÁRMICA por 1 turno"},
+  {type:"dharma",  result:"DOBLE MOVIMIENTO en tu siguiente ronda"}
+];
+
+function getLastFromLocalStorage(){
+  try{
+    const raw = localStorage.getItem("karmicCalculator");
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    const hist = Array.isArray(data.history)? data.history : [];
+    if (!hist.length) return null;
+    const last = hist[0];
+    if (last.from === 'roulette' && last.fullData?.result){
+      return { type: last.to, result: last.fullData.result };
+    }
+    if (last.description && (last.description.startsWith("KARMA")||last.description.startsWith("DHARMA"))){
+      const [kind, ...rest] = last.description.split(":");
+      return { type: kind.toLowerCase(), result: rest.join(":").trim() };
+    }
+    if (last.fullData?.difficulty !== undefined){
+      const desc = last.description || "";
+      const parts = desc.split("→");
+      const from = (parts[0]||"Humano").trim();
+      const to = (parts[1]||"Humano").split(":")[0].trim();
+      return { type:"interaction", result:`Interacción ${from} → ${to} (dif. ${last.fullData.difficulty})` };
+    }
+  }catch(e){}
+  return null;
+}
+
+function forgeReading(payload){
+  const intro = pick([
+    "El bambú se inclina, pero no se quiebra.",
+    "Respira hondo. Observa sin juicio.",
+    "Cuando la mente se aquieta, el camino aparece.",
+    "Quien empuja el río, solo se cansa."
+  ]);
+  let cuerpo = "";
+  if (payload?.type === "karma"){
+    cuerpo = `Veo carga activa: ${payload.result}. No luches contra el golpe; absorbe y redirige. Practica una renuncia pequeña ahora.`;
+  } else if (payload?.type === "dharma"){
+    cuerpo = `Llega viento propicio: ${payload.result}. Úsalo para levantar también a otro. Compartir te hará más ligero.`;
+  } else if (payload?.type === "interaction"){
+    cuerpo = `Cruce entre fuerzas: ${payload.result}. Observa el apego que empuja. Si puedes, escoge la opción con menos orgullo.`;
+  } else {
+    const rnd = pick(FALLBACK_KARMA);
+    cuerpo = `Sin señales recientes, leo el pulso: ${rnd.type.toUpperCase()} — ${rnd.result}. Toma el siguiente paso con humildad.`;
+  }
+  const outro = pick([
+    "Camina suave. La salida está en tu siguiente decisión.",
+    "Suelta un poco hoy, para andar más lejos mañana.",
+    "El dado cae, pero tu intención lo guía.",
+    "Mira la luna y recuerda: no eres tus sombras."
+  ]);
+  return `${intro}\n${cuerpo}\n${outro}`;
+}
+
+<script>
+// ===== Preferencias y estado =====
+const state = window.state || (window.state = {});
+state.voices = state.voices || [];
+state.currentVoice = state.currentVoice || null;
+state.voiceOn = state.voiceOn ?? true;
+state.uiWired = state.uiWired || false;
+
+// Persistencia de idioma/voz
+const voiceLangSel = document.getElementById('voiceLang');
+const voiceSel     = document.getElementById('voiceSelect');
+
+const savedLang  = localStorage.getItem('voiceLang') || 'es';
+const savedVoice = localStorage.getItem('voiceName') || '';
+if (voiceLangSel) voiceLangSel.value = savedLang;
+
+// Mapa de preferencia por idioma (ordena voces)
+const PREF_ORDER = {
+  es: ["es-ES","es-MX","es-AR","es-419","es"],
+  en: ["en-GB","en-US","en-AU","en-CA","en"]
+};
+
+// ===== Carga y filtrado de voces por idioma =====
+function loadVoices() {
+  state.voices = window.speechSynthesis.getVoices();
+  populateVoices(voiceLangSel ? voiceLangSel.value : 'es');
+}
+
+function populateVoices(langCode) {
+  if (!state.voices.length || !voiceSel) return;
+
+  const wanted = PREF_ORDER[langCode] || [langCode];
+  const score = v => {
+    const l = (v.lang||"").toLowerCase();
+    for (let i=0;i<wanted.length;i++) if (l.startsWith(wanted[i].toLowerCase())) return i;
+    return 99;
+  };
+
+  // Lista por idioma preferido; si no hay, todas
+  const filtered = state.voices.filter(v=>{
+    const l = (v.lang||"").toLowerCase();
+    return wanted.some(w=>l.startsWith(w.toLowerCase()));
+  }).sort((a,b)=>score(a)-score(b));
+  const list = filtered.length ? filtered : state.voices.slice();
+
+  // Poblado del <select>
+  voiceSel.innerHTML = "";
+  list.forEach(v=>{
+    const o = document.createElement('option');
+    o.value = v.name; o.textContent = `${v.name} — ${v.lang}`;
+    voiceSel.appendChild(o);
+  });
+
+  // Seleccionar la última voz elegida si existe
+  const preferred = list.find(v=>v.name===savedVoice);
+  state.currentVoice = preferred || list[0] || null;
+  if (state.currentVoice) voiceSel.value = state.currentVoice.name;
+
+  // Guardar idioma/voz
+  localStorage.setItem('voiceLang', langCode);
+  if (state.currentVoice) localStorage.setItem('voiceName', state.currentVoice.name);
+}
+
+// ===== Hablar con ducking de ambient =====
+function speak(text){
+  if (!state.voiceOn || !('speechSynthesis' in window)) return;
+
+  const u = new SpeechSynthesisUtterance(text);
+
+  if (state.currentVoice){
+    const v = state.voices.find(x=>x.name===state.currentVoice.name) || state.currentVoice;
+    u.voice = v;
+    u.lang  = v.lang || ((voiceLangSel?.value||'es')==='es' ? 'es-ES' : 'en-US');
+  } else {
+    u.lang = ((voiceLangSel?.value||'es')==='es' ? 'es-ES' : 'en-US');
+  }
+
+  u.rate = 0.95; u.pitch = 1.0; u.volume = 1.0;
+
+  // Ducking del ambient
+  const a = state.ambient; // asegúrate de asignar state.ambient cuando inicies tu música base
+  const duckEl = document.getElementById('duck'); // checkbox “Bajar música al hablar”
+  const doDuck = !!(duckEl && duckEl.checked);
+  let prevVol = a ? a.volume : 0;
+
+  u.onstart = ()=>{
+    if (doDuck && a && !a.paused){
+      prevVol = a.volume;
+      a.volume = Math.max(0, prevVol * 0.25);
+    }
+  };
+  u.onend = ()=>{
+    if (doDuck && a){ a.volume = prevVol; }
+  };
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+// ===== Wire de UI (una vez) =====
+if (!state.uiWired){
+  state.uiWired = true;
+
+  // Inicializar voces
+  if ('speechSynthesis' in window){
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  // Cambios de idioma/voz
+  voiceLangSel?.addEventListener('change', ()=>{
+    localStorage.setItem('voiceLang', voiceLangSel.value);
+    populateVoices(voiceLangSel.value);
+  });
+
+  voiceSel?.addEventListener('change', ()=>{
+    const v = state.voices.find(x=>x.name===voiceSel.value);
+    if (v){
+      state.currentVoice = v;
+      localStorage.setItem('voiceName', v.name);
+    }
+  });
+
+  // Botón ON/OFF voz (si lo tienes)
+  const btnToggle = document.getElementById('btnToggleVoice');
+  if (btnToggle){
+    btnToggle.addEventListener('click', ()=>{
+      state.voiceOn = !state.voiceOn;
+      btnToggle.textContent = state.voiceOn ? "🗣️ Voz del Maestro: ON" : "🤫 Voz del Maestro: OFF";
+      btnToggle.setAttribute("aria-pressed", state.voiceOn ? "true" : "false");
+    });
+  }
+}
+
+// Exponer speak para tu código existente
+window.speak = speak;
+</script>

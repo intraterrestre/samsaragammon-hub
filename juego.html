@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<<<<<<< HEAD
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Samsaragammon — Juego Ritual</title>
@@ -90,9 +91,81 @@
       opacity: 1;
     }
   </style>
+=======
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Carta ritual: Hombre ↔ Buda</title>
+<style>
+  :root{--green:#00ff7b;--panel:#0b1713;--panel2:#0e211a;--line:#173f30}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#000;color:#eafff5;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;min-height:100vh;overflow-x:hidden}
+  .matrix{position:fixed;inset:0;z-index:-1;opacity:.18;pointer-events:none}
+
+  .wrap{max-width:1000px;margin:0 auto;padding:24px 16px}
+  h1{font-size:clamp(26px,4vw,40px);color:var(--green);text-align:center;
+     text-shadow:0 0 10px var(--green),0 0 20px rgba(0,255,140,.35);margin:16px 0 6px}
+  .sub{opacity:.9;text-align:center;margin-bottom:18px}
+
+  /* Card frame */
+  .frame{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+         padding:18px;box-shadow:0 0 32px rgba(0,255,140,.08), inset 0 0 16px rgba(0,255,140,.04)}
+  .stage{display:flex;justify-content:center}
+
+   /* Flip card */
+  .card{
+    width:min(860px,92vw);
+    aspect-ratio: 4 / 3;          /* ← ahora es más alto, no corta la imagen */
+    position:relative;
+    perspective:1200px;
+  }
+  .card-inner{
+    position:absolute; inset:0; transform-style:preserve-3d;
+    transition:transform .9s ease;
+  }
+  .is-flipped .card-inner{ transform:rotateY(180deg); }
+
+  .face{
+    position:absolute; inset:0;
+    border-radius:18px; border:1px solid var(--line);
+    overflow:hidden; backface-visibility:hidden;
+    background:#000;                       /* ← fondo negro para que se integre */
+    box-shadow:0 0 26px rgba(0,255,140,.06);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .face img{
+    width:100%; height:100%;
+    object-fit: contain;                   /* ← muestra la imagen completa */
+    object-position: center;
+    display:block;
+    padding:12px;                          /* ← evita que toque los bordes redondeados */
+  }
+  .back{ transform:rotateY(180deg); }
+
+  /* Controls */
+  .actions{display:flex; gap:10px; justify-content:center; margin:14px 0 6px}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px;
+    border:1px solid var(--green); background:linear-gradient(180deg,#06130f,#0b1f19);
+    color:var(--green); font-weight:800; text-decoration:none; cursor:pointer;
+    box-shadow:0 0 10px var(--green),0 0 20px rgba(0,255,140,.35);
+    transition:transform .12s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 0 16px var(--green),0 0 30px rgba(0,255,140,.55)}
+  .tip{opacity:.85; text-align:center; margin-bottom:10px}
+  footer{margin:18px 0 24px; text-align:center; color:#9edfc9; font-size:.95rem;}
+
+  /* Sound toggle */
+  #soundToggle{position:fixed; right:16px; top:16px; z-index:9;
+    background:#001100; color:#00ff7b; border:2px solid #00ff7b; border-radius:22px;
+    padding:7px 11px; font-family:monospace; cursor:pointer; box-shadow:0 0 10px rgba(0,255,140,.35)}
+</style>
+>>>>>>> 8b995fe5983d8dc19ebe453f32068c37216cb3b3
 </head>
 <body>
+<canvas class="matrix" id="bg"></canvas>
+<button id="soundToggle">🔇 Activar sonido</button>
 
+<<<<<<< HEAD
   <!-- Texto ritual -->
   <div class="texto-ritual">
     <p>🌕 La luna llena brilla en el horizonte, símbolo de iluminación.</p>
@@ -138,6 +211,114 @@
       window.location.href = 'https://manual-samsaragammon-9c38dd.netlify.app/';
     }
   </script>
+=======
+<div class="wrap">
+  <h1>Carta ritual: Hombre ↔ Buda</h1>
+  <p class="sub">Toca la carta para girarla. Cada giro, una decisión. Cada decisión, un paso hacia la salida del Samsara.</p>
 
+  <div class="frame">
+    <div class="stage">
+      <div class="card" id="card">
+        <div class="card-inner">
+          <!-- Frente: Buda -->
+          <div class="face front">
+            <img
+              src="https://federicogarcia.art/wp-content/uploads/2025/11/Buda-moon-Fake-World-1-1.png"
+              alt="Buda señalando la luna" />
+          </div>
+          <!-- Reverso: Hombre -->
+          <div class="face back">
+            <img
+              src="https://federicogarcia.art/wp-content/uploads/2025/11/hombre-y-buda.png"
+              alt="Hombre occidental en la misma postura" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btnFlip">🔁 Gira la carta del destino. Entre la ilusión y el despertar, la diferencia es una mirada.</button>
+      <a class="btn" id="btnPlay" href="pitonisa.html">🎮 Entrar al juego</a>
+    </div>
+    <p class="tip">Tip: también puedes pasar el mouse por encima, tocar la carta, o presionar <strong>Barra espaciadora</strong>.</p>
+  </div>
+
+  <footer>© 2025 Constantino y Federico García — <em>Curvism instead cubism™</em>. Todos los derechos redondeados con reserva.</footer>
+</div>
+
+<!-- Audio -->
+<audio id="ambient" src="https://federicogarcia.art/wp-content/uploads/2025/10/china-green-tea-380502.mp3" loop preload="auto" playsinline></audio>
+<audio id="whoosh"  src="https://federicogarcia.art/wp-content/uploads/2025/10/ritual-l4d1c0m0.mp3" preload="auto" playsinline></audio>
+
+<script>
+  // ===== Fondo Matrix =====
+  (function(){
+    const c=document.getElementById('bg'),x=c.getContext('2d');
+    function R(){ c.width=innerWidth; c.height=innerHeight } R(); addEventListener('resize',R);
+    const A='アカサタナハマヤラワ0123456789☯KARMADHARMA'.split(''); const fs=14;
+    let cols=Math.floor(c.width/fs), drops=Array(cols).fill(1);
+    setInterval(()=>{
+      if(cols!==Math.floor(c.width/fs)){ cols=Math.floor(c.width/fs); drops=Array(cols).fill(1); }
+      x.fillStyle='rgba(0,0,0,0.06)'; x.fillRect(0,0,c.width,c.height);
+      x.fillStyle='#00ff7b'; x.font=fs+'px monospace';
+      for(let i=0;i<drops.length;i++){
+        const t=A[(Math.random()*A.length)|0]; x.fillText(t,i*fs,drops[i]*fs);
+        if(drops[i]*fs>c.height && Math.random()>0.975) drops[i]=0; drops[i]++;
+      }
+    },33);
+  })();
+
+  // ===== Carta: flip + auto-giro =====
+  (function(){
+    const card = document.getElementById('card');
+    const inner = card.querySelector('.card-inner');
+    const btnFlip = document.getElementById('btnFlip');
+    const ambient = document.getElementById('ambient');
+    const whoosh  = document.getElementById('whoosh');
+    const toggle  = document.getElementById('soundToggle');
+    let audioReady=false, autoTimer=null, hovering=false;
+>>>>>>> 8b995fe5983d8dc19ebe453f32068c37216cb3b3
+
+    function flip(){
+      inner.parentElement.classList.toggle('is-flipped');
+      if (whoosh){ try{ whoosh.currentTime=0; whoosh.volume=.65; whoosh.play().catch(()=>{});}catch(e){} }
+    }
+
+    // Auto-giro cada 6s hasta la primera interacción/hover
+    function startAuto(){ stopAuto(); autoTimer=setInterval(()=>{ if(!hovering) flip(); }, 6000); }
+    function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; } }
+    startAuto();
+
+    card.addEventListener('mouseenter',()=>{ hovering=true; });
+    card.addEventListener('mouseleave',()=>{ hovering=false; });
+    card.addEventListener('click', flip);
+    btnFlip.addEventListener('click', flip);
+    window.addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); flip(); } });
+
+    // Audio desbloqueo/Toggle
+    function tryPlayAmbient(){
+      if(!ambient) return;
+      ambient.volume=.5;
+      ambient.play().then(()=>{ audioReady=true; toggle.textContent='🔊 Silenciar'; })
+                   .catch(()=>{ /* espera interacción */ });
+    }
+    function onFirst(){ tryPlayAmbient(); stopAuto(); window.removeEventListener('pointerdown', onFirst); }
+    window.addEventListener('pointerdown', onFirst);
+
+    toggle.addEventListener('click', ()=>{
+      if(!audioReady){ tryPlayAmbient(); return; }
+      if(ambient.paused){ ambient.play(); toggle.textContent='🔊 Silenciar'; }
+      else { ambient.pause(); toggle.textContent='🔇 Activar sonido'; }
+    });
+
+    // “Entrar al juego”: pequeño delay para que suene el whoosh y navegue
+    document.getElementById('btnPlay').addEventListener('click', (e)=>{
+      e.preventDefault();
+      stopAuto();
+      flip(); // giro final teatral
+      setTimeout(()=>{ window.location.href = 'pitonisa.html'; }, 300);
+    });
+  })();
+</script>
 </body>
 </html>

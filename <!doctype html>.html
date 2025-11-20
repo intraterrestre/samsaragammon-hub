@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samsaragammon — Juego Ritual</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fdfcf9;
+      font-family: 'Helvetica Neue', sans-serif;
+      animation: fadeIn 1s ease-in;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .texto-ritual {
+      margin-top: 2em;
+      font-size: 1.3em;
+      color: #333;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6em;
+    }
+
+    .luna {
+      width: 160px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      animation: pulseLuna 2.5s infinite ease-in-out;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      display: block;
+      margin: 2em auto 1em auto;
+    }
+
+    .luna:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes pulseLuna {
+      0% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+        transform: scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+      }
+    }
+
+    .contenedor-imagenes {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 2em auto;
+      height: auto;
+    }
+
+    .imagen-ritual {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 1em;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      transition: opacity 1.5s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Texto ritual -->
+  <div class="texto-ritual">
+    <p>🌕 La luna llena brilla en el horizonte, símbolo de iluminación.</p>
+    <p>Como un Buda en potencia, acércate… <strong>y toca la luna.</strong></p>
+    <p>Empieza tu viaje en el <strong>Samsaragammon</strong> y descubre el sendero para romper la rueda del Samsara.</p>
+  </div>
+
+  <!-- Luna pulsante como botón -->
+  <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
+       alt="Luna portal"
+       class="luna"
+       onclick="redirigirAlJuego()" />
+
+  <!-- Contenedor de imágenes con fade -->
+  <div class="contenedor-imagenes">
+    <img id="hombre" src="https://federicogarcia.art/wp-content/uploads/2024/11/DALL%C2%B7E-2024-10-10-22.33.49-A-surreal-image-of-a-man-emerging-from-a-playing-die-that-is-split-into-three-large-pieces.-The-man-is-stepping-out-from-the-broken-die-and-with-his-copy.png"
+         alt="Hombre como Buda en potencia"
+         class="imagen-ritual visible" />
+
+    <img id="buda" src="https://federicogarcia.art/wp-content/uploads/2025/10/Buda-moon-Fake-World-copy.png"
+         alt="Buda liberado de esquinas"
+         class="imagen-ritual oculto" />
+  </div>
+
+  <script>
+    // Transición visual entre hombre y Buda
+    window.addEventListener('DOMContentLoaded', () => {
+      const hombre = document.getElementById('hombre');
+      const buda = document.getElementById('buda');
+
+      if (hombre && buda) {
+        setTimeout(() => {
+          hombre.classList.remove('visible');
+          hombre.classList.add('oculto');
+          buda.classList.remove('oculto');
+          buda.classList.add('visible');
+        }, 3000);
+      }
+    });
+
+    // Redirección inmediata al juego
+    function redirigirAlJuego() {
+      window.location.href = 'https://manual-samsaragammon-9c38dd.netlify.app/';
+    }
+  </script>
+
+</body>
+</html>

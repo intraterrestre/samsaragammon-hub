@@ -3,95 +3,141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Samsaragammon — El Juego</title>
+  <title>Samsaragammon — Juego Ritual</title>
   <style>
     body {
       margin: 0;
+      padding: 0;
+      background-color: #fdfcf9;
       font-family: 'Helvetica Neue', sans-serif;
-      background: linear-gradient(to bottom, #e0f7fa, #fdfdfd);
+      animation: fadeIn 1s ease-in;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .texto-ritual {
+      margin-top: 2em;
+      font-size: 1.3em;
       color: #333;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6em;
     }
-    header {
-      text-align: center;
-      padding: 2rem;
-      background-color: #009688;
-      color: white;
+
+    .luna {
+      width: 160px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      animation: pulseLuna 2.5s infinite ease-in-out;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      display: block;
+      margin: 2em auto 1em auto;
     }
-    section {
-      padding: 2rem;
-      text-align: center;
-      border-bottom: 1px solid #ccc;
+
+    .luna:hover {
+      transform: scale(1.05);
     }
-    h1, h2 {
-      margin-bottom: 1rem;
+
+    @keyframes pulseLuna {
+      0% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+        transform: scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+      }
     }
-    p {
-      font-size: 1.1rem;
-      max-width: 800px;
-      margin: 0 auto 1.5rem;
+
+    .contenedor-imagenes {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 2em auto;
+      height: auto;
     }
-    .module {
-      margin-top: 2rem;
+
+    .imagen-ritual {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 1em;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      transition: opacity 1.5s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
-    a.button {
-      display: inline-block;
-      padding: 0.8rem 1.5rem;
-      background-color: #00796b;
-      color: white;
-      font-size: 1rem;
-      border-radius: 5px;
-      text-decoration: none;
-      margin-top: 1rem;
+
+    .oculto {
+      opacity: 0;
+      pointer-events: none;
     }
-    a.button:hover {
-      background-color: #004d40;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #777;
+
+    .visible {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>🎮 Samsaragammon</h1>
-    <p>El juego curvista para aprender a salir del Samsara</p>
-  </header>
+  <!-- Texto ritual -->
+  <div class="texto-ritual">
+    <p>🌕 La luna llena brilla en el horizonte, símbolo de iluminación.</p>
+    <p>Como un Buda en potencia, acércate… <strong>y toca la luna.</strong></p>
+    <p>Empieza tu viaje en el <strong>Samsaragammon</strong> y descubre el sendero para romper la rueda del Samsara.</p>
+  </div>
 
-  <section class="module">
-    <h2>🗺️ Reinos del Samsara</h2>
-    <p>Aquí puedes explorar los seis reinos: dioses, humanos, animales, fantasmas hambrientos, demonios y el infierno. Cada uno tiene su frecuencia, su karma y su curva.</p>
-    <!-- Aquí puedes insertar tablas, imágenes o descripciones -->
-  </section>
+  <!-- Luna pulsante como botón -->
+  <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
+       alt="Luna portal"
+       class="luna"
+       onclick="redirigirAlJuego()" />
 
-  <section class="module">
-    <h2>📊 Tablas de Estrategia</h2>
-    <p>Consulta las tablas de frecuencia, karma, conciencia y movimiento. Aprende a redondear tu jugada.</p>
-    <!-- Aquí puedes insertar tablas HTML o enlaces a PDFs -->
-  </section>
+  <!-- Contenedor de imágenes con fade -->
+  <div class="contenedor-imagenes">
+    <img id="hombre" src="https://federicogarcia.art/wp-content/uploads/2024/11/DALL%C2%B7E-2024-10-10-22.33.49-A-surreal-image-of-a-man-emerging-from-a-playing-die-that-is-split-into-three-large-pieces.-The-man-is-stepping-out-from-the-broken-die-and-with-his-copy.png"
+         alt="Hombre como Buda en potencia"
+         class="imagen-ritual visible" />
 
-  <section class="module">
-    <h2>🧠 Diccionario Curvista</h2>
-    <p>¿Qué significa "curvismo"? ¿Qué es el "séptimo par cerrado"? Aquí puedes consultar los términos clave del juego y su trasfondo filosófico.</p>
-    <!-- Puedes insertar definiciones o enlaces -->
-  </section>
+    <img id="buda" src="https://federicogarcia.art/wp-content/uploads/2025/10/Buda-moon-Fake-World-copy.png"
+         alt="Buda liberado de esquinas"
+         class="imagen-ritual oculto" />
+  </div>
 
-  <section class="module">
-    <h2>🔮 Oráculo Curvista</h2>
-    <p>Haz una pregunta simbólica y deja que el oráculo te responda con una curva. (Próximamente interactivo)</p>
-    <!-- Puedes insertar frases, QR o enlaces -->
-  </section>
+  <script>
+    // Transición visual entre hombre y Buda
+    window.addEventListener('DOMContentLoaded', () => {
+      const hombre = document.getElementById('hombre');
+      const buda = document.getElementById('buda');
 
-  <section>
-    <a class="button" href="index.html">⬅️ Volver al Hub</a>
-  </section>
+      if (hombre && buda) {
+        setTimeout(() => {
+          hombre.classList.remove('visible');
+          hombre.classList.add('oculto');
+          buda.classList.remove('oculto');
+          buda.classList.add('visible');
+        }, 3000);
+      }
+    });
 
-  <footer>
-    © 2025 Federico García · Curvismo no cubismo · Todos los derechos redondeados
-  </footer>
+    // Redirección inmediata al juego
+    function redirigirAlJuego() {
+      window.location.href = 'https://manual-samsaragammon-9c38dd.netlify.app/';
+    }
+  </script>
 
 </body>
 </html>

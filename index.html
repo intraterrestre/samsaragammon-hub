@@ -3,127 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Samsaragammon Hub — Curvismo</title>
+  <title>Samsaragammon — HUB Curvista</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+  <script defer src="js/ritual.js"></script>
   <style>
     body {
       margin: 0;
+      padding: 0;
+      background-color: #fdfcf9;
       font-family: 'Helvetica Neue', sans-serif;
-      background: linear-gradient(to bottom, #fdfdfd, #e0f7fa);
+      animation: fadeIn 1s ease-in;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 {
+      margin-top: 2em;
+      font-size: 2em;
       color: #333;
     }
-    header {
-      text-align: center;
-      padding: 2rem;
-      background-color: #00796b;
-      color: white;
-    }
-    section {
-      padding: 2rem;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    h2 {
-      font-size: 1.8rem;
-      margin-top: 3rem;
-    }
-    p {
-      font-size: 1.2rem;
-      max-width: 800px;
-      margin: 0 auto 1.5rem;
-    }
-    img {
-      max-width: 90%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      margin-bottom: 2rem;
-    }
-    a.button {
-      display: inline-block;
-      padding: 0.8rem 1.5rem;
-      background-color: #009688;
-      color: white;
-      font-size: 1rem;
-      border-radius: 5px;
+
+    .enlace-ritual {
+      display: block;
+      margin: 1.5em auto;
+      font-size: 1.2em;
+      color: #444;
       text-decoration: none;
-      border: none;
-      cursor: pointer;
-      margin-top: 1rem;
+      padding: 0.5em 1em;
+      border: 2px solid #ccc;
+      border-radius: 1em;
+      width: fit-content;
+      transition: all 0.3s ease;
     }
-    a.button:hover {
-      background-color: #00695c;
+
+    .enlace-ritual:hover {
+      background-color: #eee;
+      transform: scale(1.05);
+      border-color: #999;
     }
-    .luna-portal {
-      text-align: center;
-      margin-top: 2rem;
+
+    .intro {
+      margin-top: 1em;
+      font-size: 1.1em;
+      color: #666;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .luna-portal img {
-      width: 200px;
+
+    .luna-superpuesta {
+      margin-top: 2em;
+      width: 140px;
       border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      animation: pulseLuna 2.5s infinite ease-in-out;
       cursor: pointer;
+      transition: transform 0.3s ease;
     }
-    .luna-portal img:hover {
+
+    .luna-superpuesta:hover {
       transform: scale(1.05);
     }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #777;
+
+    @keyframes pulseLuna {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>🌀 Samsaragammon Hub</h1>
-    <p>Curvismo: el arte de redondear la conciencia</p>
-  </header>
+  <h1>🌀 Samsaragammon — HUB Curvista</h1>
+  <div class="intro">
+    <p>Bienvenido al templo digital del juego filosófico.</p>
+    <p>Explora los módulos, activa tu dharma curvo, y colabora en la expansión del Samsaragammon.</p>
+  </div>
 
-  <section>
-    <h2>Bienvenido al manifiesto curvista</h2>
-    <p>
-      Antes de entrar al juego, descubre por qué <strong>vivir en cubos nos enferma</strong> — y cómo las curvas pueden sanar tu espacio, tu mente y tu alma.
-    </p>
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/10/Samsara24-direction-scaled.jpg" alt="Arte Curvista" />
-    <p>
-      Este arte representa el viaje espiritual del Homo curvicus: desde los ojos que ven con baja frecuencia hasta el séptimo par cerrado — símbolo de la realización divina. Las líneas de colores que emergen de Yama expresan nuestros niveles de conciencia, y todos convergen en la rueda del Samsara, donde el gallo, el cerdo y la serpiente mueven el mundo.
-    </p>
-    <a class="button" href="https://www.amazon.com.mx/dp/B0FSDTS252" target="_blank">📘 Ver el libro en Amazon (versión en español)</a>
-    <p>Incluye QR interactivos que te llevan al sitio web y al Oráculo Curvista.</p>
-  </section>
+  <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
+     alt="Luna portal"
+     class="luna-superpuesta"
+     id="luna" />
 
-  <section>
-    <h2>🌕 La Luna como Portal</h2>
-    <p>
-      Para aprender a salir del Samsara, debes entrar al juego <strong>Samsaragammon</strong> por la luna.<br>
-      <em>Buda no señala el ciclo... señala la luna que está fuera del teatro terrestre.</em>
-    </p>
-
-    <div class="luna-portal">
-      <a href="juego.html">
-        <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png" alt="Portal lunar" />
-      </a>
-      <p><strong>Haz clic en la luna para entrar al juego</strong></p>
-    </div>
-  </section>
-
-  <section>
-    <h2>🧘‍♂️ Buda señala la luna</h2>
-    <p>
-      No señala el Samsara, ni el teatro terrestre. Señala la luna — el séptimo cielo, el escape curvista.
-    </p>
-    <img src="https://federicogarcia.art/wp-content/uploads/2025/09/Buda-moon-Fake-World-.png" alt="Buda señalando la luna" />
-  </section>
-
-  <footer>
-    © 2025 Federico García · Curvismo no cubismo · Todos los derechos redondeados
-  </footer>
-
+  <a class="enlace-ritual" href="juego.html">🎮 Entrar al Juego Ritual</a>
+  <a class="enlace-ritual" href="manual-curvist.html">📜 Manual Curvista</a>
+  <a class="enlace-ritual" href="diccionario.html">📚 Diccionario Interactivo</a>
+  <a class="enlace-ritual" href="tabla-curvista.html">🧩 Tabla Curvista + Reinos</a>
+  <a class="enlace-ritual" href="colaborar.html">🤝 Cómo Colaborar</a>
+<a class="enlace-ritual" href="karma.html">⚖️ Karma Curvista</a>
 </body>
 </html>

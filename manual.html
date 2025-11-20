@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Curvista — Samsaragammon</title>
+  <link rel="stylesheet" href="css/manual.css" />
+  <script defer src="js/ritual.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f9f6f2;
+      font-family: 'Georgia', serif;
+      animation: fadeIn 1s ease-in;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 {
+      margin-top: 2em;
+      font-size: 2em;
+      color: #2c2c2c;
+    }
+
+    .texto-manual {
+      margin: 2em auto;
+      font-size: 1.1em;
+      color: #444;
+      max-width: 700px;
+      line-height: 1.6em;
+    }
+
+    .luna-superpuesta {
+      margin-top: 2em;
+      width: 120px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      animation: pulseLuna 2.5s infinite ease-in-out;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .luna-superpuesta:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes pulseLuna {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📜 Manual Curvista</h1>
+  <div class="texto-manual">
+    <p>Este es el núcleo filosófico del Samsaragammon.</p>
+    <p>Define los principios curvos, las atmósferas rituales, y el juego simbólico que guía al visitante.</p>
+    <p>Explorá las definiciones, los reinos, y los gestos que activan el dharma digital.</p>
+  </div>
+
+  <img src="https://federicogarcia.art/wp-content/uploads/2025/10/LUNA-PORTAL-1.png"
+       alt="Luna portal"
+       class="luna-superpuesta" />
+
+</body>
+</html>
